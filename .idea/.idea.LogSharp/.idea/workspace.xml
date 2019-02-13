@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="06bf880c-660e-4051-baeb-c4d2e5c985f3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.runtimeconfig.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/LogSharp.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/LogSharp.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/LogSharpParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/parser/LogSharpParser.cs" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/parser/LogSharpToken.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
+              <folding>
+                <marker date="1550055239907" expanded="true" signature="43:963" ph="{...}" />
+                <marker date="1550055239907" expanded="true" signature="123:961" ph="{...}" />
+                <marker date="1550055239907" expanded="false" signature="138:500" ph="scalars" />
+                <marker date="1550055239907" expanded="false" signature="518:937" ph="sugar" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+              <folding>
+                <marker date="1550055239890" expanded="true" signature="43:530" ph="{...}" />
+                <marker date="1550055239890" expanded="true" signature="85:528" ph="{...}" />
+                <marker date="1550055239890" expanded="true" signature="238:512" ph="{...}" />
+                <marker date="1550055239890" expanded="true" signature="294:378" ph="{...}" />
+                <marker date="1550055239890" expanded="true" signature="378:463" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/parser/LogSharpParser.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="258">
+              <caret line="98" column="1" selection-start-line="98" selection-start-column="1" selection-end-line="98" selection-end-column="1" />
+              <folding>
+                <marker date="1550068000367" expanded="false" signature="6:186" ph="..." />
+                <marker date="1550068000367" expanded="true" signature="213:3111" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="247:3109" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="355:442" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="533:578" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="688:738" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="888:1000" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="1099:1172" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="1404:2094" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="1581:1780" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="2221:2303" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="2407:2485" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="2599:2686" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="2804:2874" ph="{...}" />
+                <marker date="1550068000367" expanded="true" signature="2997:3076" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Program.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
+              <folding>
+                <marker date="1550067927217" expanded="false" signature="6:197" ph="..." />
+                <marker date="1550067927217" expanded="true" signature="217:2086" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="237:2084" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="320:598" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="647:2078" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="798:955" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="972:2068" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="1326:1518" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="1563:2053" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="1724:1915" ph="{...}" />
+                <marker date="1550067927217" expanded="true" signature="1940:2035" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>callback</find>
+      <find>lexer</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/parser/LogSharpToken.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogRule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9AB63239-15A5-4C40-B63F-C810C60626D1/70/1888a3d4/ISyntaxParser`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/17/Group.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogProgram.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/1B/EBNFParserBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogFact.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogPredicate.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/16/RecursiveDescentSyntaxParser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3E/BuildResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/8b/1a25c36a/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/parser/LogSharpParser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogSharpAST.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogScalar.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/29/GenericLexer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogInt.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogDouble.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogAtom.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogString.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/35/FSMLexer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/model/LogClause.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/20/ParserBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/2D/LexerBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/27/CallBacksBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/model/LogSharpAST.cs" />
+        <option value="$PROJECT_DIR$/model/LogScalar.cs" />
+        <option value="$PROJECT_DIR$/model/LogAtom.cs" />
+        <option value="$PROJECT_DIR$/model/LogString.cs" />
+        <option value="$PROJECT_DIR$/model/LogInt.cs" />
+        <option value="$PROJECT_DIR$/model/LogDouble.cs" />
+        <option value="$PROJECT_DIR$/model/LogRule.cs" />
+        <option value="$PROJECT_DIR$/model/Clause.cs" />
+        <option value="$PROJECT_DIR$/model/LogFact.cs" />
+        <option value="$PROJECT_DIR$/model/LogPredicate.cs" />
+        <option value="$PROJECT_DIR$/model/LogProgram.cs" />
+        <option value="$PROJECT_DIR$/parser/LexerCallbacks.cs" />
+        <option value="$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs" />
+        <option value="$PROJECT_DIR$/Program.cs" />
+        <option value="$PROJECT_DIR$/parser/LogSharpParser.cs" />
+        <option value="$PROJECT_DIR$/parser/LogSharpToken.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1296" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="model" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="parser" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="AssemblyExplorer" />
+      <pane id="FileSystemExplorer" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../csly/sly.sln" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Program" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <envs>
+        <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
+        <env name="ASPNETCORE_URLS" value="http://localhost:5000" />
+      </envs>
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/LogSharp.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.1" />
+      <browser url="http://localhost:5000" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="06bf880c-660e-4051-baeb-c4d2e5c985f3" name="Default Changelist" comment="" />
+      <created>1550042164970</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1550042164970</updated>
+      <workItem from="1550042167816" duration="15170000" />
+    </task>
+    <task id="LOCAL-00001" summary="parser initial commit">
+      <created>1550046753059</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1550046753059</updated>
+    </task>
+    <task id="LOCAL-00002" summary="bugfixes">
+      <created>1550063325208</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1550063325208</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="15170000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Capture Tool" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="NuGet" weight="0.32938388" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Unit Tests" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Performance Profiler" />
+      <window_info anchor="bottom" id="Build" weight="0.32938388" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32938388" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3992891" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Errors In Solution" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Unit Tests Coverage" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="parser initial commit" />
+    <MESSAGE value="bugfixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugfixes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs</url>
+          <line>10</line>
+          <properties documentPath="$PROJECT_DIR$/parser/LexerCallbacks.cs" initialLine="10">
+            <startOffsets>
+              <option value="261" />
+            </startOffsets>
+            <endOffsets>
+              <option value="294" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Program.cs</url>
+          <line>53</line>
+          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="52">
+            <startOffsets>
+              <option value="1771" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1797" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <condition expression="source == &quot;fact(hello).&quot;" language="C#" custom="RiderImportsList:" />
+          <url>file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs</url>
+          <line>65</line>
+          <properties documentPath="$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs" initialLine="65">
+            <startOffsets>
+              <option value="2215" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2232" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Program.cs</url>
+          <line>19</line>
+          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="19">
+            <startOffsets>
+              <option value="468" />
+            </startOffsets>
+            <endOffsets>
+              <option value="561" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Program.cs</url>
+          <line>50</line>
+          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="49">
+            <startOffsets>
+              <option value="1651" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1688" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="DotNetProject">
+        <watch expression="tokens[0].TokenID" language="C#" custom="RiderImportsList:" />
+        <watch expression="rules" language="C#" custom="RiderImportsList:" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>source == &quot;fact(hello).&quot;</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="watch">
+      <expression>
+        <expression-string>rules</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tokens[0].TokenID</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>r</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/model/LogInt.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
+          <folding>
+            <marker date="1550044519027" expanded="true" signature="24:196" ph="{...}" />
+            <marker date="1550044519027" expanded="true" signature="62:194" ph="{...}" />
+            <marker date="1550044519027" expanded="true" signature="141:188" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogString.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <folding>
+            <marker date="1550044483474" expanded="true" signature="24:208" ph="{...}" />
+            <marker date="1550044483474" expanded="true" signature="65:206" ph="{...}" />
+            <marker date="1550044483474" expanded="true" signature="153:200" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogAtom.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="9" column="9" lean-forward="true" selection-start-line="4" selection-start-column="7" selection-end-line="9" selection-end-column="9" />
+          <folding>
+            <marker date="1550044441877" expanded="true" signature="24:209" ph="{...}" />
+            <marker date="1550044441877" expanded="true" signature="63:207" ph="{...}" />
+            <marker date="1550044441877" expanded="true" signature="147:192" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogScalar.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="44" selection-start-line="2" selection-start-column="44" selection-end-line="2" selection-end-column="44" />
+          <folding>
+            <marker date="1550044405968" expanded="true" signature="24:94" ph="{...}" />
+            <marker date="1550044405968" expanded="true" signature="71:92" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogProgram.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
+          <folding>
+            <marker date="1550045938838" expanded="true" signature="59:261" ph="{...}" />
+            <marker date="1550045938838" expanded="true" signature="103:259" ph="{...}" />
+            <marker date="1550045938838" expanded="true" signature="206:253" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogPredicate.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="9" column="68" lean-forward="true" selection-start-line="9" selection-start-column="68" selection-end-line="9" selection-end-column="68" />
+          <folding>
+            <marker date="1550045754647" expanded="true" signature="58:366" ph="{...}" />
+            <marker date="1550045754647" expanded="true" signature="100:364" ph="{...}" />
+            <marker date="1550045754647" expanded="true" signature="282:358" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogRule.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
+          <folding>
+            <marker date="1550045349718" expanded="true" signature="24:92" ph="{...}" />
+            <marker date="1550045349718" expanded="true" signature="69:90" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogFact.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding>
+            <marker date="1550045640367" expanded="true" signature="59:340" ph="{...}" />
+            <marker date="1550045640367" expanded="true" signature="107:338" ph="{...}" />
+            <marker date="1550045640367" expanded="true" signature="194:214" ph="{...}" />
+            <marker date="1550045640367" expanded="true" signature="312:332" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/17/Group.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogClause.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="40" lean-forward="true" selection-start-line="7" selection-start-column="40" selection-end-line="7" selection-end-column="40" />
+          <folding>
+            <marker date="1550045422936" expanded="true" signature="60:364" ph="{...}" />
+            <marker date="1550045422936" expanded="true" signature="103:362" ph="{...}" />
+            <marker date="1550045422936" expanded="true" signature="274:356" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogDouble.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <folding>
+            <marker date="1550044545104" expanded="true" signature="24:208" ph="{...}" />
+            <marker date="1550044545104" expanded="true" signature="65:206" ph="{...}" />
+            <marker date="1550044545104" expanded="true" signature="153:200" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogSharpAST.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+          <folding>
+            <marker date="1550043289550" expanded="true" signature="24:82" ph="{...}" />
+            <marker date="1550043289550" expanded="true" signature="59:80" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/8b/1a25c36a/List`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="446" column="74" selection-start-line="446" selection-start-column="74" selection-end-line="446" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3E/BuildResult.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/35/FSMLexer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1305">
+          <caret line="93" column="70" selection-start-line="93" selection-start-column="62" selection-end-line="93" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/2D/LexerBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="284" column="57" lean-forward="true" selection-start-line="284" selection-start-column="57" selection-end-line="284" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/29/GenericLexer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="107" column="16" selection-start-line="107" selection-start-column="16" selection-end-line="107" selection-end-column="16" />
+          <folding>
+            <marker date="1550048307819" expanded="false" signature="6:87" ph="..." />
+            <marker date="1550048307819" expanded="true" signature="108:17763" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="139:307" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="339:413" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="438:527" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="593:17761" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="2197:2407" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="2658:2719" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="2791:2860" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="2923:3843" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="3058:3550" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="3256:3347" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="3982:5317" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="4634:5267" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="5407:6259" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="6034:6249" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="6322:9122" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="6384:6691" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="6898:8439" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="6958:8394" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="7128:7572" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="7601:7738" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="8470:9112" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="9211:9741" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="9255:9448" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="9799:10846" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="9868:10547" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="9954:10368" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="10389:10502" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="10952:14729" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="12236:12443" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="12511:13287" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="13304:14719" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="13374:13623" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="14795:15436" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="15083:15197" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="15517:17087" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="15608:15980" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="16029:17077" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="17153:17652" ph="{...}" />
+            <marker date="1550048307819" expanded="true" signature="17695:17755" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/27/CallBacksBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/1B/EBNFParserBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9AB63239-15A5-4C40-B63F-C810C60626D1/70/1888a3d4/ISyntaxParser`2.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/20/ParserBuilder.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/16/RecursiveDescentSyntaxParser.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="163" selection-start-line="163" selection-end-line="163" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="99" column="79" selection-start-line="99" selection-start-column="79" selection-end-line="99" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+          <folding>
+            <marker date="1550055239890" expanded="true" signature="43:530" ph="{...}" />
+            <marker date="1550055239890" expanded="true" signature="85:528" ph="{...}" />
+            <marker date="1550055239890" expanded="true" signature="238:512" ph="{...}" />
+            <marker date="1550055239890" expanded="true" signature="294:378" ph="{...}" />
+            <marker date="1550055239890" expanded="true" signature="378:463" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <marker date="1550067927217" expanded="false" signature="6:197" ph="..." />
+            <marker date="1550067927217" expanded="true" signature="217:2086" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="237:2084" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="320:598" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="647:2078" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="798:955" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="972:2068" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="1326:1518" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="1563:2053" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="1724:1915" ph="{...}" />
+            <marker date="1550067927217" expanded="true" signature="1940:2035" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpParser.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="98" column="1" selection-start-line="98" selection-start-column="1" selection-end-line="98" selection-end-column="1" />
+          <folding>
+            <marker date="1550068000367" expanded="false" signature="6:186" ph="..." />
+            <marker date="1550068000367" expanded="true" signature="213:3111" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="247:3109" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="355:442" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="533:578" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="688:738" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="888:1000" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="1099:1172" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="1404:2094" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="1581:1780" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="2221:2303" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="2407:2485" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="2599:2686" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="2804:2874" ph="{...}" />
+            <marker date="1550068000367" expanded="true" signature="2997:3076" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpToken.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
+          <folding>
+            <marker date="1550055239907" expanded="true" signature="43:963" ph="{...}" />
+            <marker date="1550055239907" expanded="true" signature="123:961" ph="{...}" />
+            <marker date="1550055239907" expanded="false" signature="138:500" ph="scalars" />
+            <marker date="1550055239907" expanded="false" signature="518:937" ph="sugar" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
