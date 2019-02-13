@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LogSharp.model
+namespace logSharp.model
 {
     public class LogFact : LogClause, LogRule
     {

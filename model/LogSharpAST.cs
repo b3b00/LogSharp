@@ -1,4 +1,4 @@
-namespace LogSharp.model
+namespace logSharp.model
 {
     public interface LogSharpAST
     {
