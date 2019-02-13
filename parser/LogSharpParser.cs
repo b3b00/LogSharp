@@ -1,6 +1,7 @@
 using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using LogSharp.model;
 using sly.lexer;
 using sly.parser.parser;
@@ -11,9 +12,9 @@ namespace LogSharp.parser
     {
 
         [Production("program : rule *")]
-        public LogSharpAST program(List<LogRule> rules)
+        public LogSharpAST program(List<LogSharpAST> rules)
         {
-            return new LogProgram(rules);
+            return new LogProgram(rules.Cast<LogRule>().ToList());
         }
 
         [Production("rule : fact")]
@@ -42,16 +43,26 @@ namespace LogSharp.parser
         }
 
 
-        [Production("clause : Atom LeftPar[d] (scalar Comma[d])* RightPar[d]")]
-        public LogSharpAST clause(Token<LogSharpToken> clauseName, List<Group<LogSharpToken, LogSharpAST>> parameters)
+        [Production("clause : Atom LeftPar[d] scalar (Comma[d] scalar)*  RightPar[d]")]
+        public LogSharpAST clause(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
+            List<LogScalar> parameters = new List<LogScalar>();
+            parameters.Add(headParam as LogScalar);
+            foreach (var paramGroup in tailParams)
+            {
+                LogScalar ast = paramGroup.Value(0) as LogScalar;
+//                Token<LogSharpToken> token = paramGroup.Token(0);
+                parameters.Add(ast);
+            }
+            parameters.AddRange(tailParams.Select((Group<LogSharpToken, LogSharpAST> group) => group.Value(0) as LogScalar)
+                .ToList<LogScalar>());
+            
             return new LogClause(
                 clauseName.StringWithoutQuotes,
                 parameters
-                    .Select((Group<LogSharpToken, LogSharpAST> group) => group.Value(0) as LogScalar)
-                    .ToList<LogScalar>()
                 );
         }
+        
 
         [Production("scalar : Atom")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
