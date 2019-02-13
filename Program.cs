@@ -23,6 +23,7 @@ namespace LogSharp
         
         static void Main(string[] args)
         {
+            Console.WriteLine("Hello World!");
             var parserBuildResult = BuildParser();
             if (parserBuildResult.IsError)
             {
@@ -42,12 +43,12 @@ namespace LogSharp
                     "fact(hello).",
                     "factDeux(hello,world).",
                     "p(X) :- fact(X).",
-//                    "p(X) :- fact(X), fact(hello)."
+                    "p(X) :- fact(X) fact(hello)."
                 };
                 foreach (var p in programs)
                 {
                     Console.WriteLine("--- "+p);
-                    var cp = parser.Parse(p);
+                    var cp = parser.Parse(p,"program");
                     if (cp.IsError)
                     {
                         Console.WriteLine("KO !");

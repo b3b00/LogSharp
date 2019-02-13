@@ -29,10 +29,10 @@ namespace LogSharp.parser
             return predicate;
         }
 
-        [Production("predicate : clause Imply[d] clause* Dot")]
-        public LogSharpAST Predicate(LogClause head, List<LogClause> clauses)
+        [Production("predicate : clause Imply[d] clause* Dot[d]")]
+        public LogSharpAST Predicate(LogSharpAST head, List<LogSharpAST> clauses)
         {
-            return new LogPredicate(head as LogClause, clauses as List<LogClause>);
+            return new LogPredicate(head as LogClause, clauses.Cast<LogClause>().ToList());
         }
 
 
@@ -63,6 +63,12 @@ namespace LogSharp.parser
                 );
         }
         
+        
+        [Production("scalar : Variable")]
+        public LogSharpAST AtomVariable(Token<LogSharpToken> atom)
+        {
+            return new LogVariable(atom.StringWithoutQuotes);
+        }
 
         [Production("scalar : Atom")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
