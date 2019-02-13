@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\olduh\.Rider2018.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\olduh\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_LogSharp.1138365531.00" t="ExcludeRecursive" />
+    <e p="C:\Users\olduh\LogSharp" t="IncludeRecursive">
+      <e p=".gitignore" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="LogSharp.csproj" t="IncludeRecursive" />
+      <e p="LogSharp.sln" t="IncludeFlat" />
+      <e p="model" t="Include">
+        <e p="LogAtom.cs" t="Include" />
+        <e p="LogClause.cs" t="Include" />
+        <e p="LogDouble.cs" t="Include" />
+        <e p="LogFact.cs" t="Include" />
+        <e p="LogInt.cs" t="Include" />
+        <e p="LogPredicate.cs" t="Include" />
+        <e p="LogProgram.cs" t="Include" />
+        <e p="LogRule.cs" t="Include" />
+        <e p="LogScalar.cs" t="Include" />
+        <e p="LogSharpAST.cs" t="Include" />
+        <e p="LogString.cs" t="Include" />
+        <e p="LogVariable.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp2.1" t="Include">
+            <e p="LogSharp.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="parser" t="Include">
+        <e p="LogSharpLexerCallbacks.cs" t="Include" />
+        <e p="LogSharpParser.cs" t="Include" />
+        <e p="LogSharpToken.cs" t="Include" />
+      </e>
+      <e p="Program.cs" t="Include" />
+    </e>
+  </component>
+</project>
