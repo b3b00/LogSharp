@@ -2,22 +2,24 @@ using sly.lexer;
 
 namespace LogSharp.parser
 {
+    [CallBacks(typeof(LogSharpLexerCallbacks))]
     public enum LogSharpToken
     {
         #region scalars
         
-        [Lexeme(GenericToken.Identifier)] 
-        Variable = 1,
-        Atom = 2,
+        [Lexeme(GenericToken.Identifier)]
+        Identifier = 1,
+        Variable = 2,
+        Atom = 3,
         
         [Lexeme(GenericToken.String,"\"")]
-        String = 3,
+        String = 4,
         
         [Lexeme(GenericToken.Int)]
-        Integer = 4,
+        Integer = 5,
         
         [Lexeme(GenericToken.Double)]
-        Double = 5,
+        Double = 6,
         
         #endregion
         
@@ -36,7 +38,7 @@ namespace LogSharp.parser
         Comma = 13,
         
         [Lexeme(GenericToken.SugarToken,".")]
-        Dot = 13
+        Dot = 14
         
         #endregion
         
