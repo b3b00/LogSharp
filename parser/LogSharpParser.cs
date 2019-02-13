@@ -2,11 +2,11 @@ using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
-using LogSharp.model;
+using logSharp.model;
 using sly.lexer;
 using sly.parser.parser;
 
-namespace LogSharp.parser
+namespace logSharp.parser
 {
     public class LogSharpParser
     {

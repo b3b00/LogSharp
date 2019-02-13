@@ -1,6 +1,6 @@
 using sly.lexer;
 
-namespace LogSharp.parser
+namespace logSharp.parser
 {
     [CallBacks(typeof(LogSharpLexerCallbacks))]
     public enum LogSharpToken

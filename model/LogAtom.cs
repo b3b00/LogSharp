@@ -1,4 +1,4 @@
-namespace LogSharp.model
+namespace logSharp.model
 {
     public class LogAtom : LogScalar
     {

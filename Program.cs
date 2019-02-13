@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using LogSharp.model;
-using LogSharp.parser;
 using sly.buildresult;
 using sly.parser;
 using sly.parser.generator;
 using System.Linq;
+using logSharp.model;
+using logSharp.parser;
 using sly.lexer;
 
-namespace LogSharp
+namespace logSharp
 {
     class Program
     {
@@ -43,7 +43,8 @@ namespace LogSharp
                     "fact(hello).",
                     "factDeux(hello,world).",
                     "p(X) :- fact(X).",
-                    "p(X) :- fact(X) fact(hello)."
+                    "p(X) :- fact(X) fact(hello).",
+                    "p(X,Y) :- fact(X,world) fact(hello,Y)."
                 };
                 foreach (var p in programs)
                 {

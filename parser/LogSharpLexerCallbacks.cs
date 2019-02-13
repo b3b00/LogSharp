@@ -1,6 +1,6 @@
 using sly.lexer;
 
-namespace LogSharp.parser
+namespace logSharp.parser
 {
     public class LogSharpLexerCallbacks
     {
