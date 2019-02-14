@@ -9,5 +9,10 @@ namespace logSharp.model
             Name = name;
         }
         
+        public string Dump()
+        {
+            return Name;
+        }
+        
     }
 }

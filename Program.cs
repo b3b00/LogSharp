@@ -41,14 +41,18 @@ namespace logSharp
                 List<string> programs = new List<string>()
                 {
                     "fact(hello).",
-                    "factDeux(hello,world).",
+                    "factDeux(hello, world).",
+                    "factTrois(hello, world,3).",
                     "p(X) :- fact(X).",
                     "p(X) :- fact(X) fact(hello).",
-                    "p(X,Y) :- fact(X,world) fact(hello,Y)."
+                    "p(X, Y) :- fact(X, world) fact(hello, Y).",
+                    "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X)."
                 };
                 foreach (var p in programs)
                 {
-                    Console.WriteLine("--- "+p);
+                    Console.WriteLine("--- ");
+                    Console.WriteLine(p);
+                    Console.WriteLine();
                     var cp = parser.Parse(p,"program");
                     if (cp.IsError)
                     {
@@ -58,6 +62,7 @@ namespace logSharp
                     else
                     {
                         Console.WriteLine("OK !");
+                        Console.WriteLine(cp.Result.Dump());
                     }
                 }
 

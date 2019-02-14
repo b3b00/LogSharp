@@ -12,5 +12,16 @@ namespace logSharp.model
         public LogFact(string name, List<LogScalar> parameters) : base(name, parameters)
         {
         }
+        
+        public LogFact(string name) : base(name)
+        {
+        }
+
+        public new string Dump()
+        {
+            string clause = base.Dump();
+            return $"{clause}.";
+        }
+        
     }
 }
