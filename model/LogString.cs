@@ -8,5 +8,10 @@ namespace logSharp.model
         {
             Value = value;
         }
+        
+        public string Dump()
+        {
+            return $"\"{Value}\"";
+        }
     }
 }

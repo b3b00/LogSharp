@@ -41,6 +41,13 @@ namespace logSharp.parser
         {
             return new LogFact(clause as LogClause);
         }
+        
+        [Production("fact : Atom Dot[d]")]
+        public LogSharpAST fact(Token<LogSharpToken> atom)
+        {
+            return new LogFact(atom.Value);
+        }
+
 
 
         [Production("clause : Atom LeftPar[d] scalar (Comma[d] scalar)*  RightPar[d]")]
@@ -51,12 +58,9 @@ namespace logSharp.parser
             foreach (var paramGroup in tailParams)
             {
                 LogScalar ast = paramGroup.Value(0) as LogScalar;
-//                Token<LogSharpToken> token = paramGroup.Token(0);
                 parameters.Add(ast);
             }
-            parameters.AddRange(tailParams.Select((Group<LogSharpToken, LogSharpAST> group) => group.Value(0) as LogScalar)
-                .ToList<LogScalar>());
-            
+
             return new LogClause(
                 clauseName.StringWithoutQuotes,
                 parameters
@@ -67,13 +71,13 @@ namespace logSharp.parser
         [Production("scalar : Variable")]
         public LogSharpAST AtomVariable(Token<LogSharpToken> atom)
         {
-            return new LogVariable(atom.StringWithoutQuotes);
+            return new LogVariable(atom.Value);
         }
 
         [Production("scalar : Atom")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
         {
-            return new LogAtom(atom.StringWithoutQuotes);
+            return new LogAtom(atom.Value);
         }
         [Production("scalar : String")]
         public LogSharpAST StringScalar(Token<LogSharpToken> stringToken)
