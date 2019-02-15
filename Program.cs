@@ -46,7 +46,8 @@ namespace logSharp
                     "p(X) :- fact(X).",
                     "p(X) :- fact(X) fact(hello).",
                     "p(X, Y) :- fact(X, world) fact(hello, Y).",
-                    "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X)."
+                    "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X).",
+                    "list(a,list(b,c))."
                 };
                 foreach (var p in programs)
                 {

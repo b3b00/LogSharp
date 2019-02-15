@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace logSharp.model
 {
-    public class LogFact : LogClause, LogRule
+    public class LogFact : LogTerm, LogRule
     {
 
-        public LogFact(LogClause clause) : base(clause.Name, clause.Parameters)
+        public LogFact(LogTerm clause) : base(clause.Name, clause.Parameters)
         {
         }
         
-        public LogFact(string name, List<LogScalar> parameters) : base(name, parameters)
+        public LogFact(string name, List<LogSharpAST> parameters) : base(name, parameters)
         {
         }
         

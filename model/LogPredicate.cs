@@ -5,11 +5,11 @@ namespace logSharp.model
 {
     public class LogPredicate : LogRule
     {
-        public LogClause Head { get; set; }
+        public LogTerm Head { get; set; }
         
-        public List<LogClause> Clauses { get; set; }
+        public List<LogTerm> Clauses { get; set; }
 
-        public LogPredicate(LogClause head, List<LogClause> clauses)
+        public LogPredicate(LogTerm head, List<LogTerm> clauses)
         {
             Head = head;
             Clauses = clauses;

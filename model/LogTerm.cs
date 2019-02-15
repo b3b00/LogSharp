@@ -5,23 +5,23 @@ using System.Text;
 
 namespace logSharp.model
 {
-    public class LogClause : LogSharpAST
+    public class LogTerm : LogSharpAST
     {
         public string Name { get; set; }
 
-        public List<LogScalar> Parameters { get; set; }
+        public List<LogSharpAST> Parameters { get; set; }
 
-        public LogClause(string name) : this (name, new List<LogScalar>())
+        public LogTerm(string name) : this (name, new List<LogSharpAST>())
         {
             ;
         }
 
-        public LogClause() : this(null, new List<LogScalar>())
+        public LogTerm() : this(null, new List<LogSharpAST>())
         {
         }
         
 
-        public LogClause(string name, List<LogScalar> parameters)
+        public LogTerm(string name, List<LogSharpAST> parameters)
         {
             Name = name;
             Parameters = parameters;
