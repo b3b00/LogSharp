@@ -29,17 +29,17 @@ namespace logSharp.parser
             return predicate;
         }
 
-        [Production("predicate : clause Imply[d] clause* Dot[d]")]
+        [Production("predicate : term Imply[d] term* Dot[d]")]
         public LogSharpAST Predicate(LogSharpAST head, List<LogSharpAST> clauses)
         {
-            return new LogPredicate(head as LogClause, clauses.Cast<LogClause>().ToList());
+            return new LogPredicate(head as LogTerm, clauses.Cast<LogTerm>().ToList());
         }
 
 
-        [Production("fact : clause Dot[d]")]
+        [Production("fact : term Dot[d]")]
         public LogSharpAST fact(LogSharpAST clause)
         {
-            return new LogFact(clause as LogClause);
+            return new LogFact(clause as LogTerm);
         }
         
         [Production("fact : Atom Dot[d]")]
@@ -50,21 +50,32 @@ namespace logSharp.parser
 
 
 
-        [Production("clause : Atom LeftPar[d] scalar (Comma[d] scalar)*  RightPar[d]")]
-        public LogSharpAST clause(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
+        [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
+        public LogSharpAST term(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
-            List<LogScalar> parameters = new List<LogScalar>();
+            List<LogSharpAST> parameters = new List<LogSharpAST>();
             parameters.Add(headParam as LogScalar);
             foreach (var paramGroup in tailParams)
             {
-                LogScalar ast = paramGroup.Value(0) as LogScalar;
-                parameters.Add(ast);
+                parameters.Add(paramGroup.Value(0));
             }
 
-            return new LogClause(
+            return new LogTerm(
                 clauseName.StringWithoutQuotes,
                 parameters
                 );
+        }
+
+        [Production("scalarorTerm : scalar")]
+        public LogSharpAST scalarOrTermScalar(LogSharpAST scal)
+        {
+            return scal;
+        }
+        
+        [Production("scalarorTerm : term")]
+        public LogSharpAST scalarOrTermTerm(LogSharpAST term)
+        {
+            return term;
         }
         
         
