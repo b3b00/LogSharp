@@ -9,11 +9,15 @@ namespace logSharp.model
 {
     public class LogTerm : LogSharpAST, LogValuable
     {
+        public const string listConstructor = "list";
         public bool IsScalar => false;
 
         public bool IsVariable => false;
 
         public bool IsTerm => true;
+        
+        public bool IsList => Name == listConstructor && (Parameters.Count == 2 || Parameters.Count == 0);
+
         public string Name { get; set; }
 
         public List<LogValuable> Parameters { get; set; }
@@ -36,26 +40,43 @@ namespace logSharp.model
 
         public virtual string Dump()
         {
-            var dump =  new StringBuilder(Name);
-            
-            if (Parameters.Any())
+            var dump =  new StringBuilder();
+
+            if (!IsList)
             {
-                dump.Append("(");
-                bool first = true;
-                foreach (var parameter in Parameters)
+                dump.Append(Name);
+
+                if (Parameters.Any())
                 {
-                    if (!first)
+                    dump.Append("(");
+                    bool first = true;
+                    foreach (var parameter in Parameters)
                     {
-                        dump.Append(", ");
+                        if (!first)
+                        {
+                            dump.Append(", ");
+                        }
+
+                        dump.Append(parameter.Dump());
+                        first = false;
                     }
 
-                    dump.Append(parameter.Dump());
-                    first = false;
+                    dump.Append(")");
                 }
-                dump.Append(")");
             }
-    
-            
+            else
+            {
+                dump.Append("[");
+                if (Parameters.Any())
+                {
+                    dump.Append(Parameters[0].Dump());
+                    dump.Append("|");
+                    dump.Append(Parameters[1].Dump());
+                }
+                dump.Append("]");
+            }
+
+
             return dump.ToString();
         }
         

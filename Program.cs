@@ -49,7 +49,10 @@ namespace logSharp
                     "p(X) :- fact(X) fact(hello).",
                     "p(X, Y) :- fact(X, world) fact(hello, Y).",
                     "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X).",
-                    "list(a,list(b,c))."
+                    "nested(a,list(b,c)).",
+                    "empty([]).",
+                    "const([a|Tail]).",
+                    "literal([a,b,c])."
                 };
                 foreach (var p in programs)
                 {
@@ -68,10 +71,6 @@ namespace logSharp
                         Console.WriteLine(cp.Result.Dump());
                     }
                 }
-
-                var cp2 = parser.Parse("hello(world).", "program");
-                
-                ;
 
                 return parser;
 
@@ -105,7 +104,6 @@ namespace logSharp
         static void Main(string[] args)
         {
             var p = Parsing();
-            Unify(p);
         }
     }
 }
