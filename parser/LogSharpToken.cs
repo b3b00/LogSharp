@@ -38,7 +38,17 @@ namespace logSharp.parser
         Comma = 13,
         
         [Lexeme(GenericToken.SugarToken,".")]
-        Dot = 14
+        Dot = 14,
+        
+        [Lexeme(GenericToken.SugarToken,"[")]
+        LeftBrack = 15,
+        
+        [Lexeme(GenericToken.SugarToken,"]")]
+        RightBrack = 16,
+        
+        [Lexeme(GenericToken.SugarToken,"|")]
+        Pipe = 17
+        
         
         #endregion
         

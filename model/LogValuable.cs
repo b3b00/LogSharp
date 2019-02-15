@@ -5,6 +5,8 @@ namespace logSharp.model
         bool IsScalar { get;  }
         bool IsVariable { get;  }
         bool IsTerm { get;  }
+        
+        bool IsList { get;  }
         string Name{ get;  }
     }
 }

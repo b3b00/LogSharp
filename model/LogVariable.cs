@@ -7,6 +7,8 @@ namespace logSharp.model
         public bool IsVariable => true;
 
         public bool IsTerm => false;
+        
+        public bool IsList => false;
         public string Name { get; set; }
 
         public LogVariable(string name)
