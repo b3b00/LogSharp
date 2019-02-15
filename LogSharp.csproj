@@ -9,4 +9,8 @@
       <PackageReference Include="sly" Version="2.2.5.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Interpreter\Unification" />
+    </ItemGroup>
+
 </Project>

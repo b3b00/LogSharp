@@ -53,11 +53,11 @@ namespace logSharp.parser
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
         public LogSharpAST term(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
-            List<LogSharpAST> parameters = new List<LogSharpAST>();
-            parameters.Add(headParam as LogScalar);
+            List<LogValuable> parameters = new List<LogValuable>();
+            parameters.Add(headParam as LogValuable);
             foreach (var paramGroup in tailParams)
             {
-                parameters.Add(paramGroup.Value(0));
+                parameters.Add(paramGroup.Value(0) as LogValuable);
             }
 
             return new LogTerm(
