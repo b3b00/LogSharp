@@ -9,9 +9,22 @@ namespace logSharp.model
             Value = value;
         }
         
-        public string Dump()
+        public override string Dump()
         {
             return $"\"{Value}\"";
+        }
+        
+        public bool Equals(object o)
+        {
+            if (o != null)
+            {
+                if (o is LogString other)
+                {
+                    return other.Value == Value;
+                }
+            }
+
+            return false;
         }
     }
 }

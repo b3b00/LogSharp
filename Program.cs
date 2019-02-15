@@ -4,6 +4,8 @@ using sly.buildresult;
 using sly.parser;
 using sly.parser.generator;
 using System.Linq;
+using logSharp.interpretation;
+using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
 using sly.lexer;
@@ -20,8 +22,8 @@ namespace logSharp
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             return parser;
         }
-        
-        static void Main(string[] args)
+
+        static Parser<LogSharpToken,LogSharpAST> Parsing()
         {
             Console.WriteLine("Hello World!");
             var parserBuildResult = BuildParser();
@@ -54,7 +56,7 @@ namespace logSharp
                     Console.WriteLine("--- ");
                     Console.WriteLine(p);
                     Console.WriteLine();
-                    var cp = parser.Parse(p,"program");
+                    var cp = parser.Parse(p, "program");
                     if (cp.IsError)
                     {
                         Console.WriteLine("KO !");
@@ -67,7 +69,43 @@ namespace logSharp
                     }
                 }
 
+                var cp2 = parser.Parse("hello(world).", "program");
+                
+                ;
+
+                return parser;
+
             }
+
+            return null;
+        }
+
+        static void Unify(Parser<LogSharpToken,LogSharpAST> parser)
+        {
+            
+                var r1 = parser.Parse("boy(billy)","term");
+                var billy = (LogTerm)r1.Result;
+                var r2 = parser.Parse("boy(bob)","term");
+                var bob = (LogTerm)r2.Result;
+                var r3 = parser.Parse("boy(X)","term");
+                var X = (LogTerm)r3.Result;
+                var r4 = parser.Parse("boy(Y)","term");
+                var Y = (LogTerm)r4.Result;
+                Unifier unifier = new Unifier();
+                var res1 = unifier.Unify(billy, new TermEnvironment(), bob, new TermEnvironment());
+                ;
+                var res2 = unifier.Unify(billy, new TermEnvironment(), billy, new TermEnvironment());
+                ;
+                var res3 = unifier.Unify(billy, new TermEnvironment(), X, new TermEnvironment());
+                ;
+                var res4 = unifier.Unify(Y, new TermEnvironment(), X, new TermEnvironment());
+                ;
+        }
+
+        static void Main(string[] args)
+        {
+            var p = Parsing();
+            Unify(p);
         }
     }
 }

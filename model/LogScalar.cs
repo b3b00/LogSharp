@@ -1,7 +1,13 @@
 namespace logSharp.model
 {
-    public interface LogScalar : LogSharpAST
+    public abstract class LogScalar : LogSharpAST, LogValuable
     {
-        
+        public bool IsScalar => true;
+        public bool IsVariable => false;
+        public bool IsTerm => false;
+        public string Name => null;
+
+        public bool IsVAriable => false;
+        public abstract string Dump();
     }
 }

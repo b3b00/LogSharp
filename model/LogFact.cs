@@ -9,7 +9,7 @@ namespace logSharp.model
         {
         }
         
-        public LogFact(string name, List<LogSharpAST> parameters) : base(name, parameters)
+        public LogFact(string name, List<LogValuable> parameters) : base(name, parameters)
         {
         }
         
@@ -17,7 +17,7 @@ namespace logSharp.model
         {
         }
 
-        public new string Dump()
+        public override  string Dump()
         {
             string clause = base.Dump();
             return $"{clause}.";
