@@ -6,20 +6,31 @@
     <e p="C:\Users\olduh\LogSharp" t="IncludeRecursive">
       <e p=".gitignore" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
+      <e p="interpretation" t="Include">
+        <e p="Environment.cs" t="Include" />
+        <e p="Unification" t="Include">
+          <e p="Unifier.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Interpreter" t="Include">
+        <e p="Unification" t="Include" />
+      </e>
       <e p="LogSharp.csproj" t="IncludeRecursive" />
       <e p="LogSharp.sln" t="IncludeFlat" />
       <e p="model" t="Include">
         <e p="LogAtom.cs" t="Include" />
-        <e p="LogClause.cs" t="Include" />
         <e p="LogDouble.cs" t="Include" />
         <e p="LogFact.cs" t="Include" />
         <e p="LogInt.cs" t="Include" />
+        <e p="LogList.cs" t="Include" />
         <e p="LogPredicate.cs" t="Include" />
         <e p="LogProgram.cs" t="Include" />
         <e p="LogRule.cs" t="Include" />
         <e p="LogScalar.cs" t="Include" />
         <e p="LogSharpAST.cs" t="Include" />
         <e p="LogString.cs" t="Include" />
+        <e p="LogTerm.cs" t="Include" />
+        <e p="LogValuable.cs" t="Include" />
         <e p="LogVariable.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive">
