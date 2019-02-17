@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using logSharp.model;
+using System.Text;
 
 namespace logSharp.interpretation.unification
 {
 
     public class Unification
     {
-        public Dictionary<string,LogValuable> Environment { get; set; }
+        public TermEnvironment Environment { get; set; }
         
         public bool IsOk { get; set; }
 
@@ -18,13 +19,13 @@ namespace logSharp.interpretation.unification
 
         public Unification()
         {
-            Environment = new Dictionary<string, LogValuable>();
+            Environment = new TermEnvironment();
             IsOk = true;
         }
         
         public Unification(bool ok)
         {
-            Environment = new Dictionary<string, LogValuable>();
+            Environment = new TermEnvironment();
             IsOk = ok;
         }
 
@@ -32,50 +33,66 @@ namespace logSharp.interpretation.unification
         {
             Environment[variableName] = value;
         }
+
+        public string ToString()
+        {
+            StringBuilder dump = new StringBuilder();
+            if (IsOk)
+            {
+                dump.AppendLine("Yes !");
+                dump.AppendLine(Environment.ToString());
+
+                return dump.ToString();
+            }
+            else
+            {
+                dump.AppendLine("No.");
+            }
+
+            return dump.ToString();
+        }
     }
     
     public class Unifier
     {
-        public Unification Unify(LogTerm source, TermEnvironment sourceEnv, LogTerm destination, TermEnvironment destEnv)
+
+        public Unification UnifyTerms(LogTerm source, TermEnvironment sourceEnv, LogTerm destination,
+            TermEnvironment destEnv)
         {
             if (source == null || destination == null)
             {
                 return Unification.Failed();
             }
+
             Unification unification = new Unification();
-            unification.Environment = destEnv.Environment;
+            unification.Environment = destEnv;
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
                 unification = Unification.Failed();
             }
-            else
+
+            for (int i = 0; i < source.Parameters.Count; i++)
             {
-                for (int i = 0; i < source.Parameters.Count; i++)
+                var srcArg = source.Parameters[i];
+                var destArg = destination.Parameters[i];
+                LogValuable srcVal = null;
+                LogValuable destVal = null;
+               
+                srcVal = GetValue(srcArg,sourceEnv);
+
+                if (srcVal != null)
                 {
-                    var srcArg = source.Parameters[i];
-                    var destArg = destination.Parameters[i];
-                    var srcVal = GetValue(srcArg,sourceEnv);
-                    if (srcVal != null)
+                    destVal = GetValue(destArg, destEnv);
+
+                    if (destVal == null)
                     {
-                        var destVal = GetValue(destArg, destEnv);
-                        
-                        if (destVal == null)
-                        {
-                            unification.Environment[destArg.Name] = srcVal;
-                        }
-                        else if (destVal != srcVal)
-                        {
-                            unification = Unification.Failed();
-                            break;
-                        }
+                        unification.AddBinding(destArg.Name,srcVal);
                     }
                     else
                     {
-                        // both variable
-                        if (destArg != srcArg)
+                        if (destVal != srcArg)
                         {
-                            unification = Unification.Failed();
-                            break;
+                            return Unification.Failed();
                         }
                     }
                 }
@@ -83,6 +100,8 @@ namespace logSharp.interpretation.unification
 
             return unification;
         }
+
+
 
         public LogValuable GetValue(LogValuable arg, TermEnvironment environment)
         {

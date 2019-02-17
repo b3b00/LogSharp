@@ -40,20 +40,20 @@ namespace logSharp
                 var lexer = parserBuildResult.Result.Lexer as GenericLexer<LogSharpToken>;
                 CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
 
-                List<string> programs = new List<string>()
-                {
-                    "fact(hello).",
-                    "factDeux(hello, world).",
-                    "factTrois(hello, world,3).",
-                    "p(X) :- fact(X).",
-                    "p(X) :- fact(X) fact(hello).",
-                    "p(X, Y) :- fact(X, world) fact(hello, Y).",
-                    "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X).",
-                    "nested(a,list(b,c)).",
-                    "empty([]).",
-                    "const([a|Tail]).",
-                    "literal([a,b,c])."
-                };
+                List<string> programs = new List<string>();
+//                {
+//                    "fact(hello).",
+//                    "factDeux(hello, world).",
+//                    "factTrois(hello, world,3).",
+//                    "p(X) :- fact(X).",
+//                    "p(X) :- fact(X) fact(hello).",
+//                    "p(X, Y) :- fact(X, world) fact(hello, Y).",
+//                    "p(X, Y, Z) :- fact(X, world) fact(hello, Y) fact(Z, X).",
+//                    "nested(a,list(b,c)).",
+//                    "empty([]).",
+//                    "const([a|Tail]).",
+//                    "literal([a,b,c])."
+//                };
                 foreach (var p in programs)
                 {
                     Console.WriteLine("--- ");
@@ -79,6 +79,14 @@ namespace logSharp
             return null;
         }
 
+        static void Unifyterms(LogTerm t1, LogTerm t2)
+        {
+            Unifier unifier = new Unifier();
+            Console.WriteLine($"{t1.Dump()} // {t2.Dump()}");
+            var res1 = unifier.UnifyTerms(t1, new TermEnvironment(), t2, new TermEnvironment());
+            Console.WriteLine(res1.ToString());
+        }
+
         static void Unify(Parser<LogSharpToken,LogSharpAST> parser)
         {
             
@@ -91,19 +99,17 @@ namespace logSharp
                 var r4 = parser.Parse("boy(Y)","term");
                 var Y = (LogTerm)r4.Result;
                 Unifier unifier = new Unifier();
-                var res1 = unifier.Unify(billy, new TermEnvironment(), bob, new TermEnvironment());
-                ;
-                var res2 = unifier.Unify(billy, new TermEnvironment(), billy, new TermEnvironment());
-                ;
-                var res3 = unifier.Unify(billy, new TermEnvironment(), X, new TermEnvironment());
-                ;
-                var res4 = unifier.Unify(Y, new TermEnvironment(), X, new TermEnvironment());
+                Unifyterms(billy, bob);
+                Unifyterms(billy, billy);
+                Unifyterms(billy,  X);
+                Unifyterms(X, Y);
                 ;
         }
 
         static void Main(string[] args)
         {
             var p = Parsing();
+            Unify(p);
         }
     }
 }

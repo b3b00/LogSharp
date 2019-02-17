@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using logSharp.model;
 
 namespace logSharp.interpretation
@@ -38,6 +39,17 @@ namespace logSharp.interpretation
             }
 
             return clone;
+        }
+
+        public string ToString()
+        {
+            StringBuilder dump = new StringBuilder();
+            foreach (var kvp in Environment)
+            {
+                dump.AppendLine($"{kvp.Key} = {kvp.Value.Dump()}");
+            }
+
+            return dump.ToString();
         }
         
     }
