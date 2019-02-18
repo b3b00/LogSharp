@@ -42,7 +42,7 @@ namespace logSharp.interpretation.unification
                     }
                     else
                     {
-                        if (!destVal.Equals(srcArg))
+                        if (!destVal.Equals(srcVal))
                         {
                             return Unification.Failed();
                         }
