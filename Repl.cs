@@ -34,10 +34,19 @@ namespace logSharp
         
         
 
-        static void Loop()
+        static void Loop(string[] args)
         {
             var parser = BuildParser();
             Interpreter interpreter = new Interpreter(false, null, parser);
+
+            if (args.Length > 0)
+            {
+                foreach (var prog in args)
+                {
+                    interpreter.LoadProgram(prog);
+                }
+                
+            }
             while (true)
             {
                 string input = ReadLine.Read("?. ");
@@ -105,6 +114,10 @@ namespace logSharp
                                     Console.WriteLine("bad query. trace takes 0 or 1 parameter.");
                                 }
                             }
+                            else if (ask.Name == "quiet")
+                            {
+                                interpreter.Verbose = false;
+                            }
                             else
                             {
                                 var answers = interpreter.Search(ask);
@@ -135,7 +148,8 @@ namespace logSharp
 
         public static void Run(string[] args)
         {
-            Loop();
+            
+            Loop(args);
         }
     }
 }
