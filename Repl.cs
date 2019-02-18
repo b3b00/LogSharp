@@ -45,6 +45,10 @@ namespace logSharp
                 {
                     return;
                 }
+                else if (input.StartsWith("trace"))
+                {
+                    interpreter.Verbose = true;
+                }
                 else
                 {
                     var query = parser.Parse(input, "rule");
