@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using sly.buildresult;
 using sly.parser;
 using sly.parser.generator;
 using System.Linq;
 using logSharp.interpretation;
-using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
 using sly.lexer;
-
-using String = System.String;
 
 namespace logSharp
 {
@@ -19,6 +14,16 @@ namespace logSharp
    
     public class PrologRepl
     {
+
+        delegate void ReplAction(Interpreter interpreter, Question question);
+
+        private static Dictionary<string, ReplAction> ReplActions = new Dictionary<string, ReplAction>()
+        {
+            {"load", Load},
+            {"trace", Trace},
+            {"quiet", Quiet},
+            {"dump", Dump}
+        };
 
         static Parser<LogSharpToken,LogSharpAST> BuildParser()
         {
@@ -31,8 +36,73 @@ namespace logSharp
         }
 
 
-        
-        
+        static void Load(Interpreter interpreter, Question ask)
+        {
+            if (ask.Parameters.Count == 1)
+            {
+                var param = ask.Parameters[0];
+                if (param is Atom atom)
+                {
+                    interpreter.LoadProgram(atom.Name);
+                }
+                else if (param is logSharp.model.String str)
+                {
+                    interpreter.LoadProgram(str.Value);
+                }
+                else
+                {
+                    Console.WriteLine(" bas parameter");
+                }
+            }
+            else
+            {
+                Console.WriteLine("bad query. load takes 1 parameter.");
+            }
+        }
+
+
+        static void Trace(Interpreter interpreter, Question ask)
+        {
+            if (ask.Parameters.Count <= 1)
+            {
+                string outFile = null;
+                if (ask.Parameters.Count == 1)
+                {
+                    var param = ask.Parameters[0];
+                    if (param is Atom atom)
+                    {
+                        outFile = atom.Name;
+                    }
+                    else if (param is logSharp.model.String str)
+                    {
+                        outFile = str.Value;
+                    }
+                    else
+                    {
+                        Console.WriteLine(" bad parameter");
+                    }
+                }
+
+                interpreter.DebugOutput = outFile;
+                interpreter.Verbose = true;
+            }
+            else
+            {
+                Console.WriteLine("bad query. trace takes 0 or 1 parameter.");
+            }
+        }
+
+
+        static void Quiet(Interpreter interpreter, Question ask)
+        {
+            interpreter.Verbose = false;
+        }
+
+        static void Dump(Interpreter interpreter, Question ask)
+        {
+            interpreter.LogSharpProgram.Rules.ForEach(r => Console.WriteLine(r));
+        }
+
 
         static void Loop(string[] args)
         {
@@ -50,7 +120,7 @@ namespace logSharp
             while (true)
             {
                 string input = ReadLine.Read("?. ");
-                if (input == "quit." || input == "exit.")
+                if (input == "quit" || input == "exit")
                 {
                     return;
                 }
@@ -61,62 +131,10 @@ namespace logSharp
                     {
                         if (query.Result is Question ask)
                         {
-                            if (ask.Name == "load")
+                            if (ReplActions.ContainsKey(ask.Name))
                             {
-                                if (ask.Parameters.Count == 1)
-                                {
-                                    var param = ask.Parameters[0];
-                                    if (param is Atom atom)
-                                    {
-                                        interpreter.LoadProgram(atom.Name);
-                                    }
-                                    else if (param is logSharp.model.String str)
-                                    {
-                                        interpreter.LoadProgram(str.Value);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine(" bas parameter");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("bad query. load takes 1 parameter.");
-                                }
-                            }
-                            else if (ask.Name == "trace")
-                            {
-                                if (ask.Parameters.Count <= 1)
-                                {
-                                    string outFile = null;
-                                    if (ask.Parameters.Count == 1)
-                                    {
-                                        var param = ask.Parameters[0];
-                                        if (param is Atom atom)
-                                        {
-                                            outFile = atom.Name;
-                                        }
-                                        else if (param is logSharp.model.String str)
-                                        {
-                                            outFile = str.Value;
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine(" bad parameter");
-                                        }
-                                    }
-
-                                    interpreter.DebugOutput = outFile;
-                                    interpreter.Verbose = true;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("bad query. trace takes 0 or 1 parameter.");
-                                }
-                            }
-                            else if (ask.Name == "quiet")
-                            {
-                                interpreter.Verbose = false;
+                                ReplActions[ask.Name](interpreter, ask);
+                                    
                             }
                             else
                             {

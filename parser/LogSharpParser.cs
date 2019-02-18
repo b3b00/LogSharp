@@ -92,6 +92,17 @@ namespace logSharp.parser
             );
         }
 
+        
+        [Production("term : Atom LeftPar[d]  RightPar[d]")]
+        public LogSharpAST termNoArg(Token<LogSharpToken> clauseName )
+        {
+            List<Valuable> parameters = new List<Valuable>();
+            
+            return new Term(
+                clauseName.StringWithoutQuotes,
+                parameters
+            );
+        }
 
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
         public LogSharpAST term(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
