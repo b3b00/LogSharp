@@ -7,7 +7,7 @@ using System.Text;
 
 namespace logSharp.model
 {
-    public class LogTerm : LogSharpAST, LogValuable
+    public class Term : LogSharpAST, Valuable
     {
         public const string listConstructor = "list";
         public bool IsScalar => false;
@@ -20,19 +20,19 @@ namespace logSharp.model
 
         public string Name { get; set; }
 
-        public List<LogValuable> Parameters { get; set; }
+        public List<Valuable> Parameters { get; set; }
 
-        public LogTerm(string name) : this (name, new List<LogValuable>())
+        public Term(string name) : this (name, new List<Valuable>())
         {
             ;
         }
 
-        public LogTerm() : this(null, new List<LogValuable>())
+        public Term() : this(null, new List<Valuable>())
         {
         }
         
 
-        public LogTerm(string name, List<LogValuable> parameters)
+        public Term(string name, List<Valuable> parameters)
         {
             Name = name;
             Parameters = parameters;
@@ -84,7 +84,7 @@ namespace logSharp.model
         {
             if (o != null)
             {
-                if (o is LogTerm other)
+                if (o is Term other)
                 {
                     if (other.Name == Name)
                     {

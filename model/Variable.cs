@@ -1,6 +1,6 @@
 namespace logSharp.model
 {
-    public class LogVariable : LogValuable
+    public class Variable : Valuable
     {
         public bool IsScalar => false;
 
@@ -11,7 +11,7 @@ namespace logSharp.model
         public bool IsList => false;
         public string Name { get; set; }
 
-        public LogVariable(string name)
+        public Variable(string name)
         {
             Name = name;
         }

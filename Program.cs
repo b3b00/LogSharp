@@ -12,7 +12,7 @@ using sly.lexer;
 
 namespace logSharp
 {
-    class Program
+    public class Program
     {
 
         static BuildResult<Parser<LogSharpToken,LogSharpAST>> BuildParser()
@@ -79,7 +79,7 @@ namespace logSharp
             return null;
         }
 
-        static void Unifyterms(LogTerm t1, LogTerm t2)
+        static void Unifyterms(Term t1, Term t2)
         {
             Unifier unifier = new Unifier();
             Console.WriteLine($"{t1.Dump()} // {t2.Dump()}");
@@ -91,13 +91,13 @@ namespace logSharp
         {
             
                 var r1 = parser.Parse("boy(billy)","term");
-                var billy = (LogTerm)r1.Result;
+                var billy = (Term)r1.Result;
                 var r2 = parser.Parse("boy(bob)","term");
-                var bob = (LogTerm)r2.Result;
+                var bob = (Term)r2.Result;
                 var r3 = parser.Parse("boy(X)","term");
-                var X = (LogTerm)r3.Result;
+                var X = (Term)r3.Result;
                 var r4 = parser.Parse("boy(Y)","term");
-                var Y = (LogTerm)r4.Result;
+                var Y = (Term)r4.Result;
                 Unifier unifier = new Unifier();
                 Unifyterms(billy, bob);
                 Unifyterms(billy, billy);

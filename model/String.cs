@@ -1,10 +1,10 @@
 namespace logSharp.model
 {
-    public class LogString : LogScalar
+    public class String : Scalar
     {
         public string Value { get; set; }
 
-        public LogString(string value)
+        public String(string value)
         {
             Value = value;
         }
@@ -18,7 +18,7 @@ namespace logSharp.model
         {
             if (o != null)
             {
-                if (o is LogString other)
+                if (o is String other)
                 {
                     return other.Value == Value;
                 }

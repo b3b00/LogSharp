@@ -4,18 +4,20 @@ using System.Text;
 
 namespace logSharp.model
 {
-    public class LogFact : LogTerm, LogRule
+    public class Fact : Rule
     {
 
-        public LogFact(LogTerm clause) : base(clause.Name, clause.Parameters)
+        
+        
+        public Fact(Term clause) : base(clause, null)
         {
         }
 
-        public LogFact(string name, List<LogValuable> parameters) : base(name, parameters)
+        public Fact(string name, List<Valuable> parameters) : base(new Term(name,parameters))
         {
         }
 
-        public LogFact(string name) : base(name)
+        public Fact(string name) : base(new Term(name))
         {
         }
 

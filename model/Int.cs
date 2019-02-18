@@ -1,26 +1,27 @@
 namespace logSharp.model
 {
-    public class LogAtom : LogScalar
+    public class Int : Scalar
     {
-        public string Name { get; set; }
+        public int Value { get; set; }
 
-        public LogAtom(string name)
+        public Int(int value)
         {
-            Name = name;
-        }
-
-        public override string Dump()
-        {
-            return Name;
+            Value = value;
         }
         
+        public override string Dump()
+        {
+            return Value.ToString();
+        }
+
+
         public bool Equals(object o)
         {
             if (o != null)
             {
-                if (o is LogAtom other)
+                if (o is Int other)
                 {
-                    return other.Name == Name;
+                    return other.Value == Value;
                 }
             }
 

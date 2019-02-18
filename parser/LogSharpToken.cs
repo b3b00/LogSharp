@@ -47,7 +47,10 @@ namespace logSharp.parser
         RightBrack = 16,
         
         [Lexeme(GenericToken.SugarToken,"|")]
-        Pipe = 17
+        Pipe = 17,
+        
+        [Lexeme(GenericToken.SugarToken,"?")]
+        QuestionMark = 18
         
         
         #endregion

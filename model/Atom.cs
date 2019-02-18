@@ -1,26 +1,26 @@
 namespace logSharp.model
 {
-    public class LogDouble : LogScalar
+    public class Atom : Scalar
     {
-        public double Value { get; set; }
+        public string Name { get; set; }
 
-        public LogDouble(double value)
+        public Atom(string name)
         {
-            Value = value;
+            Name = name;
         }
 
         public override string Dump()
         {
-            return Value.ToString();
+            return Name;
         }
         
         public bool Equals(object o)
         {
             if (o != null)
             {
-                if (o is LogDouble other)
+                if (o is Atom other)
                 {
-                    return other.Value == Value;
+                    return other.Name == Name;
                 }
             }
 

@@ -1,6 +1,6 @@
 namespace logSharp.model
 {
-    public abstract class LogScalar : LogSharpAST, LogValuable
+    public abstract class Scalar : LogSharpAST, Valuable
     {
         public bool IsScalar => true;
         public bool IsVariable => false;

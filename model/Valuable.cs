@@ -1,6 +1,6 @@
 namespace logSharp.model
 {
-    public interface LogValuable : LogSharpAST
+    public interface Valuable : LogSharpAST
     {
         bool IsScalar { get;  }
         bool IsVariable { get;  }
