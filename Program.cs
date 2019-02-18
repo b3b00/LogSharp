@@ -46,11 +46,10 @@ boy(alex).
 ";
                 Console.WriteLine(("OK !"));
                 var parser = parserBuildResult.Result;
-                var lexer = parserBuildResult.Result.Lexer as GenericLexer<LogSharpToken>;
-                CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+                
                 var cp = parser.Parse(program, "program");
 
-                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram);
+                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram,parser);
 //                Ask(interpreter,parser,"child(Q)?");
 //                Ask(interpreter,parser,"boy(B)?");
 //                Ask(interpreter,parser,"girl(G)?");
@@ -156,7 +155,7 @@ boy(alex).
 
         static void Main(string[] args)
         {
-            Searching();
+            PrologRepl.Run(args);
         }
     }
 }
