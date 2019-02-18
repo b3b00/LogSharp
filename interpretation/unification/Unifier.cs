@@ -1,62 +1,13 @@
 using System;
 using System.Collections.Generic;
 using logSharp.model;
-using System.Text;
 
 namespace logSharp.interpretation.unification
 {
-
-    public class Unification
-    {
-        public TermEnvironment Environment { get; set; }
-        
-        public bool IsOk { get; set; }
-
-        public static Unification Failed()
-        {
-            return new Unification(false);
-        }
-
-        public Unification()
-        {
-            Environment = new TermEnvironment();
-            IsOk = true;
-        }
-        
-        public Unification(bool ok)
-        {
-            Environment = new TermEnvironment();
-            IsOk = ok;
-        }
-
-        public void AddBinding(string variableName, LogValuable value)
-        {
-            Environment[variableName] = value;
-        }
-
-        public string ToString()
-        {
-            StringBuilder dump = new StringBuilder();
-            if (IsOk)
-            {
-                dump.AppendLine("Yes !");
-                dump.AppendLine(Environment.ToString());
-
-                return dump.ToString();
-            }
-            else
-            {
-                dump.AppendLine("No.");
-            }
-
-            return dump.ToString();
-        }
-    }
-    
     public class Unifier
     {
 
-        public Unification UnifyTerms(LogTerm source, TermEnvironment sourceEnv, LogTerm destination,
+        public Unification UnifyTerms(Term source, TermEnvironment sourceEnv, Term destination,
             TermEnvironment destEnv)
         {
             if (source == null || destination == null)
@@ -75,8 +26,8 @@ namespace logSharp.interpretation.unification
             {
                 var srcArg = source.Parameters[i];
                 var destArg = destination.Parameters[i];
-                LogValuable srcVal = null;
-                LogValuable destVal = null;
+                Valuable srcVal = null;
+                Valuable destVal = null;
                
                 srcVal = GetValue(srcArg,sourceEnv);
 
@@ -103,12 +54,12 @@ namespace logSharp.interpretation.unification
 
 
 
-        public LogValuable GetValue(LogValuable arg, TermEnvironment environment)
+        public Valuable GetValue(Valuable arg, TermEnvironment environment)
         {
-            LogValuable val = null;
+            Valuable val = null;
             if (arg.IsVariable)
             {
-                val = environment[(arg as LogVariable).Name];
+                val = environment[(arg as Variable).Name];
             }
             else
             {

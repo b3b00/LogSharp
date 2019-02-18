@@ -3,19 +3,19 @@ using System.Text;
 
 namespace logSharp.model
 {
-    public class LogPredicate : LogRule
+    public class Predicate : Rule
     {
-        public LogTerm Head { get; set; }
+        public Term Head { get; set; }
         
-        public List<LogTerm> Clauses { get; set; }
+        public List<Term> Clauses { get; set; }
 
-        public LogPredicate(LogTerm head, List<LogTerm> clauses)
+        public Predicate(Term head, List<Term> clauses) : base(head, clauses)
         {
-            Head = head;
-            Clauses = clauses;
+            
         }
         
-        public string Dump()
+        
+        public override string Dump()
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(Head.Dump());

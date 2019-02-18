@@ -1,25 +1,24 @@
 namespace logSharp.model
 {
-    public class LogInt : LogScalar
+    public class Double : Scalar
     {
-        public int Value { get; set; }
+        public double Value { get; set; }
 
-        public LogInt(int value)
+        public Double(double value)
         {
             Value = value;
         }
-        
+
         public override string Dump()
         {
             return Value.ToString();
         }
-
-
+        
         public bool Equals(object o)
         {
             if (o != null)
             {
-                if (o is LogInt other)
+                if (o is Double other)
                 {
                     return other.Value == Value;
                 }

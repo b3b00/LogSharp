@@ -8,27 +8,27 @@ using System.Text;
 
 namespace logSharp.model
 {
-    public class LogList : LogTerm
+    public class List : Term
     {
-        public LogList()
+        public List()
         {
-            Name = LogTerm.listConstructor;
+            Name = Term.listConstructor;
         }
 
-        public LogList(List<LogValuable> parameters)
+        public List(List<Valuable> parameters)
         {
-            Name = LogTerm.listConstructor;
+            Name = Term.listConstructor;
             
-            LogValuable tail = new LogList();
+            Valuable tail = new List();
             
             
             for (int i = parameters.Count - 1; i >= 0; i--)
             {
-                LogTerm term = new LogTerm(LogTerm.listConstructor,new List<LogValuable>(){parameters[i],tail});
+                Term term = new Term(Term.listConstructor,new List<Valuable>(){parameters[i],tail});
                 tail = term;
             }
 
-            Parameters = (tail as LogTerm).Parameters;
+            Parameters = (tail as Term).Parameters;
         }
 
         

@@ -1,0 +1,32 @@
+using System.Collections.Generic;
+
+namespace logSharp.model
+{
+    public abstract class Rule : LogSharpAST
+    {
+        
+        public Term Head { get; set; }
+        
+        public List<Term> Clauses { get; set; }
+
+        public List<Valuable> Parameters => Head.Parameters;
+
+        public Rule(Term head)
+        {
+            Head = head;
+        }
+        
+        public Rule(Term head, List<Term> clauses)
+        {
+            Head = head;
+            Clauses = clauses;
+        }
+
+        public string Name => Head.Name;
+
+        public int Arity => Head.Parameters.Count;
+
+        public string Specification => $"{Name}/{Arity}";
+        public abstract string Dump();
+    }
+}

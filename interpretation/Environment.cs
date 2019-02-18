@@ -6,11 +6,11 @@ namespace logSharp.interpretation
 {
     public class TermEnvironment
     {
-        public Dictionary<string,LogValuable> Environment { get; set; }
+        public Dictionary<string,Valuable> Environment { get; set; }
 
         public TermEnvironment()
         {
-            Environment = new Dictionary<string, LogValuable>();
+            Environment = new Dictionary<string, Valuable>();
         }
 
         public bool ContainsVariable(string key)
@@ -18,7 +18,7 @@ namespace logSharp.interpretation
             return Environment.ContainsKey(key);
         }
         
-        public LogValuable this[string key]
+        public Valuable this[string key]
         {
             get
             {
