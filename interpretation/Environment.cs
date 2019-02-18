@@ -34,10 +34,19 @@ namespace logSharp.interpretation
         public string ToString()
         {
             StringBuilder dump = new StringBuilder();
+            bool first = true;
+            dump.Append("[ ");
             foreach (var kvp in Environment)
             {
-                dump.AppendLine($"{kvp.Key} = {kvp.Value.Dump()}");
+                if (!first)
+                {
+                    dump.Append(" , ");
+                }
+                dump.Append($"{kvp.Key} = {kvp.Value.Dump()}");
+                first = false;
             }
+
+            dump.Append(" ]");
 
             return dump.ToString();
         }
