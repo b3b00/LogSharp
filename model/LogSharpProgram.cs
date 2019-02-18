@@ -12,6 +12,11 @@ namespace logSharp.model
         public LogSharpProgram(List<Rule> rules)
         {
             Rules = rules;
+            SetRulesBySpec();
+        }
+
+        private void SetRulesBySpec()
+        {
             RulesBySpec = new Dictionary<string, List<Rule>>();
             foreach (var rule in Rules)
             {
@@ -22,6 +27,21 @@ namespace logSharp.model
                 }
                 currentRules.Add(rule);
                 RulesBySpec[rule.Specification] = currentRules;
+            }
+        }
+
+        public void Append(Rule rule)
+        {
+            Rules.Add(rule);
+            SetRulesBySpec();
+        }
+
+        public void Append(LogSharpProgram program)
+        {
+            if (program != null && program.Rules != null && program.Rules.Any())
+            {
+                Rules.AddRange(program.Rules);
+                SetRulesBySpec();
             }
         }
 

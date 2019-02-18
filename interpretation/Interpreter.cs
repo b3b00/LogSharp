@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using DeepCopy;
 using logSharp.interpretation.unification;
 using logSharp.model;
+using logSharp.parser;
+using sly.parser;
 
 namespace logSharp.interpretation
 {
@@ -13,15 +16,41 @@ namespace logSharp.interpretation
     {
         private bool Verbose { get; set; }
         
-        private LogSharpProgram LogSharpProgram { get; set; }
+        public LogSharpProgram LogSharpProgram { get; set; }
         
         private Unifier Unifier { get; set; }
+        
+        private Parser<LogSharpToken,LogSharpAST> Parser { get; set; }
 
 
-        public Interpreter(bool verbose, LogSharpProgram logSharpProgram)
+        public void Append(Rule rule)
+        {
+            if (LogSharpProgram == null)
+            {
+                
+                LogSharpProgram = new LogSharpProgram(new List<Rule>());
+            }
+            
+            LogSharpProgram.Append(rule);
+        }
+        
+        public void Append(LogSharpProgram program)
+        {
+            if (LogSharpProgram == null)
+            {
+                LogSharpProgram = program;
+            }
+            else
+            {
+                LogSharpProgram.Append(program);
+            }
+        }
+
+        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser)
         {
             LogSharpProgram = logSharpProgram;
             Verbose = verbose;
+            Parser = parser;
             Unifier = new Unifier();
         }
 
@@ -30,6 +59,24 @@ namespace logSharp.interpretation
             if (Verbose)
             {
                 Console.WriteLine(message);
+            }
+        }
+
+        public void LoadProgram(string program)
+        {
+            string prog = File.ReadAllText(program);
+            var logprog = Parser.Parse(prog,"program");
+            if (logprog.IsOk)
+            {
+                Append(logprog.Result as LogSharpProgram);
+            }
+            else
+            {
+                Console.WriteLine("errors");
+                foreach (var error in logprog.Errors)
+                {
+                    Console.WriteLine($"\t{error.ErrorMessage}");
+                }
             }
         }
         
