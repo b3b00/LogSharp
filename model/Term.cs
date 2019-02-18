@@ -21,6 +21,9 @@ namespace logSharp.model
         public string Name { get; set; }
 
         public List<Valuable> Parameters { get; set; }
+        
+        public int Arity => Parameters.Count;
+        public string Specification => $"{Name}/{Arity}";
 
         public Term(string name) : this (name, new List<Valuable>())
         {
@@ -79,7 +82,12 @@ namespace logSharp.model
 
             return dump.ToString();
         }
-        
+
+        public override string ToString()
+        {
+            return Dump();
+        }
+
         public bool Equals(object o)
         {
             if (o != null)

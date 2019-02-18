@@ -17,7 +17,13 @@ namespace logSharp.interpretation.unification
         public Unification()
         {
             Environment = new TermEnvironment();
-            IsOk = true;
+            IsOk = false;
+        }
+        
+        public Unification(TermEnvironment environment)
+        {
+            Environment = environment;
+            IsOk = false;
         }
         
         public Unification(bool ok)
@@ -31,13 +37,14 @@ namespace logSharp.interpretation.unification
             Environment[variableName] = value;
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
             if (IsOk)
             {
-                dump.AppendLine("Yes !");
-                dump.AppendLine(Environment.ToString());
+                dump.AppendLine("Yes.");
+                string envStr = Environment.ToString();
+                dump.Append(envStr.Trim());
 
                 return dump.ToString();
             }

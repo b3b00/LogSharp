@@ -5,15 +5,17 @@ namespace logSharp.model
 {
     public class Predicate : Rule
     {
-        public Term Head { get; set; }
-        
-        public List<Term> Clauses { get; set; }
+       
 
         public Predicate(Term head, List<Term> clauses) : base(head, clauses)
         {
-            
         }
         
+        
+        public override string ToString()
+        {
+            return Dump();
+        }
         
         public override string Dump()
         {

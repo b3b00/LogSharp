@@ -11,6 +11,10 @@ namespace logSharp.model
 
         public List<Valuable> Parameters => Head.Parameters;
 
+        public bool IsFact => this is Fact;
+        
+        public bool IsPredicate => this is Predicate;
+
         public Rule(Term head)
         {
             Head = head;

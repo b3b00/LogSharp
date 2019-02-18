@@ -15,7 +15,7 @@ namespace logSharp.model
         }
 
 
-        public bool Equals(object o)
+        public override bool Equals(object o)
         {
             if (o != null)
             {

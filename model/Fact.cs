@@ -20,6 +20,11 @@ namespace logSharp.model
         public Fact(string name) : base(new Term(name))
         {
         }
+        
+        public override string ToString()
+        {
+            return Dump();
+        }
 
         public override string Dump()
         {

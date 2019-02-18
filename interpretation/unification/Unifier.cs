@@ -7,8 +7,8 @@ namespace logSharp.interpretation.unification
     public class Unifier
     {
 
-        public Unification UnifyTerms(Term source, TermEnvironment sourceEnv, Term destination,
-            TermEnvironment destEnv)
+        public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
+            Unification destEnv)
         {
             if (source == null || destination == null)
             {
@@ -16,7 +16,7 @@ namespace logSharp.interpretation.unification
             }
 
             Unification unification = new Unification();
-            unification.Environment = destEnv;
+            unification.Environment = destEnv.Environment; // todo : deepcopy ?
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
                 unification = Unification.Failed();
@@ -54,12 +54,12 @@ namespace logSharp.interpretation.unification
 
 
 
-        public Valuable GetValue(Valuable arg, TermEnvironment environment)
+        public Valuable GetValue(Valuable arg, Unification environment)
         {
             Valuable val = null;
             if (arg.IsVariable)
             {
-                val = environment[(arg as Variable).Name];
+                val = environment.Environment[(arg as Variable).Name]; // TODO : check if contained
             }
             else
             {
