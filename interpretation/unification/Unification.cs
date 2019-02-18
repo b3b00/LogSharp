@@ -42,15 +42,10 @@ namespace logSharp.interpretation.unification
             StringBuilder dump = new StringBuilder();
             if (IsOk)
             {
-                dump.AppendLine("Yes.");
                 string envStr = Environment.ToString();
                 dump.Append(envStr.Trim());
 
                 return dump.ToString();
-            }
-            else
-            {
-                dump.AppendLine("No.");
             }
 
             return dump.ToString();
