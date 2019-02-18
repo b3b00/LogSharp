@@ -4,7 +4,7 @@ using logSharp.model;
 
 namespace logSharp.interpretation.unification
 {
-    public class Unifier
+    public class Unifier : IUnifier
     {
 
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,

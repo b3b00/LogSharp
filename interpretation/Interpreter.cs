@@ -16,9 +16,11 @@ namespace logSharp.interpretation
     {
         public bool Verbose { get; set; }
         
+        public string DebugOutput { get; set; }
+        
         public LogSharpProgram LogSharpProgram { get; set; }
         
-        private Unifier Unifier { get; set; }
+        private IUnifier Unifier { get; set; }
         
         private Parser<LogSharpToken,LogSharpAST> Parser { get; set; }
 
@@ -59,6 +61,10 @@ namespace logSharp.interpretation
             if (Verbose)
             {
                 Console.WriteLine(message);
+                if (DebugOutput != null)
+                {
+                    File.AppendAllText(DebugOutput, message + "\n");
+                }
             }
         }
 

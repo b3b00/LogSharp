@@ -45,10 +45,6 @@ namespace logSharp
                 {
                     return;
                 }
-                else if (input.StartsWith("trace"))
-                {
-                    interpreter.Verbose = true;
-                }
                 else
                 {
                     var query = parser.Parse(input, "rule");
@@ -79,10 +75,38 @@ namespace logSharp
                                     Console.WriteLine("bad query. load takes 1 parameter.");
                                 }
                             }
+                            else if (ask.Name == "trace")
+                            {
+                                if (ask.Parameters.Count <= 1)
+                                {
+                                    string outFile = null;
+                                    if (ask.Parameters.Count == 1)
+                                    {
+                                        var param = ask.Parameters[0];
+                                        if (param is Atom atom)
+                                        {
+                                            outFile = atom.Name;
+                                        }
+                                        else if (param is logSharp.model.String str)
+                                        {
+                                            outFile = str.Value;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(" bad parameter");
+                                        }
+                                    }
+
+                                    interpreter.DebugOutput = outFile;
+                                    interpreter.Verbose = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("bad query. trace takes 0 or 1 parameter.");
+                                }
+                            }
                             else
                             {
-                                Console.WriteLine();
-                                Console.WriteLine($"asking : {ask}");
                                 var answers = interpreter.Search(ask);
                                 if (answers != null && answers.Any())
                                 {
@@ -95,9 +119,7 @@ namespace logSharp
                         }
                         else if (query.Result is Rule rule)
                         {
-                            // todo append fact/rule
                             interpreter.Append(rule);
-                            
                         }
                     }
                     else
