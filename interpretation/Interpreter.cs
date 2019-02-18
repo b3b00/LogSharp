@@ -107,10 +107,6 @@ namespace logSharp.interpretation
                         {
                             yield return current.Unification;
                         }
-                        else
-                        {
-                            Console.WriteLine(("No."));
-                        }
 
                         continue;
                     }
@@ -118,10 +114,13 @@ namespace logSharp.interpretation
                     var p = DeepCopier.Copy(current.Parent);
                     var u = Unifier.UnifyTerms(current.Head, current.Unification,
                         p.Goals[p.Index].Head, p.Unification);
-                    p.Index++;
-                    p.Unification = u;
-                    Trace($"stck {p} @ {p.Index}");
-                    stack.Push(p);
+                    if (u.IsOk)
+                    {
+                        p.Index++;
+                        p.Unification = u;
+                        Trace($"stck {p} @ {p.Index}");
+                        stack.Push(p);
+                    }
                     continue;
                 }
 
@@ -131,11 +130,12 @@ namespace logSharp.interpretation
                 List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
                 foreach (var applicable in (applicableRules))
                 {
-                    if (applicable != current.Rule)
+                    if (!applicable.Equals(current.Rule))
                     {
                         Goal child = new Goal(applicable, current, current.Unification);
 
-                        var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
+                        //var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
+                        var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head, child.Unification);
                         if (unif.IsOk)
                         {
                             child.Unification = unif;
