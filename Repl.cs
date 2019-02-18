@@ -83,8 +83,14 @@ namespace logSharp
                             {
                                 Console.WriteLine();
                                 Console.WriteLine($"asking : {ask}");
-                                interpreter.Search(ask);
-                                // todo query
+                                var answers = interpreter.Search(ask);
+                                if (answers != null && answers.Any())
+                                {
+                                    foreach (var answer in answers)
+                                    {
+                                        Console.WriteLine(answer);
+                                    }
+                                }
                             }
                         }
                         else if (query.Result is Rule rule)
@@ -102,47 +108,6 @@ namespace logSharp
             }
         }
 
-//        static void Searching()
-//        {
-//            var parserBuildResult = BuildParser();
-//            if (parserBuildResult.IsError)
-//            {
-//                ;
-//                parserBuildResult.Errors.ForEach(e => Console.WriteLine($"ERROR : {e.Level}  - {e.Message}"));
-//            }
-//            else
-//            {
-//                string program = @"
-//child(X) :- boy(X).
-//child(X) :- girl(X).
-//girl(alice).
-//boy(alex).
-//";
-//                Console.WriteLine(("OK !"));
-//                var parser = parserBuildResult.Result;
-//                
-//                var cp = parser.Parse(program, "program");
-//
-//                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram);
-////                Ask(interpreter,parser,"child(Q)?");
-////                Ask(interpreter,parser,"boy(B)?");
-////                Ask(interpreter,parser,"girl(G)?");
-//                Ask(interpreter,parser,"ouaf(B)?");
-//                Ask(interpreter,parser,"boy(blop)?");
-//                
-//                ;
-//            }
-//
-//        }
-
-        static void Ask(Interpreter interpreter, Parser<LogSharpToken,LogSharpAST> parser, string ask)
-        {
-            Console.WriteLine();
-            Console.WriteLine($"asking : {ask}");
-            var q = parser.Parse(ask, "question");
-            Question question = q.Result as Question;
-            interpreter.Search(question);
-        }
 
         
 
