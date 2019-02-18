@@ -23,6 +23,50 @@ namespace logSharp
             return parser;
         }
 
+
+        static void Searching()
+        {
+            var parserBuildResult = BuildParser();
+            if (parserBuildResult.IsError)
+            {
+                ;
+                parserBuildResult.Errors.ForEach(e => Console.WriteLine($"ERROR : {e.Level}  - {e.Message}"));
+            }
+            else
+            {
+                string program = @"
+child(X) :- boy(X).
+child(X) :- girl(X).
+girl(alice).
+boy(alex).
+";
+                Console.WriteLine(("OK !"));
+                var parser = parserBuildResult.Result;
+                var lexer = parserBuildResult.Result.Lexer as GenericLexer<LogSharpToken>;
+                CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+                var cp = parser.Parse(program, "program");
+
+                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram);
+//                Ask(interpreter,parser,"child(Q)?");
+//                Ask(interpreter,parser,"boy(B)?");
+//                Ask(interpreter,parser,"girl(G)?");
+                Ask(interpreter,parser,"ouaf(B)?");
+                Ask(interpreter,parser,"boy(blop)?");
+                
+                ;
+            }
+
+        }
+
+        static void Ask(Interpreter interpreter, Parser<LogSharpToken,LogSharpAST> parser, string ask)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"asking : {ask}");
+            var q = parser.Parse(ask, "question");
+            Question question = q.Result as Question;
+            interpreter.Search(question);
+        }
+
         static Parser<LogSharpToken,LogSharpAST> Parsing()
         {
             Console.WriteLine("Hello World!");
@@ -83,7 +127,7 @@ namespace logSharp
         {
             Unifier unifier = new Unifier();
             Console.WriteLine($"{t1.Dump()} // {t2.Dump()}");
-            var res1 = unifier.UnifyTerms(t1, new TermEnvironment(), t2, new TermEnvironment());
+            var res1 = unifier.UnifyTerms(t1, new Unification(), t2, new Unification());
             Console.WriteLine(res1.ToString());
         }
 
@@ -108,8 +152,7 @@ namespace logSharp
 
         static void Main(string[] args)
         {
-            var p = Parsing();
-            Unify(p);
+            Searching();
         }
     }
 }

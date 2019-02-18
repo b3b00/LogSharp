@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using DeepCopy;
 using logSharp.interpretation.unification;
@@ -18,24 +20,33 @@ namespace logSharp.interpretation
 
         public bool IsRootGoal => Parent == null;
         
-        public List<Term> Clauses = new List<Term>();
+        public List<Goal> Goals = new List<Goal>();
 
         public Term Head;
 
         public int Index { get; set; } 
         
         public Unification Unification { get; set; }
+        
 
-        public int Count => Clauses.Count;
+        public int Count => Goals.Count;
 
         public bool IsOk => Unification.IsOk;
+
+
+        public bool IsFact => Rule != null && Rule.IsFact;
+        
+        public bool IsPredicate => this.Rule != null && Rule.IsPredicate;
+
+        public string Specification => Head.Specification;
 
         public Goal(Question question)
         {
             Parent = null;
             Head = question;
-            Clauses = new List<Term>();
+            Goals = new List<Goal>();
             Unification = new Unification();
+            Unification.IsOk = false;
             Index = 0;
         }
 
@@ -44,9 +55,28 @@ namespace logSharp.interpretation
             Rule = rule;
             Parent = parent;
             Unification = DeepCopier.Copy(environment);
+            Goals = new List<Goal>();
 
             Head = rule.Head;
-            Clauses = rule.Clauses;
+            if (rule.Clauses != null && rule.Clauses.Any())
+            {
+                foreach (var t in rule.Clauses)
+                {
+                    if (t != null)
+                    {
+                        Goals.Add(new Goal(new Question(t)));
+                    }
+                    else
+                    {
+                        ;
+                    }
+                }
+            }
+            else
+            {
+                Goals.Add(new Goal(new Question(rule.Head)));
+                ;
+            }
 
             Index = 0;
             Id = NextGoalId;
@@ -58,8 +88,17 @@ namespace logSharp.interpretation
         public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
-            dump.AppendLine(base.ToString());
-            dump.AppendLine(Unification.ToString());
+            if (this.Rule != null)
+            {
+                dump.AppendLine(this.Rule.ToString() + " @ " + Index);
+            }
+            else
+            {
+                dump.AppendLine(Head.ToString() + " @ " + Index);
+            }
+
+            var unifStr = Unification.ToString();
+            dump.AppendLine(unifStr);
             return dump.ToString();
         }
         

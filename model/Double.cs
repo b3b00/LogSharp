@@ -14,7 +14,7 @@ namespace logSharp.model
             return Value.ToString();
         }
         
-        public bool Equals(object o)
+        public override bool Equals(object o)
         {
             if (o != null)
             {

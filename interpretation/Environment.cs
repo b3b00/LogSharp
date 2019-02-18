@@ -30,17 +30,7 @@ namespace logSharp.interpretation
             }
         }
 
-        public TermEnvironment Clone()
-        {
-            TermEnvironment clone = new TermEnvironment();
-            foreach (var pair in Environment)
-            {
-                clone[pair.Key] = pair.Value;
-            }
-
-            return clone;
-        }
-
+      
         public string ToString()
         {
             StringBuilder dump = new StringBuilder();
