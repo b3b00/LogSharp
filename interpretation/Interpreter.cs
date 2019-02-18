@@ -80,7 +80,7 @@ namespace logSharp.interpretation
             }
         }
         
-        public Unification Search(Question question)
+        public IEnumerable<Unification> Search(Question question)
         {
             Stack<Goal> stack = new Stack<Goal>();
             Trace($"search question {question}");
@@ -99,7 +99,7 @@ namespace logSharp.interpretation
                     {
                         if (current.Unification.IsOk)
                         {
-                            Console.WriteLine(current.Unification);
+                            yield return current.Unification;
                         }
                         else
                         {
@@ -141,9 +141,7 @@ namespace logSharp.interpretation
 
             }
 
-
-            return rootGoal.Unification;
-            return null;
+            yield return null;
         }
     }
 }
