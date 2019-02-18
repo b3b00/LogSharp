@@ -140,12 +140,12 @@ namespace logSharp.parser
         {
             return new Atom(atom.Value);
         }
-        /*[Production("scalar : String")]
+        [Production("scalar : String")]
         public LogSharpAST StringScalar(Token<LogSharpToken> stringToken)
         {
-            return new LogString(stringToken.StringWithoutQuotes);
+            return new String(stringToken.StringWithoutQuotes);
         }
-        
+        /*
         [Production("scalar : Integer")]
         public LogSharpAST IntScalar(Token<LogSharpToken> intToken)
         {

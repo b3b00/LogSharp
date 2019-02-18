@@ -12,6 +12,8 @@ using sly.lexer;
 
 namespace logSharp
 {
+    
+
     public class Program
     {
 
@@ -20,6 +22,8 @@ namespace logSharp
             var logParser = new LogSharpParser();
             var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
+            var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
+            CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
             return parser;
         }
 
