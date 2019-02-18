@@ -17,13 +17,13 @@ namespace logSharp.interpretation.unification
         public Unification()
         {
             Environment = new TermEnvironment();
-            IsOk = false;
+            IsOk = true;
         }
         
         public Unification(TermEnvironment environment)
         {
             Environment = environment;
-            IsOk = false;
+            IsOk = true;
         }
         
         public Unification(bool ok)

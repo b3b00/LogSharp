@@ -14,7 +14,7 @@ namespace logSharp.interpretation
 {
     public class Interpreter
     {
-        private bool Verbose { get; set; }
+        public bool Verbose { get; set; }
         
         public LogSharpProgram LogSharpProgram { get; set; }
         
@@ -110,9 +110,10 @@ namespace logSharp.interpretation
                     }
 
                     var p = DeepCopier.Copy(current.Parent);
-                    Unifier.UnifyTerms(current.Head, current.Unification,
+                    var u = Unifier.UnifyTerms(current.Head, current.Unification,
                         p.Goals[p.Index].Head, p.Unification);
                     p.Index++;
+                    p.Unification = u;
                     Trace($"stck {p} @ {p.Index}");
                     stack.Push(p);
                     continue;
