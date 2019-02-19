@@ -36,6 +36,13 @@ namespace logSharp.interpretation.unification
         {
             Environment[variableName] = value;
         }
+        public void AddBindings(Unification unification)
+        {
+            foreach (var binding in unification.Environment.Environment)
+            {
+                Environment[binding.Key] = binding.Value;
+            }
+        }
 
         public override string ToString()
         {

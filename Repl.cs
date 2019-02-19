@@ -162,12 +162,42 @@ namespace logSharp
         }
 
 
+        private static void UnifyTest(string source, string dest, string parserRule)
+        {
+            var parser = BuildParser();
+            IUnifier unifier = new NestedTermUnifier();
+            var r1 = parser.Parse(source, parserRule);
+            var r2 = parser.Parse(dest, parserRule);
+            if (r1.IsOk && r2.IsOk)
+            {
+                var t1 = r1.Result as Term;
+                var t2 = r2.Result as Term;
+                var u = unifier.UnifyTerms(t1, new Unification(), t2, new Unification());
+                Console.WriteLine(source);
+                Console.WriteLine(dest);
+                Console.WriteLine(u);
+            }
+        }
+
+        public static void Test()
+        {
+            UnifyTest("list(a,T)","list(H,TAIL)","term");            
+            UnifyTest("list(a,list(b,c))","list(H,list(HEAD,TAIL))","term"); // expect H=a HEAD=b tail = [c] | c
+            UnifyTest("list(a,list(b,c))","list(H,list(HEAD,TAIL))","term");
+//            "empty([]).",
+////                    "const([a|Tail]).",
+////                    "literal([a,b,c])."
+            UnifyTest("[]","[H|T]","list");
+            UnifyTest("[a,b]","[H|T]","list");
+            UnifyTest("[a,b,c]","[H|T]","list");
+            ;
+        } 
         
 
         public static void Run(string[] args)
         {
-            
-            Loop(args);
+            Test();
+            //Loop(args);
         }
     }
 }
