@@ -11,3 +11,5 @@ brother(X,Y) :- father(Z,X) father(Z,Y).
 
 myl([a,b,c]).
 myl([d,e,f]).
+
+tester(X,Y) :- testPrim(X,Y).

@@ -12,8 +12,30 @@ using sly.parser;
 
 namespace logSharp.interpretation
 {
+
+    public delegate Unification PrologPrimitive(Interpreter interpreter, Unification unificationIn,
+        List<Valuable> parameters);
+    
     public class Interpreter
     {
+
+        public static Unification testPrim(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+
+        {
+            Unification unificationOut = DeepCopier.Copy(unificationIn);
+            unificationOut.AddBinding("SOMEDUMMYPRIMITIVEEFFECT", new Atom("Hello, World!"));
+            foreach (var p in parameters)
+            {
+                if (p is Variable v)
+                {
+                    unificationOut.AddBinding(v.Name, new Atom($"atom is >{v.Name.ToLower()}<"));
+                }
+            }
+            ;
+            return unificationOut;
+        }
+        
         public bool Verbose { get; set; }
         
         public string DebugOutput { get; set; }
@@ -23,7 +45,32 @@ namespace logSharp.interpretation
         private IUnifier Unifier { get; set; }
         
         private Parser<LogSharpToken,LogSharpAST> Parser { get; set; }
+        
+        private Dictionary<string,PrologPrimitive> Primitives { get; set; }
 
+        
+        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
+        {
+            LogSharpProgram = logSharpProgram;
+            Verbose = verbose;
+            Parser = parser;
+            Unifier = unifier;
+            Primitives = new Dictionary<string, PrologPrimitive>();
+            AddPrimitive("testPrim/2",Interpreter.testPrim);
+        }
+
+        public void AddPrimitive(string spec, PrologPrimitive primitive)
+        {
+            if (!Primitives.ContainsKey(spec))
+            {
+                Primitives[spec] = primitive;
+            }
+        }
+
+        public bool tryeGetPrimitive(string spec, out PrologPrimitive primitive)
+        {
+            return Primitives.TryGetValue(spec, out primitive);
+        }
 
         public void Append(Rule rule)
         {
@@ -48,13 +95,7 @@ namespace logSharp.interpretation
             }
         }
 
-        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
-        {
-            LogSharpProgram = logSharpProgram;
-            Verbose = verbose;
-            Parser = parser;
-            Unifier = unifier;
-        }
+       
 
         public void Trace(string message)
         {
@@ -126,21 +167,35 @@ namespace logSharp.interpretation
 
                 var parent = DeepCopier.Copy(current.Parent);
                 var term = current.Goals[current.Index];
-                
-                List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
-                foreach (var applicable in (applicableRules))
-                {
-                    if (!applicable.Equals(current.Rule))
-                    {
-                        Goal child = new Goal(applicable, current, current.Unification);
 
-                        //var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
-                        var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head, child.Unification);
-                        if (unif.IsOk)
+
+                PrologPrimitive primitive;
+                if (tryeGetPrimitive(term.Specification, out primitive))
+                {
+                    var primitiveUnification = primitive(this, current.Unification, current.Head.Parameters);
+                    Goal primitived = new Goal(current.Rule, current, primitiveUnification);
+                    primitived.Index++;
+
+                    stack.Push(primitived);
+                }
+                else
+                {
+                    List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
+                    foreach (var applicable in (applicableRules))
+                    {
+                        if (!applicable.Equals(current.Rule))
                         {
-                            child.Unification = unif;
-                            Trace($"stck {child} @ {child.Index}");
-                            stack.Push(child);
+                            Goal child = new Goal(applicable, current, current.Unification);
+
+                            //var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
+                            var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head,
+                                child.Unification);
+                            if (unif.IsOk)
+                            {
+                                child.Unification = unif;
+                                Trace($"stck {child} @ {child.Index}");
+                                stack.Push(child);
+                            }
                         }
                     }
                 }
