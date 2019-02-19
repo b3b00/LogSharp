@@ -31,7 +31,7 @@ namespace logSharp.interpretation
         }
 
       
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
             bool first = true;

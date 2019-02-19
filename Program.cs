@@ -49,7 +49,7 @@ boy(alex).
                 
                 var cp = parser.Parse(program, "program");
 
-                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram,parser);
+                Interpreter interpreter = new Interpreter(false, cp.Result as LogSharpProgram,parser,new NestedTermUnifier());
 //                Ask(interpreter,parser,"child(Q)?");
 //                Ask(interpreter,parser,"boy(B)?");
 //                Ask(interpreter,parser,"girl(G)?");

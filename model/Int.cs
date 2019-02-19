@@ -13,6 +13,11 @@ namespace logSharp.model
         {
             return Value.ToString();
         }
+        
+        public override string ToString()
+        {
+            return Dump();
+        }
 
 
         public override bool Equals(object o)
@@ -26,6 +31,11 @@ namespace logSharp.model
             }
 
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
         }
     }
 }

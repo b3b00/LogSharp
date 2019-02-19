@@ -25,7 +25,6 @@ namespace logSharp.interpretation.unification
                 unification = Unification.Failed();
             }
 
-            bool ok = true;
             for (int i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];
@@ -41,7 +40,14 @@ namespace logSharp.interpretation.unification
 
                     if (destVal == null && destArg.IsVariable)
                     {
-                        unification.AddBinding(destArg.Name, srcVal);
+                        if (destArg.Name != "_")
+                        {
+                            unification.AddBinding(destArg.Name, srcVal);
+                        }
+                        else
+                        {
+                            ;
+                        }
                     }
                     else
                     {

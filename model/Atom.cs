@@ -2,7 +2,7 @@ namespace logSharp.model
 {
     public class Atom : Scalar
     {
-        public string Name { get; set; }
+        public new string Name { get; private set; }
 
         public Atom(string name)
         {
@@ -13,7 +13,12 @@ namespace logSharp.model
         {
             return Name;
         }
-        
+
+        public override string ToString()
+        {
+            return Dump();
+        }
+
         public override bool Equals(object o)
         {
             if (o != null)
@@ -25,6 +30,11 @@ namespace logSharp.model
             }
 
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

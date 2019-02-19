@@ -4,6 +4,7 @@ using sly.parser;
 using sly.parser.generator;
 using System.Linq;
 using logSharp.interpretation;
+using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
 using sly.lexer;
@@ -107,7 +108,7 @@ namespace logSharp
         static void Loop(string[] args)
         {
             var parser = BuildParser();
-            Interpreter interpreter = new Interpreter(false, null, parser);
+            Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
 
             if (args.Length > 0)
             {

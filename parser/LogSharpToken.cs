@@ -7,7 +7,7 @@ namespace logSharp.parser
     {
         #region scalars
         
-        [Lexeme(GenericToken.Identifier)]
+        [Lexeme(GenericToken.Identifier,IdentifierType.AlphaNumericDash)]
         Identifier = 1,
         Variable = 2,
         Atom = 3,
