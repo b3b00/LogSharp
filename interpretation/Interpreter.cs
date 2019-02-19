@@ -113,6 +113,7 @@ namespace logSharp.interpretation
         
         public IEnumerable<Unification> Search(Question question)
         {
+            bool resultFound = false;
             Stack<Goal> stack = new Stack<Goal>();
             Trace($"search question {question}");
             Goal rootGoal = new Goal(question);
@@ -130,6 +131,7 @@ namespace logSharp.interpretation
                     {
                         if (current.Unification.IsOk)
                         {
+                            resultFound = true;
                             yield return current.Unification;
                         }
 
@@ -165,6 +167,7 @@ namespace logSharp.interpretation
                     }
                     else
                     {
+                        resultFound = true;
                         yield return primitiveUnification;
                     }
                 }
@@ -192,7 +195,14 @@ namespace logSharp.interpretation
 
             }
 
-            yield return null;
+            if (resultFound)
+            {
+                yield break;
+            }
+            else
+            {
+                yield return Unification.Failed();
+            }
         }
     }
 }

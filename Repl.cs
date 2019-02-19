@@ -109,7 +109,8 @@ namespace logSharp
         {
             var parser = BuildParser();
             Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
-
+            interpreter.AddPrimitive("testPrim/2",Primitives.testPrim);
+            interpreter.AddPrimitive("bag_of/3",Primitives.BagOf);
             if (args.Length > 0)
             {
                 foreach (var prog in args)
