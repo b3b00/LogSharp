@@ -42,7 +42,7 @@ namespace logSharp.interpretation.unification
                     {
                         if (destArg.Name != "_")
                         {
-                            unification.AddBinding(destArg.Name, srcVal);
+                            unification.AddBinding(destArg as Variable, srcVal);
                         }
                         else
                         {

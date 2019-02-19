@@ -19,22 +19,7 @@ namespace logSharp.interpretation
     public class Interpreter
     {
 
-        public static Unification testPrim(Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
-
-        {
-            Unification unificationOut = DeepCopier.Copy(unificationIn);
-            unificationOut.AddBinding("SOMEDUMMYPRIMITIVEEFFECT", new Atom("Hello, World!"));
-            foreach (var p in parameters)
-            {
-                if (p is Variable v)
-                {
-                    unificationOut.AddBinding(v.Name, new Atom($"atom is >{v.Name.ToLower()}<"));
-                }
-            }
-            ;
-            return unificationOut;
-        }
+       
         
         public bool Verbose { get; set; }
         
@@ -44,7 +29,7 @@ namespace logSharp.interpretation
         
         private IUnifier Unifier { get; set; }
         
-        private Parser<LogSharpToken,LogSharpAST> Parser { get; set; }
+        public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
         
         private Dictionary<string,PrologPrimitive> Primitives { get; set; }
 
@@ -56,7 +41,6 @@ namespace logSharp.interpretation
             Parser = parser;
             Unifier = unifier;
             Primitives = new Dictionary<string, PrologPrimitive>();
-            AddPrimitive("testPrim/2",Interpreter.testPrim);
         }
 
         public void AddPrimitive(string spec, PrologPrimitive primitive)
@@ -173,10 +157,16 @@ namespace logSharp.interpretation
                 if (tryeGetPrimitive(term.Specification, out primitive))
                 {
                     var primitiveUnification = primitive(this, current.Unification, current.Head.Parameters);
-                    Goal primitived = new Goal(current.Rule, current, primitiveUnification);
-                    primitived.Index++;
-
-                    stack.Push(primitived);
+                    if (current.Rule != null)
+                    {
+                        Goal primitived = new Goal(current.Rule, current, primitiveUnification);
+                        primitived.Index++;
+                        stack.Push(primitived);
+                    }
+                    else
+                    {
+                        yield return primitiveUnification;
+                    }
                 }
                 else
                 {

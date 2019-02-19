@@ -31,6 +31,11 @@ namespace logSharp.interpretation.unification
             Environment = new TermEnvironment();
             IsOk = ok;
         }
+        
+        public void AddBinding(Variable variable, Valuable value)
+        {
+            Environment[variable.Name] = value;
+        }
 
         public void AddBinding(string variableName, Valuable value)
         {
