@@ -20,6 +20,10 @@ namespace logSharp.model
         {
             return Name;
         }
-        
+
+        public override string ToString()
+        {
+            return Dump();
+        }
     }
 }
