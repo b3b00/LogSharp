@@ -14,7 +14,7 @@ namespace logSharp.model
             return $"\"{Value}\"";
         }
         
-        public bool Equals(object o)
+        public override bool Equals(object o)
         {
             if (o != null)
             {
@@ -25,6 +25,13 @@ namespace logSharp.model
             }
 
             return false;
+        }
+
+       
+
+        public override int GetHashCode()
+        {
+            return (Value != null ? Value.GetHashCode() : 0);
         }
     }
 }

@@ -88,7 +88,7 @@ namespace logSharp.model
             return Dump();
         }
 
-        public bool Equals(object o)
+        public override bool Equals(object o)
         {
             if (o != null)
             {
@@ -121,6 +121,16 @@ namespace logSharp.model
             }
 
             return true;
+        }
+
+       
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Parameters != null ? Parameters.GetHashCode() : 0);
+            }
         }
     }
 }

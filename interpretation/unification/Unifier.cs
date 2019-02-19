@@ -22,7 +22,6 @@ namespace logSharp.interpretation.unification
                 unification = Unification.Failed();
             }
 
-            bool ok = true;
             for (int i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];

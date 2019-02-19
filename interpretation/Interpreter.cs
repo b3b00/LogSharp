@@ -48,12 +48,12 @@ namespace logSharp.interpretation
             }
         }
 
-        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser)
+        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
         {
             LogSharpProgram = logSharpProgram;
             Verbose = verbose;
             Parser = parser;
-            Unifier = new Unifier();
+            Unifier = unifier;
         }
 
         public void Trace(string message)
