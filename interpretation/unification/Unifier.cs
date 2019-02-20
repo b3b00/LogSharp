@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DeepCopy;
 using logSharp.model;
 
 namespace logSharp.interpretation.unification
@@ -16,7 +17,7 @@ namespace logSharp.interpretation.unification
             }
 
             Unification unification = new Unification();
-            unification.Environment = destEnv.Environment; // todo : deepcopy ?
+            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
                 unification = Unification.Failed();
@@ -53,6 +54,10 @@ namespace logSharp.interpretation.unification
             return unification;
         }
 
+        public Term EvalTerm(Term term, Unification unification)
+        {
+            return term;
+        }
 
 
         public Valuable GetValue(Valuable arg, Unification environment)
@@ -60,7 +65,15 @@ namespace logSharp.interpretation.unification
             Valuable val = null;
             if (arg.IsVariable)
             {
-                val = environment.Environment[(arg as Variable).Name]; // TODO : check if contained
+                var variable = arg as Variable;
+                if (environment.Environment.ContainsVariable(variable.Name))
+                {
+                    val = environment.Environment[variable.Name]; 
+                }
+                else
+                {
+                    val = variable;
+                }
             }
             else
             {
