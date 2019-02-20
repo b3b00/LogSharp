@@ -13,7 +13,12 @@ namespace logSharp.model
         {
             return $"\"{Value}\"";
         }
-        
+
+        public override string ToString()
+        {
+            return Dump();
+        }
+
         public override bool Equals(object o)
         {
             if (o != null)
