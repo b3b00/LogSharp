@@ -61,6 +61,11 @@ namespace logSharp.interpretation
                             Term term = queryParseResult.Result as Term;
                             Question question = new Question(term);
                             var results = interpreter.Search(question,unificationIn).ToList();
+                            bool fullyFailed = results.Select(r => r.IsOk).Aggregate(false,(bool b1, bool b2) => !b1 && !b2);
+                            if (fullyFailed)
+                            {
+                                return Unification.Failed();
+                            }
                             var values = new List<Valuable>();
                             foreach (var result in results)
                             {
