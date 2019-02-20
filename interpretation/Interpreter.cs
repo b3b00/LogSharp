@@ -169,11 +169,13 @@ namespace logSharp.interpretation
                     
                     var primitiveUnification = primitive(this, current.Unification, primitiveTerm.Parameters);
                     if (current.Rule != null) {
-                       
-                        Goal primitived = new Goal(current.Rule, current, primitiveUnification);
-                        primitived.Unification.AddBindings(current.Unification);
-                        primitived.Index = current.Index +1;
-                        stack.Push(primitived);
+                        if (primitiveUnification.IsOk)
+                        {
+                            Goal primitived = new Goal(current.Rule, current, primitiveUnification);
+                            primitived.Unification.AddBindings(current.Unification);
+                            primitived.Index = current.Index + 1;
+                            stack.Push(primitived);
+                        }
                     }
                     else
                     {

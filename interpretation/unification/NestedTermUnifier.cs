@@ -17,8 +17,8 @@ namespace logSharp.interpretation.unification
             {
                 return Unification.Failed();
             }
-
-            Unification unification = new Unification();
+        
+            Unification unification = DeepCopier.Copy(destEnv);
             unification.Environment = DeepCopier.Copy(destEnv.Environment); 
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
@@ -36,7 +36,7 @@ namespace logSharp.interpretation.unification
 
                 if (srcVal != null)
                 {
-                    destVal = Eval(destArg, destEnv);
+                    destVal = Eval(destArg, unification);
 
                     if (destVal == null && destArg.IsVariable)
                     {
@@ -69,7 +69,7 @@ namespace logSharp.interpretation.unification
                         {
                             if (destVal != null && destVal is Term destValTerm)
                             {
-                                var u = UnifyTerms(srcTerm, sourceEnv, destValTerm, destEnv);
+                                var u = UnifyTerms(srcTerm, sourceEnv, destValTerm, unification);
                                 if (u.IsOk)
                                 {
                                     unification.AddBindings(u);
@@ -81,7 +81,7 @@ namespace logSharp.interpretation.unification
                             }
                             else if (destVal == null && destArg is Term destArgTerm)
                             {
-                                var u = UnifyTerms(srcTerm, sourceEnv, destArgTerm, destEnv);
+                                var u = UnifyTerms(srcTerm, sourceEnv, destArgTerm, unification);
                                 if (u.IsOk)
                                 {
                                     unification.AddBindings(u);
