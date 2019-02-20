@@ -108,6 +108,24 @@ namespace logSharp.interpretation
             dump.AppendLine(unifStr);
             return dump.ToString();
         }
-        
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null)
+            {
+                if (obj is Goal goal)
+                {
+                    bool termEquals = goal.Head.Equals(Head);
+                    bool unifEqual = Unification.Equals(goal.Unification);
+                    return termEquals && unifEqual;
+                }
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Head.GetHashCode() + Unification.GetHashCode();
+        }
     }
 }

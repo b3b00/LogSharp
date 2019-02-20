@@ -4,6 +4,8 @@ namespace logSharp.model
     {
         public bool IsScalar => true;
         public bool IsVariable => false;
+        
+        public bool IsDiscardableVariable => false;
         public bool IsTerm => false;
         
         public bool IsList => false;

@@ -8,7 +8,9 @@ namespace logSharp.parser
         [TokenCallback((int)LogSharpToken.Identifier)]
         public static Token<LogSharpToken> TranslateIdentifier(Token<LogSharpToken> token)
         {
-            if (char.IsUpper(token.Value[0]))
+            char leadingChar = token.Value[0];
+            
+            if (char.IsUpper(leadingChar) || leadingChar == '_')
             {
                 token.TokenID = LogSharpToken.Variable;
             }

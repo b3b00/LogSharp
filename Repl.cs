@@ -142,12 +142,10 @@ namespace logSharp
                             else
                             {
                                 var answers = interpreter.Search(ask);
-                                if (answers != null && answers.Any())
+
+                                foreach (var answer in answers)
                                 {
-                                    foreach (var answer in answers)
-                                    {
-                                        Console.WriteLine(answer);
-                                    }
+                                    Console.WriteLine(answer);
                                 }
                             }
                         }

@@ -14,6 +14,8 @@ namespace logSharp.model
         public bool IsScalar => false;
 
         public bool IsVariable => false;
+        
+        public bool IsDiscardableVariable => false;
 
         public bool IsTerm => true;
         
@@ -45,9 +47,17 @@ namespace logSharp.model
         #region LISTS
 
 
+        public bool IsEmptyList => IsList && !Parameters.Any();
+        
         public static Term EmptyListTerm()
         {
             return new Term() {Name = Term.ListConstructor};
+        }
+
+        public static Term ListTerm(Valuable head, Valuable tail)
+        {
+            var list = EmptyListTerm();
+            return list;
         }
 
         public static Term ListTerm(List<Valuable> parameters)
@@ -55,16 +65,25 @@ namespace logSharp.model
             Term list = new Term();
             list.Name = Term.ListConstructor;
             
-            Valuable tail = EmptyListTerm();
+            Valuable emptyTail = EmptyListTerm();
+            Valuable currentTail = emptyTail;
             
             
             for (int i = parameters.Count - 1; i >= 0; i--)
             {
-                Term term = new Term(Term.ListConstructor,new List<Valuable>(){parameters[i],tail});
-                tail = term;
+                var currentParameter = parameters[i];
+                if (currentTail == emptyTail && currentParameter.IsVariable)
+                {
+                    currentTail = currentParameter;
+                }
+                else
+                {
+                    Term term = new Term(Term.ListConstructor, new List<Valuable>() {currentParameter, currentTail});
+                    currentTail = term;
+                }
             }
 
-            list.Parameters = (tail as Term).Parameters;
+            list.Parameters = (currentTail as Term)?.Parameters;
             return list;
         }
 
