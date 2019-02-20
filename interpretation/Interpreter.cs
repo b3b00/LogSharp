@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using DeepCopy;
@@ -123,12 +121,16 @@ namespace logSharp.interpretation
             }
             Goal rootGoal = new Goal(question);
             rootGoal.Goals.Add(rootGoal);
-            Trace($"push : {rootGoal.ToString()}");
+            Trace($"stck : {rootGoal.ToString()}");
             stack.Push(rootGoal);
             while (stack.Any())
             {
                 var stackAsList = stack.ToList();
                 Goal current = stack.Pop();
+                Trace("");
+                Trace("____________________________");
+                Trace("____________________________");
+                Trace("");
                 Trace($"pop {current}");
                 if (current.Index >= current.Count || current.IsFact)
                 {
@@ -163,10 +165,9 @@ namespace logSharp.interpretation
                 PrologPrimitive primitive;
                 if (tryeGetPrimitive(term.Specification, out primitive))
                 {
-                    // TODO : unify primitive before call! 
                     var primitiveTerm = DeepCopier.Copy(term.Head);
                     primitiveTerm = Unifier.EvalTerm(primitiveTerm,current.Unification);
-                    
+                    Trace($"calling primitive {term.Specification}");
                     var primitiveUnification = primitive(this, current.Unification, primitiveTerm.Parameters);
                     if (current.Rule != null) {
                         if (primitiveUnification.IsOk)
@@ -188,8 +189,9 @@ namespace logSharp.interpretation
                     List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
                     foreach (var applicable in (applicableRules))
                     {
-                        if (!applicable.Equals(current.Rule))
-                        {
+                        Trace($"trying rule {applicable.Head}");
+//                        if (!applicable.Equals(current.Rule))
+//                        {
                             Goal child = new Goal(applicable, current, current.Unification);
 
                             //var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
@@ -201,7 +203,8 @@ namespace logSharp.interpretation
                                 Trace($"stck {child} @ {child.Index}");
                                 stack.Push(child);
                             }
-                        }
+                            Trace("unification failed.");
+//                        }
                     }
                 }
 

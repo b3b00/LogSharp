@@ -2,9 +2,14 @@ namespace logSharp.model
 {
     public class Variable : Valuable
     {
+
+        public const string DiscardingVariable = "_";
+        
         public bool IsScalar => false;
 
         public bool IsVariable => true;
+        
+        public bool IsDiscardableVariable => Name == DiscardingVariable;
 
         public bool IsTerm => false;
         

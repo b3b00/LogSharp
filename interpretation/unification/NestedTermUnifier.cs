@@ -28,6 +28,10 @@ namespace logSharp.interpretation.unification
             for (int i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];
+                if (destination.Parameters.Count == 0 || i >= destination.Parameters.Count)
+                {
+                    ;
+                }
                 var destArg = destination.Parameters[i];
                 Valuable srcVal = null;
                 Valuable destVal = null;
@@ -40,7 +44,7 @@ namespace logSharp.interpretation.unification
 
                     if (destVal == null && destArg.IsVariable)
                     {
-                        if (destArg.Name != "_")
+                        if (destArg.Name != Variable.DiscardingVariable)
                         {
                             unification.AddBinding(destArg as Variable, srcVal);
                         }
@@ -153,7 +157,7 @@ namespace logSharp.interpretation.unification
                     }
                     else
                     {
-                        if (preserveVariables)
+                        if (preserveVariables || param.IsDiscardableVariable)
                         {
                             newParameters.Add(param);
                         }
