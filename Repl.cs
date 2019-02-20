@@ -111,6 +111,7 @@ namespace logSharp
             Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
             interpreter.AddPrimitive("testPrim/2",Primitives.testPrim);
             interpreter.AddPrimitive("bag_of/3",Primitives.BagOf);
+            interpreter.AddPrimitive("member/2",Primitives.Member);
             if (args.Length > 0)
             {
                 foreach (var prog in args)

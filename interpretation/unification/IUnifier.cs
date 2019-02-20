@@ -6,5 +6,7 @@ namespace logSharp.interpretation.unification
     {
         Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
             Unification destEnv);
+
+        Term EvalTerm(Term term, Unification unification);
     }
 }

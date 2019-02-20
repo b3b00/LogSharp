@@ -54,7 +54,14 @@ namespace logSharp.interpretation
         {
             Rule = rule;
             Parent = parent;
-            Unification = DeepCopier.Copy(environment);
+            if (Unification != null)
+            {
+                Unification.AddBindings(environment);
+            }
+            else
+            {
+                Unification = DeepCopier.Copy(environment);
+            }
             Goals = new List<Goal>();
 
             Head = rule.Head;
