@@ -27,6 +27,24 @@ namespace logSharp.interpretation
             return unificationOut;
         }
 
+        public static Unification Member(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+
+        {
+            if (parameters[0] is Scalar scalar)
+            {
+               if (parameters[1].IsList && parameters[1].IsList && parameters[1].IsList && parameters[1] is Term term)
+                {
+                    var items = term.ToValuableList();
+                    if (items.Contains(scalar))
+                    {
+                        return Unification.Success();
+                    }
+                }
+            }
+            return Unification.Failed();
+        }
+
         public static Unification BagOf(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
