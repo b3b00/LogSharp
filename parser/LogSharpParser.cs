@@ -65,13 +65,13 @@ namespace logSharp.parser
         [Production("list :  LeftBrack[d]   RightBrack[d]")]
         public LogSharpAST EmptyList()
         {
-            return new List();
+            return Term.EmptyListTerm();
         }
 
         [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
-        public LogSharpAST ListTermConst(LogSharpAST head, LogSharpAST tail)
+        public LogSharpAST ListTermConstructor(LogSharpAST head, LogSharpAST tail)
         {
-            return new Term("list", new List<Valuable>() {head as Valuable, tail as Valuable});
+            return Term.ListTerm( new List<Valuable>() {head as Valuable, tail as Valuable});
         }
         
         [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
@@ -87,7 +87,7 @@ namespace logSharp.parser
 
             
             
-            return new List(
+            return Term.ListTerm(
                 parameters
             );
         }

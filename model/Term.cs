@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -9,14 +10,14 @@ namespace logSharp.model
 {
     public class Term : LogSharpAST, Valuable
     {
-        public const string listConstructor = "list";
+        public const string ListConstructor = "list";
         public bool IsScalar => false;
 
         public bool IsVariable => false;
 
         public bool IsTerm => true;
         
-        public bool IsList => Name == listConstructor && (Parameters.Count == 2 || Parameters.Count == 0);
+        public bool IsList => Name == ListConstructor && (Parameters.Count == 2 || Parameters.Count == 0);
 
         public string Name { get; set; }
 
@@ -40,6 +41,71 @@ namespace logSharp.model
             Name = name;
             Parameters = parameters;
         }
+        
+        #region LISTS
+
+
+        public static Term EmptyListTerm()
+        {
+            return new Term() {Name = Term.ListConstructor};
+        }
+
+        public static Term ListTerm(List<Valuable> parameters)
+        {
+            Term list = new Term();
+            list.Name = Term.ListConstructor;
+            
+            Valuable tail = EmptyListTerm();
+            
+            
+            for (int i = parameters.Count - 1; i >= 0; i--)
+            {
+                Term term = new Term(Term.ListConstructor,new List<Valuable>(){parameters[i],tail});
+                tail = term;
+            }
+
+            list.Parameters = (tail as Term).Parameters;
+            return list;
+        }
+
+        public List<Valuable> ToValuableList()
+        {
+            if (IsList)
+            {
+                if (Parameters.Any())
+                {
+                    var list = new List<Valuable>();
+
+                    if (Parameters[0] is Valuable headValue)
+                    {
+                        list.Add(headValue);
+                    }
+
+                    if (Parameters.Count == 2)
+                    {
+                        if (Parameters[1] is Term tailList && tailList.IsList)
+                        {
+                            list.AddRange(tailList.ToValuableList());
+                        }
+                        else if (Parameters[1] is Valuable tailValue)
+                        {
+                            list.Add(tailValue);
+                        }
+                    }
+
+                    return list;
+                }
+                return new List<Valuable>();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Term {this.Dump()} is not a list.");
+            }
+        }
+
+        
+        
+        #endregion
 
         public virtual string Dump()
         {

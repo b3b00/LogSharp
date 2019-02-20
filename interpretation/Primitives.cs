@@ -42,7 +42,7 @@ namespace logSharp.interpretation
                         {
                             Term term = queryParseResult.Result as Term;
                             Question question = new Question(term);
-                            var results = interpreter.Search(question).ToList();
+                            var results = interpreter.Search(question,unificationIn).ToList();
                             var values = new List<Valuable>();
                             foreach (var result in results)
                             {
@@ -51,7 +51,7 @@ namespace logSharp.interpretation
                                     values.Add(result.Environment.Environment[lookedFor.Name]);
                                 }
                             }
-                            List list = new List(values); 
+                            Term list = Term.ListTerm(values); 
                             var unificationOut = new Unification();
                             unificationOut.IsOk = true;
                             unificationOut.AddBinding(outputVar,list);
