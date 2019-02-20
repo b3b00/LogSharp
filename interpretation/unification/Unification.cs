@@ -1,4 +1,5 @@
 using System.Text;
+using System.Linq;
 using logSharp.model;
 
 namespace logSharp.interpretation.unification
@@ -12,6 +13,11 @@ namespace logSharp.interpretation.unification
         public static Unification Failed()
         {
             return new Unification(false);
+        }
+        
+        public static Unification Success()
+        {
+            return new Unification(true);
         }
 
         public Unification()
@@ -54,10 +60,17 @@ namespace logSharp.interpretation.unification
             StringBuilder dump = new StringBuilder();
             if (IsOk)
             {
-                string envStr = Environment.ToString();
-                dump.Append(envStr.Trim());
-
+                dump.AppendLine("yes.");
+                if (Environment.Environment.Any())
+                {
+                    string envStr = Environment.ToString();
+                    dump.Append(envStr.Trim());
+                }
                 return dump.ToString();
+            }
+            else
+            {
+                dump.AppendLine("don't know.");
             }
 
             return dump.ToString();
