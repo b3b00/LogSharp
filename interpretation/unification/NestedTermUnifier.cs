@@ -19,7 +19,7 @@ namespace logSharp.interpretation.unification
             }
 
             Unification unification = new Unification();
-            unification.Environment = DeepCopier.Copy(destEnv.Environment); // todo : deepcopy ?
+            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
                 unification = Unification.Failed();
@@ -51,7 +51,6 @@ namespace logSharp.interpretation.unification
                     }
                     else
                     {
-                        // TODO : many cases => recurse in terms 
                         if (srcVal is Scalar)
                         {
                             if (destVal is Scalar)
@@ -111,23 +110,13 @@ namespace logSharp.interpretation.unification
         }
 
 
-
-        public Valuable GetValue(Valuable arg, Unification environment)
+        public Term EvalTerm(Term term, Unification unification)
         {
-            Valuable val = null;
-            if (arg.IsVariable)
-            {
-                val = environment.Environment[(arg as Variable).Name]; // TODO : check if contained
-            }
-            else
-            {
-                val = arg;
-            }
-
-            return val;
+            return Eval(term as Valuable, unification, true) as Term;
         }
+      
 
-        public Valuable Eval(Valuable arg, Unification environment)
+        public Valuable Eval(Valuable arg, Unification environment,bool preserveVariables = false)
         {
             if (arg.IsScalar)
             {
@@ -141,7 +130,14 @@ namespace logSharp.interpretation.unification
                 }
                 else
                 {
-                    return null;
+                    if (preserveVariables)
+                    {
+                        return arg;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
             else
@@ -157,7 +153,14 @@ namespace logSharp.interpretation.unification
                     }
                     else
                     {
-                        return null;
+                        if (preserveVariables)
+                        {
+                            newParameters.Add(param);
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
                 return new Term(term.Name,newParameters);

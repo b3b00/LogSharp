@@ -111,11 +111,16 @@ namespace logSharp.interpretation
             }
         }
         
-        public IEnumerable<Unification> Search(Question question)
+        public IEnumerable<Unification> Search(Question question, Unification unification = null)
         {
             bool resultFound = false;
             Stack<Goal> stack = new Stack<Goal>();
             Trace($"search question {question}");
+            if (unification != null && unification.IsOk)
+            {
+                Term evaled = Unifier.EvalTerm(question,unification);
+                question = new Question(evaled);
+            }
             Goal rootGoal = new Goal(question);
             rootGoal.Goals.Add(rootGoal);
             Trace($"push : {rootGoal.ToString()}");
@@ -158,11 +163,16 @@ namespace logSharp.interpretation
                 PrologPrimitive primitive;
                 if (tryeGetPrimitive(term.Specification, out primitive))
                 {
-                    var primitiveUnification = primitive(this, current.Unification, current.Head.Parameters);
-                    if (current.Rule != null)
-                    {
+                    // TODO : unify primitive before call! 
+                    var primitiveTerm = DeepCopier.Copy(term.Head);
+                    primitiveTerm = Unifier.EvalTerm(primitiveTerm,current.Unification);
+                    
+                    var primitiveUnification = primitive(this, current.Unification, primitiveTerm.Parameters);
+                    if (current.Rule != null) {
+                       
                         Goal primitived = new Goal(current.Rule, current, primitiveUnification);
-                        primitived.Index++;
+                        primitived.Unification.AddBindings(current.Unification);
+                        primitived.Index = current.Index +1;
                         stack.Push(primitived);
                     }
                     else
