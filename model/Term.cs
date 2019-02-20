@@ -103,6 +103,34 @@ namespace logSharp.model
             }
         }
 
+
+        public Valuable ListHead()
+        {
+            if (IsList)
+            {
+                if (Parameters.Any())
+                {
+                    return Parameters[0];
+                }
+
+                return null;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Term {this.Dump()} is not a list.");
+            }
+        }
+
+        public Term ListTail()
+        {
+            if (Parameters.Count >= 2)
+            {
+                return Parameters[1] as Term;
+            }
+
+            return null;
+        }
+
         
         
         #endregion
