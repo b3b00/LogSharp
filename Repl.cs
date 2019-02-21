@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using sly.parser;
 using sly.parser.generator;
-using System.Linq;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
 using sly.lexer;
+using Utility.CommandLine;
 
 namespace logSharp
 {
@@ -15,6 +15,12 @@ namespace logSharp
    
     public class PrologRepl
     {
+
+        [Argument('v', "verbose", "verbosity")]
+        private static string LogFile { get; set; }
+        
+        [Operands]
+        private static string[] Programs { get; set; }
 
         delegate void ReplAction(Interpreter interpreter, Question question);
 
@@ -107,21 +113,30 @@ namespace logSharp
 
         static void Loop(string[] args)
         {
+            Arguments.Populate();
             var parser = BuildParser();
             Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
             interpreter.AddPrimitive("testPrim/2",Primitives.testPrim);
             interpreter.AddPrimitive("bag_of/3",Primitives.BagOf);
             interpreter.AddPrimitive("member/2",Primitives.Member);
-            if (args.Length > 0)
+
+            if (!string.IsNullOrEmpty(LogFile))
             {
-                foreach (var prog in args)
+                interpreter.DebugOutput = LogFile;
+                interpreter.Verbose = true;
+            }
+
+            if (Programs != null && Programs.Length > 0)
+            {
+                for (int i = 1; i < Programs.Length; i++)
                 {
-                    interpreter.LoadProgram(prog);
+                    interpreter.LoadProgram(Programs[i]);
                 }
-                
+
             }
             while (true)
             {
+                ReadLine.HistoryEnabled = true;
                 string input = ReadLine.Read("?. ");
                 if (input == "quit" || input == "exit")
                 {
