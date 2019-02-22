@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DeepCopy;
-using logSharp.interpretation.unification;
 using logSharp.model;
 using String = logSharp.model.String;
+using logSharp.interpretation;
+using logSharp.interpretation.unification;
+using static logSharp.helpers.ListHelper;
 
-namespace logSharp.interpretation
+namespace logSharp.builtins
 {
-    public class Primitives
+    public class PreludeBuiltins
     {
-        public static Unification testPrim(Interpreter interpreter, Unification unificationIn,
+        [BuiltIn("testPrim/0")]
+        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {
@@ -24,28 +27,50 @@ namespace logSharp.interpretation
                 }
             }
             ;
-            return unificationOut;
+            return BuildList(unificationOut);
         }
 
-        public static Unification Member(Interpreter interpreter, Unification unificationIn,
+        [BuiltIn("member/2")]
+        public static List<Unification> Member(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {
             if (parameters[0] is Scalar scalar)
             {
-               if (parameters[1].IsList && parameters[1].IsList && parameters[1].IsList && parameters[1] is Term term)
+                var p1 = parameters[1];
+               if (p1.IsList && p1.IsList && p1.IsList && p1 is Term term)
                 {
                     var items = term.ToValuableList();
                     if (items.Contains(scalar))
                     {
-                        return Unification.Success();
+                        return BuildList(Unification.Success());
                     }
                 }
             }
-            return Unification.Failed();
+            else if (parameters[0] is Variable variable)
+            {
+                var p1 = parameters[1];
+                if (p1.IsList && p1.IsList && p1.IsList && p1 is Term term)
+                {
+                    var items = term.ToValuableList();
+                    if (items != null && items.Any())
+                    {
+                        List<Unification> unifications = new List<Unification>();
+                        foreach (var item in items)
+                        {
+                            Unification unification = new Unification();
+                            unification.AddBinding(variable.Name,item);
+                            unifications.Add(unification);
+                        }
+                        return unifications;
+                    }
+                }
+            }
+            return BuildList(Unification.Failed());
         }
 
-        public static Unification BagOf(Interpreter interpreter, Unification unificationIn,
+        [BuiltIn("bag_of/3")]
+        public static List<Unification> BagOf(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {
@@ -64,7 +89,7 @@ namespace logSharp.interpretation
                             bool fullyFailed = results.Select(r => r.IsOk).Aggregate(false,(bool b1, bool b2) => !b1 && !b2);
                             if (fullyFailed)
                             {
-                                return Unification.Failed();
+                                return BuildList(Unification.Failed());
                             }
                             var values = new List<Valuable>();
                             foreach (var result in results)
@@ -78,7 +103,7 @@ namespace logSharp.interpretation
                             var unificationOut = new Unification();
                             unificationOut.IsOk = true;
                             unificationOut.AddBinding(outputVar,list);
-                            return unificationOut;
+                            return BuildList(unificationOut);
                         }
                         else
                         {
@@ -88,7 +113,7 @@ namespace logSharp.interpretation
                 }
             }
 
-            return Unification.Failed();
+            return BuildList(Unification.Failed());
         }
     }
 }

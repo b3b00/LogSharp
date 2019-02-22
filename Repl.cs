@@ -116,9 +116,7 @@ namespace logSharp
             Arguments.Populate();
             var parser = BuildParser();
             Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
-            interpreter.AddPrimitive("testPrim/2",Primitives.testPrim);
-            interpreter.AddPrimitive("bag_of/3",Primitives.BagOf);
-            interpreter.AddPrimitive("member/2",Primitives.Member);
+            
 
             if (!string.IsNullOrEmpty(LogFile))
             {
@@ -130,7 +128,10 @@ namespace logSharp
             {
                 for (int i = 1; i < Programs.Length; i++)
                 {
-                    interpreter.LoadProgram(Programs[i]);
+                    if (!Programs[i].EndsWith(".dll"))
+                    {
+                        interpreter.LoadProgram(Programs[i]);
+                    }
                 }
 
             }
@@ -212,8 +213,8 @@ namespace logSharp
 
         public static void Run(string[] args)
         {
-            Test();
-            //Loop(args);
+//            Test();
+            Loop(args);
         }
     }
 }

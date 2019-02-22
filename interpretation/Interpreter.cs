@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DeepCopy;
+using logSharp.builtins;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
@@ -11,7 +12,7 @@ using sly.parser;
 namespace logSharp.interpretation
 {
 
-    public delegate Unification PrologPrimitive(Interpreter interpreter, Unification unificationIn,
+    public delegate List<Unification> PrologBuiltIn(Interpreter interpreter, Unification unificationIn,
         List<Valuable> parameters);
     
     public class Interpreter
@@ -29,7 +30,7 @@ namespace logSharp.interpretation
         
         public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
         
-        private Dictionary<string,PrologPrimitive> Primitives { get; set; }
+        private Dictionary<string,PrologBuiltIn> Primitives { get; set; }
 
         
         public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
@@ -38,20 +39,21 @@ namespace logSharp.interpretation
             Verbose = verbose;
             Parser = parser;
             Unifier = unifier;
-            Primitives = new Dictionary<string, PrologPrimitive>();
+            Primitives = new Dictionary<string, PrologBuiltIn>();
+            BuiltinsLoader.LoadBuiltIns(this);
         }
 
-        public void AddPrimitive(string spec, PrologPrimitive primitive)
+        public void AddPrimitive(string spec, PrologBuiltIn builtIn)
         {
             if (!Primitives.ContainsKey(spec))
             {
-                Primitives[spec] = primitive;
+                Primitives[spec] = builtIn;
             }
         }
 
-        public bool tryeGetPrimitive(string spec, out PrologPrimitive primitive)
+        public bool tryeGetPrimitive(string spec, out PrologBuiltIn builtIn)
         {
-            return Primitives.TryGetValue(spec, out primitive);
+            return Primitives.TryGetValue(spec, out builtIn);
         }
 
         public void Append(Rule rule)
@@ -162,26 +164,32 @@ namespace logSharp.interpretation
                 var term = current.Goals[current.Index];
 
 
-                PrologPrimitive primitive;
-                if (tryeGetPrimitive(term.Specification, out primitive))
+                PrologBuiltIn builtIn;
+                if (tryeGetPrimitive(term.Specification, out builtIn))
                 {
                     var primitiveTerm = DeepCopier.Copy(term.Head);
                     primitiveTerm = Unifier.EvalTerm(primitiveTerm,current.Unification);
                     Trace($"calling primitive {term.Specification}");
-                    var primitiveUnification = primitive(this, current.Unification, primitiveTerm.Parameters);
+                    var primitiveUnifications = builtIn(this, current.Unification, primitiveTerm.Parameters);
                     if (current.Rule != null) {
-                        if (primitiveUnification.IsOk)
+                        if (primitiveUnifications != null && primitiveUnifications.Any())
                         {
-                            Goal primitived = new Goal(current.Rule, current, primitiveUnification);
-                            primitived.Unification.AddBindings(current.Unification);
-                            primitived.Index = current.Index + 1;
-                            stack.Push(primitived);
+                            foreach (var primitiveUnification in primitiveUnifications)
+                            {
+                                Goal primitived = new Goal(current.Rule, current, primitiveUnification);
+                                primitived.Unification.AddBindings(current.Unification);
+                                primitived.Index = current.Index + 1;
+                                stack.Push(primitived);
+                            }
                         }
                     }
                     else
                     {
                         resultFound = true;
-                        yield return primitiveUnification;
+                        foreach (var primitiveUnification in primitiveUnifications)
+                        {
+                            yield return primitiveUnification;
+                        }
                     }
                 }
                 else
