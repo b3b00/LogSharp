@@ -21,6 +21,8 @@ namespace logSharp.model
         
         public bool IsList => Name == ListConstructor && (Parameters.Count == 2 || Parameters.Count == 0);
 
+        public bool IsConstantList => ListTail() == null || (!ListTail().IsVariable && ListTail().IsConstantList);
+
         public string Name { get; set; }
 
         public List<Valuable> Parameters { get; set; }
@@ -183,12 +185,23 @@ namespace logSharp.model
             else
             {
                 dump.Append("[");
+                
+                
                 if (Parameters.Any())
                 {
-                    dump.Append(Parameters[0].Dump());
-                    dump.Append("|");
-                    dump.Append(Parameters[1].Dump());
+                    if (IsConstantList)
+                    {
+                        var items = ToValuableList();
+                        dump.Append(string.Join(", ", items.Select(i => i.Dump())));
+                    }
+                    else
+                    {
+                        dump.Append(Parameters[0].Dump());
+                        dump.Append("|");
+                        dump.Append(Parameters[1].Dump());
+                    }
                 }
+                
                 dump.Append("]");
             }
 

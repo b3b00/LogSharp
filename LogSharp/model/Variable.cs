@@ -14,6 +14,8 @@ namespace logSharp.model
         public bool IsTerm => false;
         
         public bool IsList => false;
+        
+        public bool IsConstantList => true;
         public string Name { get; set; }
 
         public Variable(string name)

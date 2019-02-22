@@ -10,6 +10,8 @@ namespace logSharp.model
         bool IsTerm { get;  }
         
         bool IsList { get;  }
+        
+        bool IsConstantList { get;  }
         string Name{ get;  }
     }
 }
