@@ -80,15 +80,11 @@ namespace logSharp.builtins
         {
             if (parameters[0] is Variable lookedFor)
             {
-                if (parameters[1] is String query)
+                if (parameters[1] is Term query)
                 {
                     if (parameters[2] is Variable outputVar)
                     {
-                        var queryParseResult = interpreter.Parser.Parse(query.Value, "term");
-                        if (queryParseResult.IsOk)
-                        {
-                            Term term = queryParseResult.Result as Term;
-                            Question question = new Question(term);
+                            Question question = new Question(query);
                             bool previousVerbosity = interpreter.Verbose;
                             interpreter.Verbose = false;
                             var results = interpreter.Search(question, unificationIn).ToList();
@@ -114,19 +110,10 @@ namespace logSharp.builtins
                             unificationOut.IsOk = true;
                             unificationOut.AddBinding(outputVar, list);
                             return BuildList(unificationOut);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"bad query : {query.Value}");
-                        }
                     }
                     else if (parameters[2].IsList && parameters[2] is Term list)
                     {
-                        var queryParseResult = interpreter.Parser.Parse(query.Value, "term");
-                        if (queryParseResult.IsOk)
-                        {
-                            Term term = queryParseResult.Result as Term;
-                            Question question = new Question(term);
+                            Question question = new Question(query);
                             bool previousVerbosity = interpreter.Verbose;
                             interpreter.Verbose = false;
                             var results = interpreter.Search(question, unificationIn).ToList();
@@ -156,12 +143,6 @@ namespace logSharp.builtins
                             {
                                 return BuildList(Unification.Failed());
                             }
-                        }
-                        else
-                        {
-                            return BuildList(Unification.Failed());
-
-                        }
                     }
                 }
             }
