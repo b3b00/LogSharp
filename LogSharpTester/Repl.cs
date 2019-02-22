@@ -147,34 +147,37 @@ namespace LogSharpTester
                 }
                 else
                 {
-                    var query = parser.Parse(input, "rule");
-                    if (query.IsOk)
+                    if (!string.IsNullOrEmpty(input))
                     {
-                        if (query.Result is Question ask)
+                        var query = parser.Parse(input, "rule");
+                        if (query.IsOk)
                         {
-                            if (ReplActions.ContainsKey(ask.Name))
+                            if (query.Result is Question ask)
                             {
-                                ReplActions[ask.Name](interpreter, ask);
-                                    
-                            }
-                            else
-                            {
-                                var answers = interpreter.Search(ask);
-
-                                foreach (var answer in answers)
+                                if (ReplActions.ContainsKey(ask.Name))
                                 {
-                                    Console.WriteLine(answer);
+                                    ReplActions[ask.Name](interpreter, ask);
+
+                                }
+                                else
+                                {
+                                    var answers = interpreter.Search(ask);
+
+                                    foreach (var answer in answers)
+                                    {
+                                        Console.WriteLine(answer);
+                                    }
                                 }
                             }
+                            else if (query.Result is Rule rule)
+                            {
+                                interpreter.Append(rule);
+                            }
                         }
-                        else if (query.Result is Rule rule)
+                        else
                         {
-                            interpreter.Append(rule);
+                            Console.WriteLine("bad query.");
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("bad query.");
                     }
                 }
             }
