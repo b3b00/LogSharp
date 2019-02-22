@@ -120,6 +120,49 @@ namespace logSharp.builtins
                             Console.WriteLine($"bad query : {query.Value}");
                         }
                     }
+                    else if (parameters[2].IsList && parameters[2] is Term list)
+                    {
+                        var queryParseResult = interpreter.Parser.Parse(query.Value, "term");
+                        if (queryParseResult.IsOk)
+                        {
+                            Term term = queryParseResult.Result as Term;
+                            Question question = new Question(term);
+                            bool previousVerbosity = interpreter.Verbose;
+                            interpreter.Verbose = false;
+                            var results = interpreter.Search(question, unificationIn).ToList();
+                            interpreter.Verbose = previousVerbosity;
+                            bool fullyFailed = results.Select(r => r.IsOk)
+                                .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
+                            if (fullyFailed)
+                            {
+                                return BuildList(Unification.Failed());
+                            }
+                            var values = new List<Valuable>();
+                            foreach (var result in results)
+                            {
+                                if (result != null && result.Environment.ContainsVariable(lookedFor.Name))
+                                {
+                                    values.Add(result.Environment.Environment[lookedFor.Name]);
+                                }
+                            }
+                            // TODO check if values and list.items == 
+                            List<Valuable> inValues = list.ToValuableList();
+                            int intersectCount = inValues.Intersect(values).ToList().Count; 
+                            if (intersectCount == inValues.Count && intersectCount == values.Count)
+                            {
+                                return BuildList(Unification.Success());
+                            }
+                            else
+                            {
+                                return BuildList(Unification.Failed());
+                            }
+                        }
+                        else
+                        {
+                            return BuildList(Unification.Failed());
+
+                        }
+                    }
                 }
             }
 
