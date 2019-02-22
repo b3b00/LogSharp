@@ -28,67 +28,71 @@ namespace logSharp.interpretation.unification
             for (int i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];
-                if (destination.Parameters.Count == 0 || i >= destination.Parameters.Count)
+                if (destination.Parameters.Any() || i < destination.Parameters.Count)
                 {
-                    ;
-                }
-                var destArg = destination.Parameters[i];
-                Valuable srcVal = null;
-                Valuable destVal = null;
 
-                srcVal = Eval(srcArg, sourceEnv);
+                    var destArg = destination.Parameters[i];
+                    Valuable srcVal = null;
+                    Valuable destVal = null;
 
-                if (srcVal != null)
-                {
-                    destVal = Eval(destArg, unification);
+                    srcVal = Eval(srcArg, sourceEnv);
 
-                    if (destVal == null && destArg.IsVariable)
+                    if (srcVal != null)
                     {
-                        if (destArg.Name != Variable.DiscardingVariable)
+                        destVal = Eval(destArg, unification);
+
+                        if (destVal == null && destArg.IsVariable)
                         {
-                            unification.AddBinding(destArg as Variable, srcVal);
-                        }
-                        else
-                        {
-                            ;
-                        }
-                    }
-                    else
-                    {
-                        if (srcVal is Scalar)
-                        {
-                            if (destVal is Scalar)
+                            if (destArg.Name != Variable.DiscardingVariable)
                             {
-                                if (!destVal.Equals(srcVal))
-                                {
-                                    return Unification.Failed();
-                                }
+                                unification.AddBinding(destArg as Variable, srcVal);
                             }
                             else
                             {
-                                return Unification.Failed();
+                                ;
                             }
                         }
-                        else if (srcVal is Term srcTerm)
+                        else
                         {
-                            if (destVal != null && destVal is Term destValTerm)
+                            if (srcVal is Scalar)
                             {
-                                var u = UnifyTerms(srcTerm, sourceEnv, destValTerm, unification);
-                                if (u.IsOk)
+                                if (destVal is Scalar)
                                 {
-                                    unification.AddBindings(u);
+                                    if (!destVal.Equals(srcVal))
+                                    {
+                                        return Unification.Failed();
+                                    }
                                 }
                                 else
                                 {
                                     return Unification.Failed();
                                 }
                             }
-                            else if (destVal == null && destArg is Term destArgTerm)
+                            else if (srcVal is Term srcTerm)
                             {
-                                var u = UnifyTerms(srcTerm, sourceEnv, destArgTerm, unification);
-                                if (u.IsOk)
+                                if (destVal != null && destVal is Term destValTerm)
                                 {
-                                    unification.AddBindings(u);
+                                    var u = UnifyTerms(srcTerm, sourceEnv, destValTerm, unification);
+                                    if (u.IsOk)
+                                    {
+                                        unification.AddBindings(u);
+                                    }
+                                    else
+                                    {
+                                        return Unification.Failed();
+                                    }
+                                }
+                                else if (destVal == null && destArg is Term destArgTerm)
+                                {
+                                    var u = UnifyTerms(srcTerm, sourceEnv, destArgTerm, unification);
+                                    if (u.IsOk)
+                                    {
+                                        unification.AddBindings(u);
+                                    }
+                                    else
+                                    {
+                                        return Unification.Failed();
+                                    }
                                 }
                                 else
                                 {
@@ -97,14 +101,10 @@ namespace logSharp.interpretation.unification
                             }
                             else
                             {
-                                return Unification.Failed();
+                                ;
                             }
-                        }
-                        else
-                        {
-                            ;
-                        }
 
+                        }
                     }
                 }
             }

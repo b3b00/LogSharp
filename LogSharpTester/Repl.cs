@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using sly.parser;
 using sly.parser.generator;
 using logSharp.interpretation;
@@ -9,7 +10,7 @@ using logSharp.parser;
 using sly.lexer;
 using Utility.CommandLine;
 
-namespace logSharp
+namespace LogSharpTester
 {
     
    
@@ -108,10 +109,11 @@ namespace logSharp
         static void Dump(Interpreter interpreter, Question ask)
         {
             interpreter.LogSharpProgram.Rules.ForEach(r => Console.WriteLine(r));
+            interpreter.BuiltIns.Keys.ToList().ForEach(b => Console.WriteLine(b));
         }
 
 
-        static void Loop(string[] args)
+        public static void Loop(string[] args)
         {
             Arguments.Populate();
             var parser = BuildParser();

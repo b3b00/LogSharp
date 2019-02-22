@@ -10,6 +10,7 @@ using static logSharp.helpers.ListHelper;
 
 namespace logSharp.builtins
 {
+    [BuiltIns]
     public class PreludeBuiltins
     {
         [BuiltIn("testPrim/0")]
@@ -26,6 +27,7 @@ namespace logSharp.builtins
                     unificationOut.AddBinding(v, new Atom($"atom is >{v.Name.ToLower()}<"));
                 }
             }
+
             ;
             return BuildList(unificationOut);
         }
@@ -38,7 +40,7 @@ namespace logSharp.builtins
             if (parameters[0] is Scalar scalar)
             {
                 var p1 = parameters[1];
-               if (p1.IsList && p1.IsList && p1.IsList && p1 is Term term)
+                if (p1.IsList && p1.IsList && p1.IsList && p1 is Term term)
                 {
                     var items = term.ToValuableList();
                     if (items.Contains(scalar))
@@ -59,13 +61,15 @@ namespace logSharp.builtins
                         foreach (var item in items)
                         {
                             Unification unification = new Unification();
-                            unification.AddBinding(variable.Name,item);
+                            unification.AddBinding(variable.Name, item);
                             unifications.Add(unification);
                         }
+
                         return unifications;
                     }
                 }
             }
+
             return BuildList(Unification.Failed());
         }
 
@@ -85,12 +89,17 @@ namespace logSharp.builtins
                         {
                             Term term = queryParseResult.Result as Term;
                             Question question = new Question(term);
-                            var results = interpreter.Search(question,unificationIn).ToList();
-                            bool fullyFailed = results.Select(r => r.IsOk).Aggregate(false,(bool b1, bool b2) => !b1 && !b2);
+                            bool previousVerbosity = interpreter.Verbose;
+                            interpreter.Verbose = false;
+                            var results = interpreter.Search(question, unificationIn).ToList();
+                            interpreter.Verbose = previousVerbosity;
+                            bool fullyFailed = results.Select(r => r.IsOk)
+                                .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
                             if (fullyFailed)
                             {
                                 return BuildList(Unification.Failed());
                             }
+
                             var values = new List<Valuable>();
                             foreach (var result in results)
                             {
@@ -99,17 +108,18 @@ namespace logSharp.builtins
                                     values.Add(result.Environment.Environment[lookedFor.Name]);
                                 }
                             }
-                            Term list = Term.ListTerm(values); 
+
+                            Term list = Term.ListTerm(values);
                             var unificationOut = new Unification();
                             unificationOut.IsOk = true;
-                            unificationOut.AddBinding(outputVar,list);
+                            unificationOut.AddBinding(outputVar, list);
                             return BuildList(unificationOut);
                         }
                         else
                         {
                             Console.WriteLine($"bad query : {query.Value}");
                         }
-                    }   
+                    }
                 }
             }
 

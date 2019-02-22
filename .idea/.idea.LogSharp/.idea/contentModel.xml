@@ -3,50 +3,80 @@
   <component name="ContentModelStore">
     <e p="C:\Users\olduh\.Rider2018.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\olduh\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_LogSharp.1138365531.00" t="ExcludeRecursive" />
-    <e p="C:\Users\olduh\LogSharp" t="IncludeRecursive">
-      <e p=".gitignore" t="Include" />
-      <e p="bin" t="ExcludeRecursive" />
-      <e p="interpretation" t="Include">
-        <e p="Environment.cs" t="Include" />
-        <e p="Unification" t="Include">
-          <e p="Unifier.cs" t="Include" />
+    <e p="C:\Users\olduh\LogSharp" t="IncludeFlat">
+      <e p="LogSharp" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="builtins" t="Include">
+          <e p="BuiltInAttribute.cs" t="Include" />
+          <e p="BuiltInAttributes.cs" t="Include" />
+          <e p="BuiltinsLoader.cs" t="Include" />
+          <e p="PreludeBuiltins.cs" t="Include" />
         </e>
-      </e>
-      <e p="Interpreter" t="Include">
-        <e p="Unification" t="Include" />
-      </e>
-      <e p="LogSharp.csproj" t="IncludeRecursive" />
-      <e p="LogSharp.sln" t="IncludeFlat" />
-      <e p="model" t="Include">
-        <e p="LogAtom.cs" t="Include" />
-        <e p="LogDouble.cs" t="Include" />
-        <e p="LogFact.cs" t="Include" />
-        <e p="LogInt.cs" t="Include" />
-        <e p="LogList.cs" t="Include" />
-        <e p="LogPredicate.cs" t="Include" />
-        <e p="LogProgram.cs" t="Include" />
-        <e p="LogRule.cs" t="Include" />
-        <e p="LogScalar.cs" t="Include" />
-        <e p="LogSharpAST.cs" t="Include" />
-        <e p="LogString.cs" t="Include" />
-        <e p="LogTerm.cs" t="Include" />
-        <e p="LogValuable.cs" t="Include" />
-        <e p="LogVariable.cs" t="Include" />
-      </e>
-      <e p="obj" t="ExcludeRecursive">
-        <e p="Debug" t="Include">
-          <e p="netcoreapp2.1" t="Include">
-            <e p="LogSharp.AssemblyInfo.cs" t="Include" />
+        <e p="helpers" t="Include">
+          <e p="ListHelper.cs" t="Include" />
+        </e>
+        <e p="interpretation" t="Include">
+          <e p="Environment.cs" t="Include" />
+          <e p="Goal.cs" t="Include" />
+          <e p="Interpreter.cs" t="Include" />
+          <e p="Unification" t="Include">
+            <e p="IUnifier.cs" t="Include" />
+            <e p="NestedTermUnifier.cs" t="Include" />
+            <e p="Unification.cs" t="Include" />
+            <e p="Unifier.cs" t="Include" />
           </e>
         </e>
+        <e p="Interpreter" t="Include">
+          <e p="Unification" t="Include" />
+        </e>
+        <e p="LogSharp.csproj" t="IncludeRecursive" />
+        <e p="model" t="Include">
+          <e p="Atom.cs" t="Include" />
+          <e p="Double.cs" t="Include" />
+          <e p="Fact.cs" t="Include" />
+          <e p="Int.cs" t="Include" />
+          <e p="LogSharpAST.cs" t="Include" />
+          <e p="LogSharpProgram.cs" t="Include" />
+          <e p="Predicate.cs" t="Include" />
+          <e p="Question.cs" t="Include" />
+          <e p="Rule.cs" t="Include" />
+          <e p="Scalar.cs" t="Include" />
+          <e p="String.cs" t="Include" />
+          <e p="Term.cs" t="Include" />
+          <e p="Valuable.cs" t="Include" />
+          <e p="Variable.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="LogSharp.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="parser" t="Include">
+          <e p="LogSharpLexerCallbacks.cs" t="Include" />
+          <e p="LogSharpParser.cs" t="Include" />
+          <e p="LogSharpToken.cs" t="Include" />
+        </e>
+      </e>
+      <e p="LogSharp.sln" t="IncludeFlat" />
+      <e p="LogSharpTester" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="f.pro" t="Include" />
+        <e p="log.log" t="Include" />
+        <e p="LogSharpTester.csproj" t="IncludeRecursive" />
+        <e p="MyBuiltIns.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="LogSharpTester.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Repl.cs" t="Include" />
       </e>
       <e p="packages" t="ExcludeRecursive" />
-      <e p="parser" t="Include">
-        <e p="LogSharpLexerCallbacks.cs" t="Include" />
-        <e p="LogSharpParser.cs" t="Include" />
-        <e p="LogSharpToken.cs" t="Include" />
-      </e>
-      <e p="Program.cs" t="Include" />
     </e>
   </component>
 </project>
