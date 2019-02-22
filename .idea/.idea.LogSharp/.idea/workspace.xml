@@ -2,17 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="06bf880c-660e-4051-baeb-c4d2e5c985f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.deps.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.runtimeconfig.dev.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.runtimeconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/LogSharp.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/LogSharp.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parser/LogSharpParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/parser/LogSharpParser.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LogSharpTester/MyBuiltIns.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tester/MyBuiltIns.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LogSharp/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LogSharp/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LogSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LogSharp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogSharp.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LogSharp.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repl.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/builtins/BuiltInAttribute.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/builtins/BuiltinsLoader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/builtins/PreludeBuiltins.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/f.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/ListHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/Environment.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/Goal.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/Interpreter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/unification/IUnifier.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/unification/NestedTermUnifier.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/unification/Unification.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interpretation/unification/Unifier.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Atom.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Double.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Fact.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Int.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/LogSharpAST.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/LogSharpProgram.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Predicate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Question.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Rule.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Scalar.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/String.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Term.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Valuable.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Variable.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/LogSharpParser.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser/LogSharpToken.cs" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,81 +47,233 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tester/MyBuiltIns.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="192">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LogSharpTester/Program.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+              <folding>
+                <marker date="1550849476278" expanded="false" signature="6:51" ph="..." />
+                <marker date="1550849476278" expanded="true" signature="69:198" ph="{...}" />
+                <marker date="1550849476278" expanded="true" signature="89:196" ph="{...}" />
+                <marker date="1550849476278" expanded="true" signature="135:190" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="97">
+              <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+              <folding>
+                <marker date="1550849931000" expanded="false" signature="6:168" ph="..." />
+                <marker date="1550849931000" expanded="true" signature="197:2154" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="231:2152" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="309:392" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="478:861" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="543:851" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="622:837" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="718:819" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="927:1456" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="1541:2144" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="1651:2132" ph="{...}" />
+                <marker date="1550849931000" expanded="true" signature="1906:2118" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LogSharpTester/MyBuiltIns.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="192">
+              <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+              <folding>
+                <marker date="1550848605383" expanded="false" signature="6:196" ph="..." />
+                <marker date="1550848605383" expanded="true" signature="222:530" ph="{...}" />
+                <marker date="1550848605383" expanded="true" signature="267:528" ph="{...}" />
+                <marker date="1550848605383" expanded="true" signature="449:522" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/78/ed4a4d5b/ThrowHelper.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/parser/LogSharpToken.cs">
+        <entry file="file://$PROJECT_DIR$/LogSharp/interpretation/unification/NestedTermUnifier.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
+            <state relative-caret-position="225">
+              <caret line="108" column="17" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
               <folding>
-                <marker date="1550055239907" expanded="true" signature="43:963" ph="{...}" />
-                <marker date="1550055239907" expanded="true" signature="123:961" ph="{...}" />
-                <marker date="1550055239907" expanded="false" signature="138:500" ph="scalars" />
-                <marker date="1550055239907" expanded="false" signature="518:937" ph="sugar" />
+                <marker date="1550850128142" expanded="false" signature="6:136" ph="..." />
+                <marker date="1550850128142" expanded="true" signature="183:6146" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="231:6144" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="363:4387" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="428:501" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="759:839" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="902:4307" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1053:4293" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1318:4275" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1470:1871" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1573:1718" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1751:1845" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1900:4253" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="1976:2539" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2061:2339" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2160:2305" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2376:2509" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2600:4099" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2714:3262" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="2898:3042" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="3083:3228" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="3351:3899" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="3535:3679" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="3720:3865" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="3936:4069" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4132:4226" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4454:4544" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4651:6138" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4691:4747" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4779:5281" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="4865:4981" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5002:5267" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5063:5143" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5168:5249" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5298:6128" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5466:6056" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5573:5663" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5688:6038" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5788:5894" ph="{...}" />
+                <marker date="1550850128142" expanded="true" signature="5923:6016" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs">
+        <entry file="file://$PROJECT_DIR$/LogSharp/interpretation/Interpreter.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+            <state relative-caret-position="-111">
+              <caret line="171" column="20" selection-start-line="171" selection-start-column="20" selection-end-line="171" selection-end-column="20" />
               <folding>
-                <marker date="1550055239890" expanded="true" signature="43:530" ph="{...}" />
-                <marker date="1550055239890" expanded="true" signature="85:528" ph="{...}" />
-                <marker date="1550055239890" expanded="true" signature="238:512" ph="{...}" />
-                <marker date="1550055239890" expanded="true" signature="294:378" ph="{...}" />
-                <marker date="1550055239890" expanded="true" signature="378:463" ph="{...}" />
+                <marker date="1550846657746" expanded="false" signature="6:230" ph="..." />
+                <marker date="1550846657746" expanded="true" signature="265:7851" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="442:7849" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1002:1271" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1339:1474" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1394:1464" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1550:1630" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1669:1903" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1720:1838" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="1964:2190" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2015:2086" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2103:2180" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2242:2505" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2277:2495" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2376:2481" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2554:3046" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2703:2790" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2807:3036" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="2920:3022" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="3153:7843" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="3359:3506" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="3714:7650" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="4097:4958" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="4159:4454" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="4235:4397" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="4693:4910" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="5152:6470" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="5543:6146" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="5630:6124" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="5740:6098" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="6171:6452" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="6317:6430" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="6491:7635" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="6677:7617" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="6765:6856" ph="/* if (!applicable.Equals(current.Rule)) ... */" />
+                <marker date="1550846657746" expanded="true" signature="7268:7509" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="7680:7737" ph="{...}" />
+                <marker date="1550846657746" expanded="true" signature="7754:7833" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/parser/LogSharpParser.cs">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/79/9287eff9/FileStream.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="98" column="1" selection-start-line="98" selection-start-column="1" selection-end-line="98" selection-end-column="1" />
-              <folding>
-                <marker date="1550068000367" expanded="false" signature="6:186" ph="..." />
-                <marker date="1550068000367" expanded="true" signature="213:3111" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="247:3109" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="355:442" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="533:578" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="688:738" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="888:1000" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="1099:1172" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="1404:2094" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="1581:1780" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="2221:2303" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="2407:2485" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="2599:2686" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="2804:2874" ph="{...}" />
-                <marker date="1550068000367" expanded="true" signature="2997:3076" ph="{...}" />
-              </folding>
+            <state relative-caret-position="193">
+              <caret line="1564" column="5" lean-forward="true" selection-start-line="1564" selection-start-column="5" selection-end-line="1564" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Program.cs">
+        <entry file="file://$PROJECT_DIR$/LogSharpTester/Repl.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="-72">
+              <caret line="110" column="12" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
               <folding>
-                <marker date="1550067927217" expanded="false" signature="6:197" ph="..." />
-                <marker date="1550067927217" expanded="true" signature="217:2086" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="237:2084" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="320:598" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="647:2078" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="798:955" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="972:2068" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="1326:1518" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="1563:2053" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="1724:1915" ph="{...}" />
-                <marker date="1550067927217" expanded="true" signature="1940:2035" ph="{...}" />
+                <marker date="1550849519432" expanded="false" signature="6:275" ph="..." />
+                <marker date="1550849519432" expanded="true" signature="301:7043" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="340:7041" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="724:850" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="915:1343" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1409:2064" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1462:1936" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1563:1655" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1716:1808" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1829:1922" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="1953:2054" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2131:3032" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2184:2898" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2284:2788" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2397:2486" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2551:2640" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2665:2770" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="2915:3022" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3099:3160" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3225:3410" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3459:5652" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3706:3829" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3887:4171" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="3959:4156" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4032:4138" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4196:5642" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4367:4431" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4452:5628" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4567:5484" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4647:5296" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4740:4910" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="4943:5270" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="5109:5240" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="5356:5462" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="5509:5610" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="5739:6327" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="5989:6317" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="6362:6912" ph="{...}" />
+                <marker date="1550849519432" expanded="true" signature="6633:6748" ph="/* &quot;empty([]).&quot;, ... */" />
+                <marker date="1550849519432" expanded="true" signature="6969:7035" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -107,47 +285,48 @@
     <findStrings>
       <find>callback</find>
       <find>lexer</find>
+      <find>test</find>
+      <find>primitive</find>
+      <find>primiti</find>
+      <find>primit</find>
+      <find>dump</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/parser/LogSharpToken.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogRule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharp/interpretation/Interpreter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9AB63239-15A5-4C40-B63F-C810C60626D1/70/1888a3d4/ISyntaxParser`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/52/c6a42c6b/StringBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharp/interpretation/unification/NestedTermUnifier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/17/Group.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogProgram.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/1B/EBNFParserBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogFact.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogPredicate.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/16/RecursiveDescentSyntaxParser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/79/9287eff9/FileStream.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Tester/MyBuiltIns.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3E/BuildResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/1C/EBNFSyntaxTreeVisitor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/8b/1a25c36a/List`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharpTester/Repl.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/78/ed4a4d5b/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharpTester/MyBuiltIns.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Tester/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/parser/LogSharpParser.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogSharpAST.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogScalar.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/a9/76995b8d/CustomAttributeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/3a/e3ef49e4/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/29/GenericLexer.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogInt.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogDouble.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogAtom.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogString.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/35/FSMLexer.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/model/LogClause.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/20/ParserBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LogSharpTester/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/2D/LexerBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/99/381a3383/String.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A7538FB0-6ED7-462D-B19F-FFC46339EBFE/f2/f9c35379/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/27/CallBacksBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/30/Token.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -168,21 +347,40 @@
         <option value="$PROJECT_DIR$/Program.cs" />
         <option value="$PROJECT_DIR$/parser/LogSharpParser.cs" />
         <option value="$PROJECT_DIR$/parser/LogSharpToken.cs" />
+        <option value="$PROJECT_DIR$/primitives/BuiltinsLoader.cs" />
+        <option value="$PROJECT_DIR$/builtins/Primitives.cs" />
+        <option value="$PROJECT_DIR$/helpers/ListHelper.cs" />
+        <option value="$PROJECT_DIR$/builtins/PrimitveAttribute.cs" />
+        <option value="$PROJECT_DIR$/builtins/BuiltInAttribute.cs" />
+        <option value="$PROJECT_DIR$/Repl.cs" />
+        <option value="$PROJECT_DIR$/interpretation/Interpreter.cs" />
+        <option value="$PROJECT_DIR$/builtins/BuiltInAttributes.cs" />
+        <option value="$PROJECT_DIR$/builtins/PreludeBuiltins.cs" />
+        <option value="$PROJECT_DIR$/builtins/BuiltinsLoader.cs" />
+        <option value="$PROJECT_DIR$/Tester/Program.cs" />
+        <option value="$PROJECT_DIR$/LogSharpTester/MyBuiltIns.cs" />
+        <option value="$PROJECT_DIR$/LogSharpTester/Program.cs" />
+        <option value="$PROJECT_DIR$/LogSharpTester/Repl.cs" />
+        <option value="$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs" />
+        <option value="$PROJECT_DIR$/Tester/MyBuiltIns.cs" />
+        <option value="$PROJECT_DIR$/LogSharp/interpretation/unification/NestedTermUnifier.cs" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="1000" />
+    <option name="x" value="-1608" />
+    <option name="y" value="-5" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <autoscrollFromSource SolutionExplorer="true" AssemblyExplorer="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="FileSystemExplorer" />
       <pane id="SolutionExplorer">
         <subPane>
           <expand>
@@ -199,13 +397,25 @@
               <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
               <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
               <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="model" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="builtins" type="24d0babc:SolutionExplorerModelNode" />
             </path>
             <path>
               <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
               <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
               <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="parser" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="interpretation" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="interpretation" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="unification" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="LogSharp" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="LogSharpTester" type="24d0babc:SolutionExplorerModelNode" />
             </path>
           </expand>
           <select />
@@ -213,7 +423,6 @@
         <option name="show-all-files" value="false" />
       </pane>
       <pane id="AssemblyExplorer" />
-      <pane id="FileSystemExplorer" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -238,9 +447,9 @@
   </component>
   <component name="RunManager">
     <configuration name="Program" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/LogSharp.dll" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/LogSharpTester/bin/Debug/netcoreapp2.1/LogSharpTester.dll" />
+      <option name="PROGRAM_PARAMETERS" value="-v log.log f.pro" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/LogSharpTester" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <envs>
         <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
@@ -249,7 +458,7 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="PROJECT_PATH" value="$PROJECT_DIR$/LogSharp.csproj" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/LogSharpTester/LogSharpTester.csproj" />
       <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
       <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
       <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
@@ -272,6 +481,9 @@
       <option name="presentableId" value="Default" />
       <updated>1550042164970</updated>
       <workItem from="1550042167816" duration="15170000" />
+      <workItem from="1550846789386" duration="1696000" />
+      <workItem from="1550848499362" duration="531000" />
+      <workItem from="1550849392588" duration="737000" />
     </task>
     <task id="LOCAL-00001" summary="parser initial commit">
       <created>1550046753059</created>
@@ -291,7 +503,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15170000" />
+    <option name="totallyTimeSpent" value="24910000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -303,43 +515,43 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <frame x="-1608" y="-5" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Capture Tool" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27313626" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="NuGet" weight="0.32938388" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Unit Tests" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Performance Profiler" />
-      <window_info anchor="bottom" id="Build" weight="0.32938388" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Capture Tool" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32938388" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3992891" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4993573" weight="0.32916668" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.54948586" visible="true" weight="0.42777777" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Unit Tests Coverage" />
+      <window_info anchor="bottom" id="NuGet" order="7" weight="0.32938388" />
+      <window_info anchor="bottom" id="Performance Profiler" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
+      <window_info anchor="bottom" id="Unit Tests" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="13" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.45051414" side_tool="true" weight="0.31805557" />
+      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.49164525" weight="0.32916668" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="right" id="Errors In Solution" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="6" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <MESSAGE value="parser initial commit" />
@@ -353,32 +565,6 @@
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs</url>
-          <line>10</line>
-          <properties documentPath="$PROJECT_DIR$/parser/LexerCallbacks.cs" initialLine="10">
-            <startOffsets>
-              <option value="261" />
-            </startOffsets>
-            <endOffsets>
-              <option value="294" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Program.cs</url>
-          <line>53</line>
-          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="52">
-            <startOffsets>
-              <option value="1771" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1797" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <condition expression="source == &quot;fact(hello).&quot;" language="C#" custom="RiderImportsList:" />
           <url>file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/3/Parser.cs</url>
@@ -394,30 +580,41 @@
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Program.cs</url>
-          <line>19</line>
-          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="19">
-            <startOffsets>
-              <option value="468" />
-            </startOffsets>
-            <endOffsets>
-              <option value="561" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="18" />
+          <url>file://$PROJECT_DIR$/builtins/BuiltinsLoader.cs</url>
+          <line>14</line>
+          <properties documentPath="$PROJECT_DIR$/builtins/BuiltinsLoader.cs" initialLine="13" />
+          <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Program.cs</url>
-          <line>50</line>
-          <properties documentPath="$PROJECT_DIR$/Program.cs" initialLine="49">
+          <url>file://$PROJECT_DIR$/interpretation/Interpreter.cs</url>
+          <line>42</line>
+          <properties documentPath="$PROJECT_DIR$/interpretation/Interpreter.cs" initialLine="42" />
+          <option name="timeStamp" value="222" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/interpretation/Interpreter.cs</url>
+          <line>43</line>
+          <properties documentPath="$PROJECT_DIR$/interpretation/Interpreter.cs" initialLine="43" />
+          <option name="timeStamp" value="223" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/builtins/BuiltinsLoader.cs</url>
+          <line>34</line>
+          <properties documentPath="$PROJECT_DIR$/builtins/BuiltinsLoader.cs" initialLine="34" />
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs</url>
+          <line>43</line>
+          <properties documentPath="$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs" initialLine="43">
             <startOffsets>
-              <option value="1651" />
+              <option value="1346" />
             </startOffsets>
             <endOffsets>
-              <option value="1688" />
+              <option value="1386" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="19" />
+          <option name="timeStamp" value="234" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -425,11 +622,25 @@
       <configuration name="DotNetProject">
         <watch expression="tokens[0].TokenID" language="C#" custom="RiderImportsList:" />
         <watch expression="rules" language="C#" custom="RiderImportsList:" />
+        <watch expression="p" language="C#" custom="RiderImportsList:" />
+        <watch expression="prog" language="C#" custom="RiderImportsList:" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>type.Name.Contains(&quot;Prelude&quot;)</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.FullName.Contains(&quot;LogSh&quot;)</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>source == &quot;fact(hello).&quot;</expression-string>
         <language-id>C#</language-id>
@@ -453,7 +664,55 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>r</expression-string>
+        <expression-string>Assembly.GetEntryAssembly()</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>Assembly.GetExecutingAssembly()</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>Assembly.GetCallingAssembly()</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>Assembly</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.FullName</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>attribute</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.GetTypes()</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>AppDomain.CurrentDomain.GetAssemblies()</expression-string>
         <language-id>C#</language-id>
         <custom-info>RiderImportsList:</custom-info>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -461,101 +720,12 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/model/LogInt.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
-          <folding>
-            <marker date="1550044519027" expanded="true" signature="24:196" ph="{...}" />
-            <marker date="1550044519027" expanded="true" signature="62:194" ph="{...}" />
-            <marker date="1550044519027" expanded="true" signature="141:188" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogString.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding>
-            <marker date="1550044483474" expanded="true" signature="24:208" ph="{...}" />
-            <marker date="1550044483474" expanded="true" signature="65:206" ph="{...}" />
-            <marker date="1550044483474" expanded="true" signature="153:200" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogAtom.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="9" lean-forward="true" selection-start-line="4" selection-start-column="7" selection-end-line="9" selection-end-column="9" />
-          <folding>
-            <marker date="1550044441877" expanded="true" signature="24:209" ph="{...}" />
-            <marker date="1550044441877" expanded="true" signature="63:207" ph="{...}" />
-            <marker date="1550044441877" expanded="true" signature="147:192" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogScalar.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="44" selection-start-line="2" selection-start-column="44" selection-end-line="2" selection-end-column="44" />
-          <folding>
-            <marker date="1550044405968" expanded="true" signature="24:94" ph="{...}" />
-            <marker date="1550044405968" expanded="true" signature="71:92" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogProgram.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-          <folding>
-            <marker date="1550045938838" expanded="true" signature="59:261" ph="{...}" />
-            <marker date="1550045938838" expanded="true" signature="103:259" ph="{...}" />
-            <marker date="1550045938838" expanded="true" signature="206:253" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogPredicate.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="68" lean-forward="true" selection-start-line="9" selection-start-column="68" selection-end-line="9" selection-end-column="68" />
-          <folding>
-            <marker date="1550045754647" expanded="true" signature="58:366" ph="{...}" />
-            <marker date="1550045754647" expanded="true" signature="100:364" ph="{...}" />
-            <marker date="1550045754647" expanded="true" signature="282:358" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogRule.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
-          <folding>
-            <marker date="1550045349718" expanded="true" signature="24:92" ph="{...}" />
-            <marker date="1550045349718" expanded="true" signature="69:90" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogFact.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-          <folding>
-            <marker date="1550045640367" expanded="true" signature="59:340" ph="{...}" />
-            <marker date="1550045640367" expanded="true" signature="107:338" ph="{...}" />
-            <marker date="1550045640367" expanded="true" signature="194:214" ph="{...}" />
-            <marker date="1550045640367" expanded="true" signature="312:332" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogAtom.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogScalar.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogProgram.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogPredicate.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogRule.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogFact.cs" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/17/Group.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -563,41 +733,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogClause.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" column="40" lean-forward="true" selection-start-line="7" selection-start-column="40" selection-end-line="7" selection-end-column="40" />
-          <folding>
-            <marker date="1550045422936" expanded="true" signature="60:364" ph="{...}" />
-            <marker date="1550045422936" expanded="true" signature="103:362" ph="{...}" />
-            <marker date="1550045422936" expanded="true" signature="274:356" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogDouble.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding>
-            <marker date="1550044545104" expanded="true" signature="24:208" ph="{...}" />
-            <marker date="1550044545104" expanded="true" signature="65:206" ph="{...}" />
-            <marker date="1550044545104" expanded="true" signature="153:200" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/LogSharpAST.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding>
-            <marker date="1550043289550" expanded="true" signature="24:82" ph="{...}" />
-            <marker date="1550043289550" expanded="true" signature="59:80" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/model/LogClause.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogDouble.cs" />
+    <entry file="file://$PROJECT_DIR$/model/LogSharpAST.cs" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/8b/1a25c36a/List`1.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -718,73 +856,277 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs">
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpParser.cs" />
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpToken.cs" />
+    <entry file="file://$PROJECT_DIR$/primitives/BuiltinsLoader.cs" />
+    <entry file="file://$PROJECT_DIR$/model/Scalar.cs" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/1C/EBNFSyntaxTreeVisitor.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        <state relative-caret-position="95">
+          <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9AB63239-15A5-4C40-B63F-C810C60626D1/30/Token.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="79" column="37" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parser/LogSharpLexerCallbacks.cs" />
+    <entry file="file://$PROJECT_DIR$/helpers/ListHelper.cs" />
+    <entry file="file://$PROJECT_DIR$/interpretation/unification/Unification.cs" />
+    <entry file="file://$PROJECT_DIR$/model/Double.cs" />
+    <entry file="file://$PROJECT_DIR$/builtins/BuiltInAttribute.cs" />
+    <entry file="file://$PROJECT_DIR$/builtins/BuiltInAttributes.cs" />
+    <entry file="file://$PROJECT_DIR$/interpretation/Interpreter.cs" />
+    <entry file="file://$PROJECT_DIR$/builtins/PreludeBuiltins.cs" />
+    <entry file="file://$PROJECT_DIR$/builtins/BuiltinsLoader.cs" />
+    <entry file="file://$PROJECT_DIR$/Program.cs" />
+    <entry file="file://$PROJECT_DIR$/obj/Debug/netcoreapp2.1/LogSharp.AssemblyInfo.cs" />
+    <entry file="file://$PROJECT_DIR$/Tester/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="15" />
           <folding>
-            <marker date="1550055239890" expanded="true" signature="43:530" ph="{...}" />
-            <marker date="1550055239890" expanded="true" signature="85:528" ph="{...}" />
-            <marker date="1550055239890" expanded="true" signature="238:512" ph="{...}" />
-            <marker date="1550055239890" expanded="true" signature="294:378" ph="{...}" />
-            <marker date="1550055239890" expanded="true" signature="378:463" ph="{...}" />
+            <marker date="1550848149035" expanded="true" signature="6:29" ph="..." />
+            <marker date="1550848149035" expanded="true" signature="67:173" ph="{...}" />
+            <marker date="1550848149035" expanded="true" signature="113:167" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Program.cs">
+    <entry file="file://$PROJECT_DIR$/Repl.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        <state relative-caret-position="32">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/a9/76995b8d/CustomAttributeExtensions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1504">
+          <caret line="94" column="6" selection-start-line="94" selection-start-column="6" selection-end-line="94" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogSharpTester/Repl.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-72">
+          <caret line="110" column="12" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
           <folding>
-            <marker date="1550067927217" expanded="false" signature="6:197" ph="..." />
-            <marker date="1550067927217" expanded="true" signature="217:2086" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="237:2084" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="320:598" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="647:2078" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="798:955" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="972:2068" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="1326:1518" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="1563:2053" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="1724:1915" ph="{...}" />
-            <marker date="1550067927217" expanded="true" signature="1940:2035" ph="{...}" />
+            <marker date="1550849519432" expanded="false" signature="6:275" ph="..." />
+            <marker date="1550849519432" expanded="true" signature="301:7043" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="340:7041" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="724:850" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="915:1343" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1409:2064" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1462:1936" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1563:1655" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1716:1808" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1829:1922" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="1953:2054" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2131:3032" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2184:2898" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2284:2788" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2397:2486" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2551:2640" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2665:2770" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="2915:3022" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3099:3160" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3225:3410" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3459:5652" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3706:3829" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3887:4171" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="3959:4156" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4032:4138" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4196:5642" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4367:4431" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4452:5628" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4567:5484" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4647:5296" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4740:4910" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="4943:5270" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="5109:5240" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="5356:5462" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="5509:5610" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="5739:6327" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="5989:6317" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="6362:6912" ph="{...}" />
+            <marker date="1550849519432" expanded="true" signature="6633:6748" ph="/* &quot;empty([]).&quot;, ... */" />
+            <marker date="1550849519432" expanded="true" signature="6969:7035" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser/LogSharpParser.cs">
+    <entry file="file://$PROJECT_DIR$/LogSharpTester/Program.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="98" column="1" selection-start-line="98" selection-start-column="1" selection-end-line="98" selection-end-column="1" />
+        <state relative-caret-position="128">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
           <folding>
-            <marker date="1550068000367" expanded="false" signature="6:186" ph="..." />
-            <marker date="1550068000367" expanded="true" signature="213:3111" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="247:3109" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="355:442" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="533:578" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="688:738" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="888:1000" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="1099:1172" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="1404:2094" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="1581:1780" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="2221:2303" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="2407:2485" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="2599:2686" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="2804:2874" ph="{...}" />
-            <marker date="1550068000367" expanded="true" signature="2997:3076" ph="{...}" />
+            <marker date="1550849476278" expanded="false" signature="6:51" ph="..." />
+            <marker date="1550849476278" expanded="true" signature="69:198" ph="{...}" />
+            <marker date="1550849476278" expanded="true" signature="89:196" ph="{...}" />
+            <marker date="1550849476278" expanded="true" signature="135:190" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser/LogSharpToken.cs">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/79/9287eff9/FileStream.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
+        <state relative-caret-position="193">
+          <caret line="1564" column="5" lean-forward="true" selection-start-line="1564" selection-start-column="5" selection-end-line="1564" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogSharp/builtins/BuiltinsLoader.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
           <folding>
-            <marker date="1550055239907" expanded="true" signature="43:963" ph="{...}" />
-            <marker date="1550055239907" expanded="true" signature="123:961" ph="{...}" />
-            <marker date="1550055239907" expanded="false" signature="138:500" ph="scalars" />
-            <marker date="1550055239907" expanded="false" signature="518:937" ph="sugar" />
+            <marker date="1550849931000" expanded="false" signature="6:168" ph="..." />
+            <marker date="1550849931000" expanded="true" signature="197:2154" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="231:2152" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="309:392" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="478:861" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="543:851" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="622:837" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="718:819" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="927:1456" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="1541:2144" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="1651:2132" ph="{...}" />
+            <marker date="1550849931000" expanded="true" signature="1906:2118" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogSharp/interpretation/Interpreter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-111">
+          <caret line="171" column="20" selection-start-line="171" selection-start-column="20" selection-end-line="171" selection-end-column="20" />
+          <folding>
+            <marker date="1550846657746" expanded="false" signature="6:230" ph="..." />
+            <marker date="1550846657746" expanded="true" signature="265:7851" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="442:7849" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1002:1271" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1339:1474" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1394:1464" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1550:1630" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1669:1903" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1720:1838" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="1964:2190" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2015:2086" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2103:2180" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2242:2505" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2277:2495" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2376:2481" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2554:3046" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2703:2790" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2807:3036" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="2920:3022" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="3153:7843" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="3359:3506" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="3714:7650" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="4097:4958" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="4159:4454" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="4235:4397" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="4693:4910" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="5152:6470" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="5543:6146" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="5630:6124" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="5740:6098" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="6171:6452" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="6317:6430" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="6491:7635" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="6677:7617" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="6765:6856" ph="/* if (!applicable.Equals(current.Rule)) ... */" />
+            <marker date="1550846657746" expanded="true" signature="7268:7509" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="7680:7737" ph="{...}" />
+            <marker date="1550846657746" expanded="true" signature="7754:7833" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tester/MyBuiltIns.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogSharpTester/MyBuiltIns.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+          <folding>
+            <marker date="1550848605383" expanded="false" signature="6:196" ph="..." />
+            <marker date="1550848605383" expanded="true" signature="222:530" ph="{...}" />
+            <marker date="1550848605383" expanded="true" signature="267:528" ph="{...}" />
+            <marker date="1550848605383" expanded="true" signature="449:522" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/341DFE22-562E-4DB3-8729-B233A8CD1A5F/78/ed4a4d5b/ThrowHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogSharp/interpretation/unification/NestedTermUnifier.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="108" column="17" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
+          <folding>
+            <marker date="1550850128142" expanded="false" signature="6:136" ph="..." />
+            <marker date="1550850128142" expanded="true" signature="183:6146" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="231:6144" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="363:4387" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="428:501" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="759:839" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="902:4307" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1053:4293" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1318:4275" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1470:1871" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1573:1718" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1751:1845" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1900:4253" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="1976:2539" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2061:2339" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2160:2305" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2376:2509" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2600:4099" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2714:3262" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="2898:3042" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="3083:3228" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="3351:3899" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="3535:3679" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="3720:3865" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="3936:4069" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4132:4226" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4454:4544" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4651:6138" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4691:4747" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4779:5281" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="4865:4981" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5002:5267" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5063:5143" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5168:5249" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5298:6128" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5466:6056" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5573:5663" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5688:6038" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5788:5894" ph="{...}" />
+            <marker date="1550850128142" expanded="true" signature="5923:6016" ph="{...}" />
           </folding>
         </state>
       </provider>

@@ -30,7 +30,7 @@ namespace logSharp.interpretation
         
         public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
         
-        private Dictionary<string,PrologBuiltIn> Primitives { get; set; }
+        public Dictionary<string,PrologBuiltIn> BuiltIns { get; set; }
 
         
         public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
@@ -39,21 +39,21 @@ namespace logSharp.interpretation
             Verbose = verbose;
             Parser = parser;
             Unifier = unifier;
-            Primitives = new Dictionary<string, PrologBuiltIn>();
+            BuiltIns = new Dictionary<string, PrologBuiltIn>();
             BuiltinsLoader.LoadBuiltIns(this);
         }
 
-        public void AddPrimitive(string spec, PrologBuiltIn builtIn)
+        public void AddBuiltIn(string spec, PrologBuiltIn builtIn)
         {
-            if (!Primitives.ContainsKey(spec))
+            if (!BuiltIns.ContainsKey(spec))
             {
-                Primitives[spec] = builtIn;
+                BuiltIns[spec] = builtIn;
             }
         }
 
-        public bool tryeGetPrimitive(string spec, out PrologBuiltIn builtIn)
+        private bool TryGetBuiltIn(string spec, out PrologBuiltIn builtIn)
         {
-            return Primitives.TryGetValue(spec, out builtIn);
+            return BuiltIns.TryGetValue(spec, out builtIn);
         }
 
         public void Append(Rule rule)
@@ -164,31 +164,30 @@ namespace logSharp.interpretation
                 var term = current.Goals[current.Index];
 
 
-                PrologBuiltIn builtIn;
-                if (tryeGetPrimitive(term.Specification, out builtIn))
+                if (TryGetBuiltIn(term.Specification, out var builtIn))
                 {
-                    var primitiveTerm = DeepCopier.Copy(term.Head);
-                    primitiveTerm = Unifier.EvalTerm(primitiveTerm,current.Unification);
-                    Trace($"calling primitive {term.Specification}");
-                    var primitiveUnifications = builtIn(this, current.Unification, primitiveTerm.Parameters);
+                    var builtInTerm = DeepCopier.Copy(term.Head);
+                    builtInTerm = Unifier.EvalTerm(builtInTerm,current.Unification);
+                    Trace($"calling built-in {term.Specification}");
+                    var builtInUnifications = builtIn(this, current.Unification, builtInTerm.Parameters);
                     if (current.Rule != null) {
-                        if (primitiveUnifications != null && primitiveUnifications.Any())
+                        if (builtInUnifications != null && builtInUnifications.Any())
                         {
-                            foreach (var primitiveUnification in primitiveUnifications)
+                            foreach (var builtInUnification in builtInUnifications)
                             {
-                                Goal primitived = new Goal(current.Rule, current, primitiveUnification);
-                                primitived.Unification.AddBindings(current.Unification);
-                                primitived.Index = current.Index + 1;
-                                stack.Push(primitived);
+                                Goal built = new Goal(current.Rule, current, builtInUnification);
+                                built.Unification.AddBindings(current.Unification);
+                                built.Index = current.Index + 1;
+                                stack.Push(built);
                             }
                         }
                     }
                     else
                     {
                         resultFound = true;
-                        foreach (var primitiveUnification in primitiveUnifications)
+                        foreach (var builtInUnification in builtInUnifications)
                         {
-                            yield return primitiveUnification;
+                            yield return builtInUnification;
                         }
                     }
                 }
