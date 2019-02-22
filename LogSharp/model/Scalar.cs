@@ -11,6 +11,8 @@ namespace logSharp.model
         public bool IsList => false;
         public string Name => null;
 
+        public bool IsConstantList => true;
+
         public bool IsVAriable => false;
         public abstract string Dump();
     }
