@@ -11,8 +11,6 @@
       <PackageReference Include="Utility.CommandLine.Arguments" Version="2.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interpreter\Unification" />
-    </ItemGroup>
+  
 
 </Project>
