@@ -201,7 +201,6 @@ namespace logSharp.interpretation
 //                        {
                             Goal child = new Goal(applicable, current, current.Unification);
 
-                            //var unif = Unifier.UnifyTerms(term.Head, term.Unification, child.Head, child.Unification);
                             var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head,
                                 child.Unification);
                             if (unif.IsOk)
@@ -210,7 +209,11 @@ namespace logSharp.interpretation
                                 Trace($"stck {child} @ {child.Index}");
                                 stack.Push(child);
                             }
-                            Trace("unification failed.");
+                            else
+                            {
+                                Trace("unification failed.");
+                            }
+
 //                        }
                     }
                 }
