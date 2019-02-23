@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
 using System.Text;
+using logSharp.helpers;
 
 namespace logSharp.model
 {
@@ -59,6 +58,7 @@ namespace logSharp.model
         public static Term ListTerm(Valuable head, Valuable tail)
         {
             var list = EmptyListTerm();
+            list.Parameters = ListHelper.BuildList(head, tail);
             return list;
         }
 
