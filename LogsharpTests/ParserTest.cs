@@ -3,11 +3,13 @@ using Xunit;
 
 namespace ogsharpTests
 {
-    public class UnitTest1
+    public class ParserTest 
     {
         [Fact]
         public void Test1()
         {
         }
+
+        
     }
 }
