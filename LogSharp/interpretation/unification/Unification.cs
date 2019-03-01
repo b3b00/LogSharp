@@ -115,5 +115,10 @@ namespace logSharp.interpretation.unification
 
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return Environment.GetHashCode();
+        }
     }
 }

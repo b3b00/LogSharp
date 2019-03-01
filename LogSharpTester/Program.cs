@@ -1,15 +1,29 @@
-﻿using System;
-using logSharp;
-using logSharp.helpers;
+﻿using logSharp.helpers;
 using logSharp.interpretation.unification;
 using logSharp.model;
+using logSharp.parser;
 using LogSharpTester;
+using sly.lexer;
+using sly.parser;
+using sly.parser.generator;
 
 namespace Tester
 {
     class Program
     {
+        
+        public static Parser<LogSharpToken,LogSharpAST> BuildParser()
+        {
+            var logParser = new LogSharpParser();
+            var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
+            var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
+            var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
+            CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+            return parser.Result;
+        }
 
+        
+        
         static void RecursiveUnificationTest()
         {
 //            unify(member_of(X, L),[ X = c , L = [b, c] , member_of(X, [_, L]),[ X = c , L = [b, c] ] <-- should be [_,L?]
@@ -49,7 +63,8 @@ namespace Tester
         static void Main(string[] args)
         {
             PrologRepl.Loop(args);
-            RecursiveUnificationTest();
+//            AnonymiseTest();
+            //RecursiveUnificationTest();
         }
     }
 }
