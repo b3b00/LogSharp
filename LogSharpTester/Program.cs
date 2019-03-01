@@ -26,33 +26,30 @@ namespace Tester
         
         static void RecursiveUnificationTest()
         {
-//            unify(member_of(X, L),[ X = c , L = [b, c] , member_of(X, [_, L]),[ X = c , L = [b, c] ] <-- should be [_,L?]
-// Goal child = new Goal(applicable, current, current.Unification??);
-            var unifier = new NestedTermUnifier();
-            Term term1 = new Term("member_of", ListHelper.BuildList<Valuable>(new Variable("X"), new Variable("L")));
-            Unification u1 = new Unification();
-            u1.AddBinding("X",new Atom("c") );
-            u1.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
-
-
-            var l = Term.ListTerm(
-                new Variable("_"),
-                new Variable("L")
-                );
-            Term child = new Term("member_of",
-                                    ListHelper.BuildList<Valuable>(
-                                        new Variable("X"),
-                                        l
-                                        )
-                                 );
+            var parser = BuildParser();
+            var src = parser.Parse("member_of(X, L)", "term").Result as Term;
+            var dest = parser.Parse("member_of(X, [_, L])", "term").Result as Term;
             
-            var childU = new Unification();
+
+            var unifier = new NestedTermUnifier();
+
+            Unification srcEnv = new Unification();
+            srcEnv.AddBinding("X",new Atom("c") );
+            srcEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+
+            
+            var destEnv = new Unification();
             var emptyChildU = new Unification();
             
-            childU.AddBinding("X",new Atom("c") );
-            childU.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+            destEnv.AddBinding("X",new Atom("c") );
+            destEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
 
-            var res = unifier.UnifyTerms(term1, u1, child, emptyChildU);
+            var e1 = unifier.Eval(src, srcEnv);
+            var e2 = unifier.Eval(dest, destEnv);
+            Console.WriteLine($"SRC :>{e1} <");
+            Console.WriteLine($"DEST :>{e2} <");
+            
+            var res = unifier.UnifyTerms(src, srcEnv, dest, new Unification());
             ;
 
 
