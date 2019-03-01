@@ -132,7 +132,7 @@ namespace LogSharpTester
                 {
                     if (!Programs[i].EndsWith(".dll"))
                     {
-                        interpreter.LoadProgram(Programs[i]);
+                        interpreter.LoadProgramFile(Programs[i]);
                     }
                 }
 
