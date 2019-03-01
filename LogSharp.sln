@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSharp", "LogSharp\LogSha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSharpTester", "LogSharpTester\LogSharpTester.csproj", "{A45BCB7C-32E1-4F4A-87DC-33DE479B41AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ogsharpTests", "ogsharpTests\ogsharpTests.csproj", "{E6FD533B-4CEF-4232-BF73-F8260D419991}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsharpTests", "LogsharpTests\LogsharpTests.csproj", "{E6FD533B-4CEF-4232-BF73-F8260D419991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
