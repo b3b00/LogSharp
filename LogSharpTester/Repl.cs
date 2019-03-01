@@ -51,11 +51,11 @@ namespace LogSharpTester
                 var param = ask.Parameters[0];
                 if (param is Atom atom)
                 {
-                    interpreter.LoadProgram(atom.Name);
+                    interpreter.LoadProgramFile(atom.Name);
                 }
                 else if (param is logSharp.model.String str)
                 {
-                    interpreter.LoadProgram(str.Value);
+                    interpreter.LoadProgramFile(str.Value);
                 }
                 else
                 {
