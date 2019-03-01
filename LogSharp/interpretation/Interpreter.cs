@@ -93,10 +93,16 @@ namespace logSharp.interpretation
             }
         }
 
-        public void LoadProgram(string program)
+        public void LoadProgramFile(string program)
         {
             string prog = File.ReadAllText(program);
-            var logprog = Parser.Parse(prog,"program");
+            LoadProgram(prog);
+        }
+        
+        public void LoadProgram(string program)
+        {
+            
+            var logprog = Parser.Parse(program,"program");
             if (logprog.IsOk)
             {
                 Append(logprog.Result as LogSharpProgram);
