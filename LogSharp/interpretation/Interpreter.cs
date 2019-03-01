@@ -140,6 +140,7 @@ namespace logSharp.interpretation
                 Trace("____________________________");
                 Trace("");
                 Trace($"pop {current}");
+                
                 if (current.Index >= current.Count || current.IsFact)
                 {
                     if (current.IsRootGoal)
@@ -154,8 +155,22 @@ namespace logSharp.interpretation
                     }
 
                     var p = DeepCopier.Copy(current.Parent);
-                    var u = Unifier.UnifyTerms(current.Head, current.Unification,
-                        p.Goals[p.Index].Head, p.Unification);
+                    Unification u = new Unification();
+                    if (current.IsFact)
+                    {
+                        u = Unifier.UnifyTerms(current.Head, current.Unification,
+                            p.Goals[p.Index].Head, p.Unification);
+                    }
+                    else if (current.Index >= current.Count)
+                    {
+                        u = Unifier.UnifyTerms(current.Head, current.Unification,
+                            p.Head, p.Unification);
+                    }
+                    else
+                    {
+                        ;
+                    }
+
                     if (u.IsOk)
                     {
                         p.Index++;
@@ -184,6 +199,7 @@ namespace logSharp.interpretation
                                 Goal built = new Goal(current.Rule, current, builtInUnification);
                                 built.Unification.AddBindings(current.Unification);
                                 built.Index = current.Index + 1;
+                                Trace($"stck {built} @ {built.Index}");
                                 stack.Push(built);
                             }
                         }

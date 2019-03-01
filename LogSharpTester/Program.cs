@@ -48,7 +48,7 @@ namespace Tester
         
         static void Main(string[] args)
         {
-//            PrologRepl.Loop(args);
+            PrologRepl.Loop(args);
             RecursiveUnificationTest();
         }
     }
