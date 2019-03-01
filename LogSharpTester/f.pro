@@ -17,4 +17,4 @@ tester(X,Y) :- testPrim(X,Y).
 member_of(X,[X|_]).
 member_of(X,[_|L]) :- member_of(X,L).
 
-cof(C,F) :- bag_of(CC,"father(F,CC)", L) member(C,L).
+cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
