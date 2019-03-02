@@ -1,20 +1,16 @@
-
-
 using Xunit;
 
 namespace ogsharpTests
 {
     public class ListTests : BaseTest
     {
-        
-        public const string PrologProgram = @"
-member_of(X,[X|_]).
-member_of(X,[_|L]) :- member_of(X,L).";
-
-
         public ListTests() : base(PrologProgram)
         {
         }
+
+        public const string PrologProgram = @"
+member_of(X,[X|_]).
+member_of(X,[_|L]) :- member_of(X,L).";
 
         [Fact]
         public void MemberFirstTest()
@@ -23,7 +19,7 @@ member_of(X,[_|L]) :- member_of(X,L).";
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
-        
+
         [Fact]
         public void MemberSecondTest()
         {
@@ -31,7 +27,7 @@ member_of(X,[_|L]) :- member_of(X,L).";
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
-        
+
         [Fact]
         public void MemberThirdTest()
         {

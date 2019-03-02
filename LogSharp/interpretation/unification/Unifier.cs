@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DeepCopy;
 using logSharp.model;
 
@@ -7,30 +5,24 @@ namespace logSharp.interpretation.unification
 {
     public class Unifier : IUnifier
     {
-
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
             Unification destEnv)
         {
-            if (source == null || destination == null)
-            {
-                return Unification.Failed();
-            }
+            if (source == null || destination == null) return Unification.Failed();
 
-            Unification unification = new Unification();
-            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
+            var unification = new Unification();
+            unification.Environment = DeepCopier.Copy(destEnv.Environment);
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
-            {
                 unification = Unification.Failed();
-            }
 
-            for (int i = 0; i < source.Parameters.Count; i++)
+            for (var i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];
                 var destArg = destination.Parameters[i];
                 Valuable srcVal = null;
                 Valuable destVal = null;
-               
-                srcVal = GetValue(srcArg,sourceEnv);
+
+                srcVal = GetValue(srcArg, sourceEnv);
 
                 if (srcVal != null)
                 {
@@ -38,14 +30,11 @@ namespace logSharp.interpretation.unification
 
                     if (destVal == null)
                     {
-                        unification.AddBinding(destArg.Name,srcVal);
+                        unification.AddBinding(destArg.Name, srcVal);
                     }
                     else
                     {
-                        if (!destVal.Equals(srcVal))
-                        {
-                            return Unification.Failed();
-                        }
+                        if (!destVal.Equals(srcVal)) return Unification.Failed();
                     }
                 }
             }
@@ -67,13 +56,9 @@ namespace logSharp.interpretation.unification
             {
                 var variable = arg as Variable;
                 if (environment.Environment.ContainsVariable(variable.Name))
-                {
-                    val = environment.Environment[variable.Name]; 
-                }
+                    val = environment.Environment[variable.Name];
                 else
-                {
                     val = variable;
-                }
             }
             else
             {

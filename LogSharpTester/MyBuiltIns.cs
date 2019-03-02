@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using logSharp.builtins;
 using logSharp.interpretation;
-using logSharp.model;
 using logSharp.interpretation.unification;
-using System.Collections.Generic;
+using logSharp.model;
 using static logSharp.helpers.ListHelper;
 
 namespace LogSharpTester

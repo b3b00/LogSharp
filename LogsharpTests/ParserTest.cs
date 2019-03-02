@@ -1,15 +1,12 @@
-using System;
 using Xunit;
 
 namespace ogsharpTests
 {
-    public class ParserTest 
+    public class ParserTest
     {
         [Fact]
         public void Test1()
         {
         }
-
-        
     }
 }

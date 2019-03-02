@@ -1,31 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using sly.parser;
-using sly.parser.generator;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
 using sly.lexer;
+using sly.parser;
+using sly.parser.generator;
 using Utility.CommandLine;
+using String = logSharp.model.String;
 
 namespace LogSharpTester
 {
-    
-   
     public class PrologRepl
     {
-
-        [Argument('v', "verbose", "verbosity")]
-        private static string LogFile { get; set; }
-        
-        [Operands]
-        private static string[] Programs { get; set; }
-
-        delegate void ReplAction(Interpreter interpreter, Question question);
-
-        private static Dictionary<string, ReplAction> ReplActions = new Dictionary<string, ReplAction>()
+        private static readonly Dictionary<string, ReplAction> ReplActions = new Dictionary<string, ReplAction>
         {
             {"load", Load},
             {"trace", Trace},
@@ -33,34 +23,33 @@ namespace LogSharpTester
             {"dump", Dump}
         };
 
-        static Parser<LogSharpToken,LogSharpAST> BuildParser()
+        [Argument('v', "verbose", "verbosity")]
+        private static string LogFile { get; set; }
+
+        [Operands] private static string[] Programs { get; set; }
+
+        private static Parser<LogSharpToken, LogSharpAST> BuildParser()
         {
             var logParser = new LogSharpParser();
             var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
-            CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+            CallBacksBuilder.BuildCallbacks(lexer);
             return parser.Result;
         }
 
 
-        static void Load(Interpreter interpreter, Question ask)
+        private static void Load(Interpreter interpreter, Question ask)
         {
             if (ask.Parameters.Count == 1)
             {
                 var param = ask.Parameters[0];
                 if (param is Atom atom)
-                {
                     interpreter.LoadProgramFile(atom.Name);
-                }
-                else if (param is logSharp.model.String str)
-                {
+                else if (param is String str)
                     interpreter.LoadProgramFile(str.Value);
-                }
                 else
-                {
                     Console.WriteLine(" bas parameter");
-                }
             }
             else
             {
@@ -69,7 +58,7 @@ namespace LogSharpTester
         }
 
 
-        static void Trace(Interpreter interpreter, Question ask)
+        private static void Trace(Interpreter interpreter, Question ask)
         {
             if (ask.Parameters.Count <= 1)
             {
@@ -78,17 +67,11 @@ namespace LogSharpTester
                 {
                     var param = ask.Parameters[0];
                     if (param is Atom atom)
-                    {
                         outFile = atom.Name;
-                    }
-                    else if (param is logSharp.model.String str)
-                    {
+                    else if (param is String str)
                         outFile = str.Value;
-                    }
                     else
-                    {
                         Console.WriteLine(" bad parameter");
-                    }
                 }
 
                 interpreter.DebugOutput = outFile;
@@ -101,12 +84,12 @@ namespace LogSharpTester
         }
 
 
-        static void Quiet(Interpreter interpreter, Question ask)
+        private static void Quiet(Interpreter interpreter, Question ask)
         {
             interpreter.Verbose = false;
         }
 
-        static void Dump(Interpreter interpreter, Question ask)
+        private static void Dump(Interpreter interpreter, Question ask)
         {
             interpreter.LogSharpProgram.Rules.ForEach(r => Console.WriteLine(r));
             interpreter.BuiltIns.Keys.ToList().ForEach(b => Console.WriteLine(b));
@@ -117,8 +100,8 @@ namespace LogSharpTester
         {
             Arguments.Populate();
             var parser = BuildParser();
-            Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
-            
+            var interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
+
 
             if (!string.IsNullOrEmpty(LogFile))
             {
@@ -127,57 +110,44 @@ namespace LogSharpTester
             }
 
             if (Programs != null && Programs.Length > 0)
-            {
-                for (int i = 1; i < Programs.Length; i++)
-                {
+                for (var i = 1; i < Programs.Length; i++)
                     if (!Programs[i].EndsWith(".dll"))
-                    {
                         interpreter.LoadProgramFile(Programs[i]);
-                    }
-                }
-
-            }
             while (true)
             {
                 ReadLine.HistoryEnabled = true;
-                string input = ReadLine.Read("?. ");
+                var input = ReadLine.Read("?. ");
                 if (input == "quit" || input == "exit")
                 {
                     return;
                 }
-                else
+
+                if (!string.IsNullOrEmpty(input))
                 {
-                    if (!string.IsNullOrEmpty(input))
+                    var query = parser.Parse(input, "rule");
+                    if (query.IsOk)
                     {
-                        var query = parser.Parse(input, "rule");
-                        if (query.IsOk)
+                        if (query.Result is Question ask)
                         {
-                            if (query.Result is Question ask)
+                            if (ReplActions.ContainsKey(ask.Name))
                             {
-                                if (ReplActions.ContainsKey(ask.Name))
-                                {
-                                    ReplActions[ask.Name](interpreter, ask);
-
-                                }
-                                else
-                                {
-                                    var answers = interpreter.Search(ask);
-
-                                    foreach (var answer in answers)
-                                    {
-                                        Console.WriteLine(answer);
-                                    }
-                                }
+                                ReplActions[ask.Name](interpreter, ask);
                             }
-                            else if (query.Result is Rule rule)
+                            else
                             {
-                                interpreter.Append(rule);
+                                var answers = interpreter.Search(ask);
+
+                                foreach (var answer in answers) Console.WriteLine(answer);
                             }
                         }
-                        else
+                        else if (query.Result is Rule rule)
                         {
-                            Console.WriteLine("bad query.");
+                            interpreter.Append(rule);
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("bad query.");
                     }
                 }
             }
@@ -203,23 +173,25 @@ namespace LogSharpTester
 
         public static void Test()
         {
-            UnifyTest("list(a,T)","list(H,TAIL)","term");            
-            UnifyTest("list(a,list(b,c))","list(H,list(HEAD,TAIL))","term"); // expect H=a HEAD=b tail = [c] | c
-            UnifyTest("list(a,list(b,c))","list(H,list(HEAD,TAIL))","term");
+            UnifyTest("list(a,T)", "list(H,TAIL)", "term");
+            UnifyTest("list(a,list(b,c))", "list(H,list(HEAD,TAIL))", "term"); // expect H=a HEAD=b tail = [c] | c
+            UnifyTest("list(a,list(b,c))", "list(H,list(HEAD,TAIL))", "term");
 //            "empty([]).",
 ////                    "const([a|Tail]).",
 ////                    "literal([a,b,c])."
-            UnifyTest("[]","[H|T]","list");
-            UnifyTest("[a,b]","[H|T]","list");
-            UnifyTest("[a,b,c]","[H|T]","list");
+            UnifyTest("[]", "[H|T]", "list");
+            UnifyTest("[a,b]", "[H|T]", "list");
+            UnifyTest("[a,b,c]", "[H|T]", "list");
             ;
-        } 
-        
+        }
+
 
         public static void Run(string[] args)
         {
 //            Test();
             Loop(args);
         }
+
+        private delegate void ReplAction(Interpreter interpreter, Question question);
     }
 }

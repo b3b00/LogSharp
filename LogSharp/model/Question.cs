@@ -1,4 +1,3 @@
-
 namespace logSharp.model
 {
     public class Question : Term

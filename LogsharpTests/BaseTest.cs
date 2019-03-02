@@ -20,15 +20,17 @@ namespace ogsharpTests
         {
             var parser = BuildParser();
             Interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
+            Interpreter.Verbose = true;
             Interpreter.LoadProgram(program);
         }
+
         private Parser<LogSharpToken, LogSharpAST> BuildParser()
         {
             var logParser = new LogSharpParser();
             var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
-            CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+            CallBacksBuilder.BuildCallbacks(lexer);
             return parser.Result;
         }
 
@@ -49,6 +51,5 @@ namespace ogsharpTests
             var answers = Interpreter.Search(question).ToList();
             return answers;
         }
-
     }
 }

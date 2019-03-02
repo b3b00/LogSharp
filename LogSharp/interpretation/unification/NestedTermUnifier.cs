@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using DeepCopy;
 using logSharp.model;
 
@@ -9,28 +7,21 @@ namespace logSharp.interpretation.unification
 {
     public class NestedTermUnifier : IUnifier
     {
-
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
             Unification destEnv)
         {
-            if (source == null || destination == null)
-            {
-                return Unification.Failed();
-            }
-        
-            Unification unification = DeepCopier.Copy(destEnv);
-            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
-            if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
-            {
-                unification = Unification.Failed();
-            }
+            if (source == null || destination == null) return Unification.Failed();
 
-            for (int i = 0; i < source.Parameters.Count; i++)
+            var unification = DeepCopier.Copy(destEnv);
+            unification.Environment = DeepCopier.Copy(destEnv.Environment);
+            if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
+                unification = Unification.Failed();
+
+            for (var i = 0; i < source.Parameters.Count; i++)
             {
                 var srcArg = source.Parameters[i];
                 if (destination.Parameters.Any() || i < destination.Parameters.Count)
                 {
-
                     var destArg = destination.Parameters[i];
                     Valuable srcVal = null;
                     Valuable destVal = null;
@@ -44,13 +35,9 @@ namespace logSharp.interpretation.unification
                         if (destVal == null && destArg.IsVariable)
                         {
                             if (destArg.Name != Variable.DiscardingVariable)
-                            {
                                 unification.AddBinding(destArg as Variable, srcVal);
-                            }
                             else
-                            {
                                 ;
-                            }
                         }
                         else
                         {
@@ -58,10 +45,7 @@ namespace logSharp.interpretation.unification
                             {
                                 if (destVal is Scalar)
                                 {
-                                    if (!destVal.Equals(srcVal))
-                                    {
-                                        return Unification.Failed();
-                                    }
+                                    if (!destVal.Equals(srcVal)) return Unification.Failed();
                                 }
                                 else
                                 {
@@ -74,25 +58,17 @@ namespace logSharp.interpretation.unification
                                 {
                                     var u = UnifyTerms(srcTerm, sourceEnv, destValTerm, unification);
                                     if (u.IsOk)
-                                    {
                                         unification.AddBindings(u);
-                                    }
                                     else
-                                    {
                                         return Unification.Failed();
-                                    }
                                 }
                                 else if (destVal == null && destArg is Term destArgTerm)
                                 {
                                     var u = UnifyTerms(srcTerm, sourceEnv, destArgTerm, unification);
                                     if (u.IsOk)
-                                    {
                                         unification.AddBindings(u);
-                                    }
                                     else
-                                    {
                                         return Unification.Failed();
-                                    }
                                 }
                                 else
                                 {
@@ -103,7 +79,6 @@ namespace logSharp.interpretation.unification
                             {
                                 ;
                             }
-
                         }
                     }
                 }
@@ -116,59 +91,42 @@ namespace logSharp.interpretation.unification
 
         public Term EvalTerm(Term term, Unification unification)
         {
-            return Eval(term as Valuable, unification, true) as Term;
+            return Eval(term, unification, true) as Term;
         }
-      
 
-        public Valuable Eval(Valuable arg, Unification environment,bool preserveVariables = false)
+
+        public Valuable Eval(Valuable arg, Unification environment, bool preserveVariables = false)
         {
-            if (arg.IsScalar)
-            {
-                return arg;
-            }
+            if (arg.IsScalar) return arg;
             if (arg.IsVariable)
             {
                 if (environment.Environment.ContainsVariable(arg.Name))
+                    return Eval(environment.Environment[arg.Name], environment);
+
+                if (preserveVariables)
+                    return arg;
+                return null;
+            }
+
+            var term = arg as Term;
+            var newParameters = new List<Valuable>();
+            foreach (var param in term.Parameters)
+            {
+                var p = Eval(param, environment);
+                if (p != null)
                 {
-                    return Eval(environment.Environment[arg.Name],environment);
+                    newParameters.Add(p);
                 }
                 else
                 {
-                    if (preserveVariables)
-                    {
-                        return arg;
-                    }
+                    if (preserveVariables || param.IsDiscardableVariable)
+                        newParameters.Add(param);
                     else
-                    {
                         return null;
-                    }
                 }
             }
-            else
-            {
-                Term term = arg as Term;
-                var newParameters = new List<Valuable>();
-                foreach (var param in term.Parameters)
-                {
-                    var p = Eval(param, environment);
-                    if (p != null)
-                    {
-                        newParameters.Add(p);
-                    }
-                    else
-                    {
-                        if (preserveVariables || param.IsDiscardableVariable)
-                        {
-                            newParameters.Add(param);
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-                return new Term(term.Name,newParameters);
-            }
+
+            return new Term(term.Name, newParameters);
         }
     }
 }

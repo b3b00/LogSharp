@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using DeepCopy;
@@ -10,35 +9,11 @@ namespace logSharp.interpretation
 {
     public class Goal
     {
-        public static int NextGoalId = 0;
-        
-        public int Id { get; private set; }
-        
-        public Rule Rule { get; set; }
-        
-        public Goal Parent { get; set; }
+        public static int NextGoalId;
 
-        public bool IsRootGoal => Parent == null;
-        
         public List<Goal> Goals = new List<Goal>();
 
         public Term Head;
-
-        public int Index { get; set; } 
-        
-        public Unification Unification { get; set; }
-        
-
-        public int Count => Goals.Count;
-
-        public bool IsOk => Unification.IsOk;
-
-
-        public bool IsFact => Rule != null && Rule.IsFact;
-        
-        public bool IsPredicate => this.Rule != null && Rule.IsPredicate;
-
-        public string Specification => Head.Specification;
 
         public Goal(Question question)
         {
@@ -55,29 +30,19 @@ namespace logSharp.interpretation
             Rule = rule;
             Parent = parent;
             if (Unification != null)
-            {
                 Unification.AddBindings(environment);
-            }
             else
-            {
                 Unification = DeepCopier.Copy(environment);
-            }
             Goals = new List<Goal>();
 
             Head = rule.Head;
             if (rule.Clauses != null && rule.Clauses.Any())
             {
                 foreach (var t in rule.Clauses)
-                {
                     if (t != null)
-                    {
                         Goals.Add(new Goal(new Question(t)));
-                    }
                     else
-                    {
                         ;
-                    }
-                }
             }
             else
             {
@@ -90,19 +55,38 @@ namespace logSharp.interpretation
             NextGoalId++;
         }
 
+        public int Id { get; }
+
+        public Rule Rule { get; set; }
+
+        public Goal Parent { get; set; }
+
+        public bool IsRootGoal => Parent == null;
+
+        public int Index { get; set; }
+
+        public Unification Unification { get; set; }
+
+
+        public int Count => Goals.Count;
+
+        public bool IsOk => Unification.IsOk;
+
+
+        public bool IsFact => Rule != null && Rule.IsFact;
+
+        public bool IsPredicate => Rule != null && Rule.IsPredicate;
+
+        public string Specification => Head.Specification;
 
 
         public override string ToString()
         {
-            StringBuilder dump = new StringBuilder();
-            if (this.Rule != null)
-            {
-                dump.AppendLine(this.Rule.ToString() + " @ " + Index);
-            }
+            var dump = new StringBuilder();
+            if (Rule != null)
+                dump.AppendLine(Rule + " @ " + Index);
             else
-            {
-                dump.AppendLine(Head.ToString() + " @ " + Index);
-            }
+                dump.AppendLine(Head + " @ " + Index);
 
             var unifStr = Unification.ToString();
             dump.AppendLine(unifStr);
@@ -112,14 +96,13 @@ namespace logSharp.interpretation
         public override bool Equals(object obj)
         {
             if (obj != null)
-            {
                 if (obj is Goal goal)
                 {
-                    bool termEquals = goal.Head.Equals(Head);
-                    bool unifEqual = Unification.Equals(goal.Unification);
+                    var termEquals = goal.Head.Equals(Head);
+                    var unifEqual = Unification.Equals(goal.Unification);
                     return termEquals && unifEqual;
                 }
-            }
+
             return false;
         }
 

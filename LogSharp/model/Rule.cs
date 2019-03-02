@@ -4,27 +4,26 @@ namespace logSharp.model
 {
     public abstract class Rule : LogSharpAST
     {
-        
-        public Term Head { get; set; }
-        
-        public List<Term> Clauses { get; set; }
-
-        public List<Valuable> Parameters => Head.Parameters;
-
-        public bool IsFact => this is Fact;
-        
-        public bool IsPredicate => this is Predicate;
-
         public Rule(Term head)
         {
             Head = head;
         }
-        
+
         public Rule(Term head, List<Term> clauses)
         {
             Head = head;
             Clauses = clauses;
         }
+
+        public Term Head { get; set; }
+
+        public List<Term> Clauses { get; set; }
+
+        public List<Valuable> Parameters => Head.Parameters;
+
+        public bool IsFact => this is Fact;
+
+        public bool IsPredicate => this is Predicate;
 
         public string Name => Head.Name;
 

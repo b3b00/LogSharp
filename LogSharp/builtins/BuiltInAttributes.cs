@@ -2,14 +2,9 @@ using System;
 
 namespace logSharp.builtins
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class BuiltInsAttribute : Attribute
 
     {
-        
-        public BuiltInsAttribute()
-        {
-        }
-
     }
 }

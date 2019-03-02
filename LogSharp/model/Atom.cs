@@ -2,12 +2,12 @@ namespace logSharp.model
 {
     public class Atom : Scalar
     {
-        public new string Name { get; private set; }
-
         public Atom(string name)
         {
             Name = name;
         }
+
+        public new string Name { get; }
 
         public override string Dump()
         {
@@ -22,12 +22,8 @@ namespace logSharp.model
         public override bool Equals(object o)
         {
             if (o != null)
-            {
                 if (o is Atom other)
-                {
                     return other.Name == Name;
-                }
-            }
 
             return false;
         }

@@ -1,26 +1,11 @@
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 using logSharp.model;
 
 namespace logSharp.interpretation.unification
 {
     public class Unification
     {
-        public TermEnvironment Environment { get; set; }
-
-        public bool IsOk { get; set; }
-
-        public static Unification Failed()
-        {
-            return new Unification(false);
-        }
-
-        public static Unification Success()
-        {
-            return new Unification(true);
-        }
-
         public Unification()
         {
             Environment = new TermEnvironment();
@@ -39,6 +24,20 @@ namespace logSharp.interpretation.unification
             IsOk = ok;
         }
 
+        public TermEnvironment Environment { get; set; }
+
+        public bool IsOk { get; set; }
+
+        public static Unification Failed()
+        {
+            return new Unification(false);
+        }
+
+        public static Unification Success()
+        {
+            return new Unification(true);
+        }
+
         public void AddBinding(Variable variable, Valuable value)
         {
             Environment[variable.Name] = value;
@@ -51,30 +50,25 @@ namespace logSharp.interpretation.unification
 
         public void AddBindings(Unification unification)
         {
-            foreach (var binding in unification.Environment.Environment)
-            {
-                Environment[binding.Key] = binding.Value;
-            }
+            foreach (var binding in unification.Environment.Environment) Environment[binding.Key] = binding.Value;
         }
 
         public override string ToString()
         {
-            StringBuilder dump = new StringBuilder();
+            var dump = new StringBuilder();
             if (IsOk)
             {
                 dump.AppendLine("yes.");
                 if (Environment.Environment.Any())
                 {
-                    string envStr = Environment.ToString();
+                    var envStr = Environment.ToString();
                     dump.Append(envStr.Trim());
                 }
 
                 return dump.ToString();
             }
-            else
-            {
-                dump.AppendLine("don't know.");
-            }
+
+            dump.AppendLine("don't know.");
 
             return dump.ToString();
         }
@@ -82,12 +76,11 @@ namespace logSharp.interpretation.unification
         public override bool Equals(object obj)
         {
             if (obj != null)
-            {
                 if (obj is Unification unification)
                 {
                     var dico1 = Environment.Environment;
                     var dico2 = unification.Environment.Environment;
-                    int count = dico1.Count; 
+                    var count = dico1.Count;
                     if (count == dico2.Count)
                     {
                         var keys1 = dico1.Keys.ToList();
@@ -96,22 +89,16 @@ namespace logSharp.interpretation.unification
                         if (intersection.Count() == count)
                         {
                             foreach (var pair in dico1)
-                            {
                                 if (dico2.ContainsKey(pair.Key))
                                 {
                                     var value = dico2[pair.Key];
-                                    if (!value.Equals(pair.Value))
-                                    {
-                                        return false;
-                                    }
+                                    if (!value.Equals(pair.Value)) return false;
                                 }
-                            }
 
                             return true;
                         }
                     }
                 }
-            }
 
             return false;
         }
