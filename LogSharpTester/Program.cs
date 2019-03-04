@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using logSharp.helpers;
+using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
@@ -23,6 +26,26 @@ namespace Tester
             return parser.Result;
         }
 
+
+        static void Is()
+        {
+            string program = @"
+            plusone(X,Y) :- is(X,""1 + 1""). 
+";
+            var parser = BuildParser();
+            var parsed = parser.Parse(program);
+            var t = parser.Parse(@"plusone(A,1)?");
+            if (parsed.IsOk)
+            {
+                Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
+                
+                var r = interpreter.Search("plusone(Y,1)?").ToList();
+                ;
+            }
+
+
+
+        }
         
         
         static void RecursiveUnificationTest()
@@ -60,7 +83,8 @@ namespace Tester
         
         static void Main(string[] args)
         {
-            PrologRepl.Loop(args);
+//            PrologRepl.Loop(args);
+Is();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
         }

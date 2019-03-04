@@ -14,7 +14,7 @@ namespace logSharp.builtins
     public class PreludeBuiltins
     {
         [BuiltIn("testPrim/0")]
-        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> TestPrim(Term testTerm, Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {
@@ -33,7 +33,7 @@ namespace logSharp.builtins
         }
 
         [BuiltIn("member/2")]
-        public static List<Unification> Member(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> Member(Term memberTerm, Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {
@@ -74,7 +74,7 @@ namespace logSharp.builtins
         }
 
         [BuiltIn("bag_of/3")]
-        public static List<Unification> BagOf(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> BagOf(Term bagOfTerm, Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
 
         {

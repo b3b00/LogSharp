@@ -1,4 +1,6 @@
-﻿namespace logSharp.builtins.expressions.model
+﻿using logSharp.interpretation.unification;
+
+namespace logSharp.builtins.expressions.model
 {
     public class UnaryOperation : Expression
     {
@@ -11,26 +13,29 @@
             RightExpression = right;
         }
 
-        public int? Evaluate(ExpressionContext context)
+        public object Evaluate(Unification unification)
         {
-            var right = RightExpression.Evaluate(context);
+            var right = RightExpression.Evaluate(unification);
 
-            if (right.HasValue)
+            if (right != null && right is int i)
+            {
                 switch (Operator)
                 {
                     case ExpressionToken.PLUS:
                     {
-                        return +right.Value;
+                        return i;
                     }
                     case ExpressionToken.MINUS:
                     {
-                        return -right.Value;
+                        return i;
                     }
                     default:
                     {
                         return null;
                     }
                 }
+            }
+
             return null;
         }
     }

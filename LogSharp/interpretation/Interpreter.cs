@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using DeepCopy;
 using logSharp.builtins;
+using logSharp.helpers;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
@@ -12,7 +13,7 @@ using sly.parser;
 namespace logSharp.interpretation
 {
 
-    public delegate List<Unification> PrologBuiltIn(Interpreter interpreter, Unification unificationIn,
+    public delegate List<Unification> PrologBuiltIn(Term builtInTerm,Interpreter interpreter, Unification unificationIn,
         List<Valuable> parameters);
     
     public class Interpreter
@@ -116,6 +117,22 @@ namespace logSharp.interpretation
                 }
             }
         }
+
+        public IEnumerable<Unification> Search(string question, Unification unification = null)
+        {
+            var parsedQuestion = Parser.Parse(question, "rule");
+            if (parsedQuestion.IsOk)
+            {
+                return Search(parsedQuestion.Result as Question, unification);
+            }
+            else
+            {
+                parsedQuestion.Errors.ForEach(e => Console.WriteLine(e.ErrorMessage));
+                return ListHelper.BuildList(Unification.Failed());
+            }
+            
+        }
+        
         
         public IEnumerable<Unification> Search(Question question, Unification unification = null)
         {
@@ -190,7 +207,7 @@ namespace logSharp.interpretation
                     var builtInTerm = DeepCopier.Copy(term.Head);
                     builtInTerm = Unifier.EvalTerm(builtInTerm,current.Unification);
                     Trace($"calling built-in {term.Specification}");
-                    var builtInUnifications = builtIn(this, current.Unification, builtInTerm.Parameters);
+                    var builtInUnifications = builtIn(term.Head, this, current.Unification, builtInTerm.Parameters);
                     if (current.Rule != null) {
                         if (builtInUnifications != null && builtInUnifications.Any())
                         {

@@ -1,4 +1,6 @@
-﻿namespace logSharp.builtins.expressions.model
+﻿using logSharp.interpretation.unification;
+
+namespace logSharp.builtins.expressions.model
 {
     public class Group : Expression
     {
@@ -9,9 +11,9 @@
             InnerExpression = expr;
         }
 
-        public int? Evaluate(ExpressionContext context)
+        public object Evaluate(Unification unification)
         {
-            return InnerExpression.Evaluate(context);
+            return InnerExpression.Evaluate(unification);
         }
     }
 }

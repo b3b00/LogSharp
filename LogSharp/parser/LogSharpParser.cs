@@ -156,13 +156,13 @@ namespace logSharp.parser
         {
             return new String(stringToken.StringWithoutQuotes);
         }
-        /*
+        
         [Production("scalar : Integer")]
         public LogSharpAST IntScalar(Token<LogSharpToken> intToken)
         {
             return new LogInt(intToken.IntValue);
         }
-        
+        /*
         [Production("scalar : Double")]
         public LogSharpAST DoubleScalar(Token<LogSharpToken> doubleToken)
         {

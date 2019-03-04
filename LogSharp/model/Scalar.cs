@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace logSharp.model
 {
     public abstract class Scalar : LogSharpAST, Valuable
@@ -14,6 +16,9 @@ namespace logSharp.model
         public bool IsConstantList => true;
 
         public bool IsVAriable => false;
+
+        public Dictionary<string,object> Data { get; set; }
+
         public abstract string Dump();
     }
 }

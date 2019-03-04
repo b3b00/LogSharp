@@ -1,7 +1,9 @@
-﻿namespace logSharp.builtins.expressions.model
+﻿using logSharp.interpretation.unification;
+
+namespace logSharp.builtins.expressions.model
 {
     public interface Expression
     {
-        int? Evaluate(ExpressionContext context);
+        object Evaluate(Unification unification);
     }
 }

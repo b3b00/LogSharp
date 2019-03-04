@@ -23,6 +23,8 @@ namespace logSharp.model
         public bool IsConstantList => ListTail() == null || (!ListTail().IsVariable && ListTail().IsConstantList);
 
         public string Name { get; set; }
+        
+        public Dictionary<string,object> Data { get; set; }
 
         public List<Valuable> Parameters { get; set; }
         
@@ -43,6 +45,7 @@ namespace logSharp.model
         {
             Name = name;
             Parameters = parameters;
+            Data = new Dictionary<string, object>();
         }
         
         #region LISTS

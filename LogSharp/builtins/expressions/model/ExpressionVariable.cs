@@ -1,4 +1,6 @@
-﻿namespace logSharp.builtins.expressions.model
+﻿using logSharp.interpretation.unification;
+
+namespace logSharp.builtins.expressions.model
 {
     public sealed class ExpressionVariable : Expression
     {
@@ -10,9 +12,9 @@
         }
 
 
-        public int? Evaluate(ExpressionContext context)
+        public object Evaluate(Unification unification)
         {
-            return context.GetValue(VariableName);
+            return null;
         }
     }
 }

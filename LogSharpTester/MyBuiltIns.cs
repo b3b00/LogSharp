@@ -7,15 +7,15 @@ using static logSharp.helpers.ListHelper;
 
 namespace LogSharpTester
 {
-    [BuiltIns]
+//    [BuiltIns]
     public class MyBuiltIns
     {
-        [BuiltIn("testBuiltIn/0")]
-        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
-
-        {
-            return BuildList(Unification.Success());
-        }
+//        [BuiltIn("testBuiltIn/0")]
+//        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
+//            List<Valuable> parameters)
+//
+//        {
+//            return BuildList(Unification.Success());
+//        }
     }
 }

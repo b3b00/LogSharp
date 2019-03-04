@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace logSharp.model
 {
     public class Variable : Valuable
@@ -17,6 +19,8 @@ namespace logSharp.model
         
         public bool IsConstantList => true;
         public string Name { get; set; }
+        
+        public Dictionary<string,object> Data { get; set; }
 
         public Variable(string name)
         {

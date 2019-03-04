@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+
 namespace logSharp.model
 {
     public interface Valuable : LogSharpAST
     {
+        Dictionary<string,object> Data { get; set; }
         bool IsScalar { get;  }
         bool IsVariable { get;  }
         
