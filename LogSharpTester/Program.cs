@@ -1,4 +1,5 @@
-﻿using logSharp.helpers;
+﻿using System;
+using logSharp.helpers;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
