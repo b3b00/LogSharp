@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using logSharp.builtins.expressions;
+using logSharp.builtins.expressions.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
@@ -16,6 +18,24 @@ namespace Tester
 {
     class Program
     {
+        private static Parser<ExpressionToken, Expression> expressionParser;
+        
+        public static Parser<ExpressionToken, Expression> ExpressionParser
+        {
+            get
+            {
+                if (expressionParser == null)
+                {
+                    var startingRule = $"{typeof(VariableExpressionParser).Name}_expressions";
+                    var parserInstance = new VariableExpressionParser();
+                    var builder = new ParserBuilder<ExpressionToken, Expression>();
+                    expressionParser = builder.BuildParser(parserInstance, ParserType.LL_RECURSIVE_DESCENT, startingRule).Result;
+                    ;
+                }
+
+                return expressionParser;
+            }
+        }
         
         public static Parser<LogSharpToken,ILogSharpAst> BuildParser()
         {
@@ -122,6 +142,8 @@ namespace Tester
         
         static void Main(string[] args)
         {
+//            var r = ExpressionParser.Parse("X < Y");
+//            ;
 //            PrologRepl.Loop(args);
 //Is();
             Assert();

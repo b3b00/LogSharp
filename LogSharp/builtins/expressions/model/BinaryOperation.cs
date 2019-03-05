@@ -6,7 +6,7 @@ using logSharp.interpretation.unification;
 namespace logSharp.builtins.expressions.model
 {
 
-    public delegate object Operation(ExpressionToken oper, object left, object right);
+    public delegate object Operation(ExpressionToken oper, IComparable left, IComparable right);
     
     public class BinaryOperation : Expression
     {
@@ -152,6 +152,16 @@ namespace logSharp.builtins.expressions.model
                 {
                     return Div;
                 }
+                case ExpressionToken.EQUALS:
+                case ExpressionToken.DIFFERENT:
+                case ExpressionToken.GT:
+                case ExpressionToken.LT:
+                case ExpressionToken.GTE:
+                case ExpressionToken.LTE:
+                {
+                    return Compare;
+                }
+                
                 default:
                 {
                     return null;
@@ -180,7 +190,7 @@ namespace logSharp.builtins.expressions.model
 
                 if (operation != null)
                 {
-                    return operation(Operator,left, right);
+                    return operation(Operator,(IComparable)left, (IComparable)right);
                 }
                 
             }

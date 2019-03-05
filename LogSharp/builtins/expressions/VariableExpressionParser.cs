@@ -32,6 +32,8 @@ namespace logSharp.builtins.expressions
         
         [Operation((int) ExpressionToken.EQUALS, Affix.InFix, Associativity.Right, 5)]
         [Operation((int) ExpressionToken.DIFFERENT, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) ExpressionToken.GT, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) ExpressionToken.LT, Affix.InFix, Associativity.Left, 5)]
         [Operation((int) ExpressionToken.GTE, Affix.InFix, Associativity.Left, 5)]
         [Operation((int) ExpressionToken.LTE, Affix.InFix, Associativity.Left, 5)]
         public Expression BinaryComparisonExpression(Expression left, Token<ExpressionToken> operation, Expression right)
