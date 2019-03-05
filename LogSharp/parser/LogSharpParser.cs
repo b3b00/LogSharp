@@ -154,7 +154,7 @@ namespace logSharp.parser
         [Production("scalar : String")]
         public LogSharpAST StringScalar(Token<LogSharpToken> stringToken)
         {
-            return new String(stringToken.StringWithoutQuotes);
+            return new LogString(stringToken.StringWithoutQuotes);
         }
         
         [Production("scalar : Integer")]
@@ -162,12 +162,12 @@ namespace logSharp.parser
         {
             return new LogInt(intToken.IntValue);
         }
-        /*
+        
         [Production("scalar : Double")]
         public LogSharpAST DoubleScalar(Token<LogSharpToken> doubleToken)
         {
             return new LogDouble(doubleToken.DoubleValue);
-        }*/
+        }
         
         
         

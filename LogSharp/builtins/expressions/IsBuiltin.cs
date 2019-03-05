@@ -40,10 +40,12 @@ namespace logSharp.builtins.expressions
         public static List<Unification> IsPrim(Term isTerm, Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
         {
+            List<Unification> unifications = new List<Unification>();
+            
             if (parameters[0] is Variable variable)
             {
                 var p1 = parameters[1];
-                if (p1 is String source)
+                if (p1 is LogString source)
                 {
                     var parseResult = Parser.Parse(source.Value, $"{typeof(VariableExpressionParser).Name}_expressions");
 
@@ -56,17 +58,18 @@ namespace logSharp.builtins.expressions
                         Valuable value = null;
                         if (result is string stringRes)
                         {
-                            value = new String(stringRes);
+                            value = new LogString(stringRes);
                         } 
                         else if (result is int intRes)
                         {
-                            value = new Int(intRes);
+                            value = new LogInt(intRes);
                         }
                         else if (result is double doubleRes)
                         {
-                            value = new Double(doubleRes);
+                            value = new LogDouble(doubleRes);
                         }
                         unificationOut.AddBinding(variable,value);
+                        unifications.Add(unificationOut);
                     }
                     else
                     {
@@ -76,7 +79,7 @@ namespace logSharp.builtins.expressions
 
                      
                     
-                    return ListHelper.BuildList(Unification.Success());
+                    return unifications;
                 }
             }
 

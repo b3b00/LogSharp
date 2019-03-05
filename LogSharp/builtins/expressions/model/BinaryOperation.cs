@@ -20,8 +20,8 @@ namespace logSharp.builtins.expressions.model
             
         private static object Add(object left, object right)
         {
-            
             var leftType = left.GetType();
+             
             var rightType = right.GetType();
 
             if (leftType == typeof(string) || rightType == typeof(string))

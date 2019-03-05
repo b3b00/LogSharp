@@ -1,19 +1,19 @@
-using System;
-
 namespace logSharp.model
 {
-    public class Double : Scalar
+    public class LogString : Scalar
     {
-        public double Value { get; set; }
+        
+        public override object RawValue => Value;
+        public string Value { get; set; }
 
-        public Double(double value)
+        public LogString(string value)
         {
             Value = value;
         }
-
+        
         public override string Dump()
         {
-            return Value.ToString();
+            return $"\"{Value}\"";
         }
 
         public override string ToString()
@@ -25,19 +25,20 @@ namespace logSharp.model
         {
             if (o != null)
             {
-                if (o is Double other)
+                if (o is LogString other)
                 {
-                    return Math.Abs(other.Value - Value) < 0.000001;
+                    return other.Value == Value;
                 }
             }
 
             return false;
         }
 
+       
 
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return (Value != null ? Value.GetHashCode() : 0);
         }
     }
 }

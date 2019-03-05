@@ -1,17 +1,21 @@
+using System;
+
 namespace logSharp.model
 {
-    public class String : Scalar
+    public class LogDouble : Scalar
     {
-        public string Value { get; set; }
+        
+        public override object RawValue => Value;
+        public double Value { get; set; }
 
-        public String(string value)
+        public LogDouble(double value)
         {
             Value = value;
         }
-        
+
         public override string Dump()
         {
-            return $"\"{Value}\"";
+            return Value.ToString();
         }
 
         public override string ToString()
@@ -23,20 +27,19 @@ namespace logSharp.model
         {
             if (o != null)
             {
-                if (o is String other)
+                if (o is LogDouble other)
                 {
-                    return other.Value == Value;
+                    return Math.Abs(other.Value - Value) < 0.000001;
                 }
             }
 
             return false;
         }
 
-       
 
         public override int GetHashCode()
         {
-            return (Value != null ? Value.GetHashCode() : 0);
+            return Value.GetHashCode();
         }
     }
 }

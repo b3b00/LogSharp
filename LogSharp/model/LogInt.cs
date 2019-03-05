@@ -2,6 +2,9 @@ namespace logSharp.model
 {
     public class LogInt : Scalar
     {
+        
+        public override object RawValue => Value;
+        
         public int Value { get; set; }
 
         public LogInt(int value)

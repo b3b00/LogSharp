@@ -53,7 +53,7 @@ namespace LogSharpTester
                 {
                     interpreter.LoadProgramFile(atom.Name);
                 }
-                else if (param is logSharp.model.String str)
+                else if (param is logSharp.model.LogString str)
                 {
                     interpreter.LoadProgramFile(str.Value);
                 }
@@ -81,7 +81,7 @@ namespace LogSharpTester
                     {
                         outFile = atom.Name;
                     }
-                    else if (param is logSharp.model.String str)
+                    else if (param is logSharp.model.LogString str)
                     {
                         outFile = str.Value;
                     }

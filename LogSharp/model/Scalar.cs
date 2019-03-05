@@ -4,6 +4,8 @@ namespace logSharp.model
 {
     public abstract class Scalar : LogSharpAST, Valuable
     {
+        public virtual object RawValue { get; }
+        
         public bool IsScalar => true;
         public bool IsVariable => false;
         
@@ -13,9 +15,7 @@ namespace logSharp.model
         public bool IsList => false;
         public string Name => null;
 
-        public bool IsConstantList => true;
-
-        public bool IsVAriable => false;
+        public bool IsConstantList => false;
 
         public Dictionary<string,object> Data { get; set; }
 

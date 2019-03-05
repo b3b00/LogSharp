@@ -30,7 +30,7 @@ namespace Tester
         static void Is()
         {
             string program = @"
-            plusone(X,Y) :- is(X,""1 + 1""). 
+            plusone(X,Y) :- is(X,""1 + Y""). 
 ";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
@@ -39,7 +39,8 @@ namespace Tester
             {
                 Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
                 
-                var r = interpreter.Search("plusone(Y,1)?").ToList();
+                var r = interpreter.Search("plusone(K,41)?").ToList();
+                r.ForEach(u => Console.WriteLine(u.ToString())); 
                 ;
             }
 

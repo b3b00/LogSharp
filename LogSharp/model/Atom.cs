@@ -2,6 +2,8 @@ namespace logSharp.model
 {
     public class Atom : Scalar
     {
+        
+        public override object RawValue => Name;
         public new string Name { get; private set; }
 
         public Atom(string name)

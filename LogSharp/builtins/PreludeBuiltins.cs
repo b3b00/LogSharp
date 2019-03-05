@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DeepCopy;
 using logSharp.model;
-using String = logSharp.model.String;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using static logSharp.helpers.ListHelper;

@@ -1,4 +1,5 @@
 ﻿using logSharp.interpretation.unification;
+using logSharp.model;
 
 namespace logSharp.builtins.expressions.model
 {
@@ -14,6 +15,15 @@ namespace logSharp.builtins.expressions.model
 
         public object Evaluate(Unification unification)
         {
+            if (unification.Environment.ContainsVariable(VariableName))
+            {
+                var logValue = unification.Environment[VariableName];
+                if (logValue is Scalar scalar)
+                {
+                    return scalar.RawValue;
+                }
+            }
+
             return null;
         }
     }
