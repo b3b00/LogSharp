@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace logSharp.model
 {
-    public abstract class Rule : LogSharpAST
+    public abstract class Rule : ILogSharpAst
     {
         
         public Term Head { get; set; }
         
         public List<Term> Clauses { get; set; }
 
-        public List<Valuable> Parameters => Head.Parameters;
+        public List<IValuable> Parameters => Head.Parameters;
 
         public bool IsFact => this is Fact;
         

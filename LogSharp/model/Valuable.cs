@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace logSharp.model
 {
-    public interface Valuable : LogSharpAST
+    public interface IValuable : ILogSharpAst
     {
         Dictionary<string,object> Data { get; set; }
         bool IsScalar { get;  }

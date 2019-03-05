@@ -13,75 +13,75 @@ namespace logSharp.parser
     {
 
         [Production("program : rule *")]
-        public LogSharpAST program(List<LogSharpAST> rules)
+        public ILogSharpAst program(List<ILogSharpAst> rules)
         {
             return new LogSharpProgram(rules.Cast<Rule>().ToList());
         }
 
         [Production("rule : question")]
-        public LogSharpAST factRule(LogSharpAST question)
+        public ILogSharpAst factRule(ILogSharpAst question)
         {
             return question;
         }
         
         [Production("rule : fact")]
-        public LogSharpAST questionRule(LogSharpAST fact)
+        public ILogSharpAst questionRule(ILogSharpAst fact)
         {
             return fact;
         }
         
         [Production("rule : predicate")]
-        public LogSharpAST predicateRule(Rule predicate)
+        public ILogSharpAst predicateRule(Rule predicate)
         {
             return predicate;
         }
 
         [Production("predicate : term Imply[d] term* Dot[d]")]
-        public LogSharpAST Predicate(LogSharpAST head, List<LogSharpAST> clauses)
+        public ILogSharpAst Predicate(ILogSharpAst head, List<ILogSharpAst> clauses)
         {
             return new Predicate(head as Term, clauses.Cast<Term>().ToList());
         }
 
 
         [Production("fact : term Dot[d]")]
-        public LogSharpAST Fact(LogSharpAST clause)
+        public ILogSharpAst Fact(ILogSharpAst clause)
         {
             return new Fact(clause as Term);
         }
         
         [Production("question : term QuestionMark[d]")]
-        public LogSharpAST Question(LogSharpAST clause)
+        public ILogSharpAst Question(ILogSharpAst clause)
         {
             return new Question(clause as Term);
         }
         
         [Production("fact : Atom Dot[d]")]
-        public LogSharpAST fact(Token<LogSharpToken> atom)
+        public ILogSharpAst fact(Token<LogSharpToken> atom)
         {
             return new Fact(atom.Value);
         }
 
         
         [Production("list :  LeftBrack[d]   RightBrack[d]")]
-        public LogSharpAST EmptyList()
+        public ILogSharpAst EmptyList()
         {
             return Term.EmptyListTerm();
         }
 
         [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
-        public LogSharpAST ListTermConstructor(LogSharpAST head, LogSharpAST tail)
+        public ILogSharpAst ListTermConstructor(ILogSharpAst head, ILogSharpAst tail)
         {
-            return Term.ListTerm( new List<Valuable>() {head as Valuable, tail as Valuable});
+            return Term.ListTerm( new List<IValuable>() {head as IValuable, tail as IValuable});
         }
         
         [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
-        public LogSharpAST ListTermLiteral(LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
+        public ILogSharpAst ListTermLiteral(ILogSharpAst headParam, List<Group<LogSharpToken, ILogSharpAst>> tailParams)
         {
-            List<Valuable> parameters = new List<Valuable>();
-            parameters.Add(headParam as Valuable);
+            List<IValuable> parameters = new List<IValuable>();
+            parameters.Add(headParam as IValuable);
             foreach (var paramGroup in tailParams)
             {
-                var param = paramGroup.Value(0) as Valuable;
+                var param = paramGroup.Value(0) as IValuable;
                 parameters.Add(param);
             }
 
@@ -94,9 +94,9 @@ namespace logSharp.parser
 
         
         [Production("term : Atom LeftPar[d]  RightPar[d]")]
-        public LogSharpAST termNoArg(Token<LogSharpToken> clauseName )
+        public ILogSharpAst termNoArg(Token<LogSharpToken> clauseName )
         {
-            List<Valuable> parameters = new List<Valuable>();
+            List<IValuable> parameters = new List<IValuable>();
             
             return new Term(
                 clauseName.StringWithoutQuotes,
@@ -105,13 +105,13 @@ namespace logSharp.parser
         }
 
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
-        public LogSharpAST term(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
+        public ILogSharpAst term(Token<LogSharpToken> clauseName, ILogSharpAst headParam, List<Group<LogSharpToken, ILogSharpAst>> tailParams)
         {
-            List<Valuable> parameters = new List<Valuable>();
-            parameters.Add(headParam as Valuable);
+            List<IValuable> parameters = new List<IValuable>();
+            parameters.Add(headParam as IValuable);
             foreach (var paramGroup in tailParams)
             {
-                var param = paramGroup.Value(0) as Valuable;
+                var param = paramGroup.Value(0) as IValuable;
                 parameters.Add(param);
             }
 
@@ -122,49 +122,49 @@ namespace logSharp.parser
         }
 
         [Production("scalarorTerm : scalar")]
-        public LogSharpAST scalarOrTermScalar(LogSharpAST scal)
+        public ILogSharpAst scalarOrTermScalar(ILogSharpAst scal)
         {
             return scal;
         }
         
         [Production("scalarorTerm : term")]
-        public LogSharpAST scalarOrTermTerm(LogSharpAST term)
+        public ILogSharpAst scalarOrTermTerm(ILogSharpAst term)
         {
             return term;
         }
         
         [Production("scalarorTerm : list")]
-        public LogSharpAST scalarOrTermList(LogSharpAST list)
+        public ILogSharpAst scalarOrTermList(ILogSharpAst list)
         {
             return list;
         }
         
         
         [Production("scalar : Variable")]
-        public LogSharpAST AtomVariable(Token<LogSharpToken> atom)
+        public ILogSharpAst AtomVariable(Token<LogSharpToken> atom)
         {
             return new Variable(atom.Value);
         }
 
         [Production("scalar : Atom")]
-        public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
+        public ILogSharpAst AtomScalar(Token<LogSharpToken> atom)
         {
             return new Atom(atom.Value);
         }
         [Production("scalar : String")]
-        public LogSharpAST StringScalar(Token<LogSharpToken> stringToken)
+        public ILogSharpAst StringScalar(Token<LogSharpToken> stringToken)
         {
             return new LogString(stringToken.StringWithoutQuotes);
         }
         
         [Production("scalar : Integer")]
-        public LogSharpAST IntScalar(Token<LogSharpToken> intToken)
+        public ILogSharpAst IntScalar(Token<LogSharpToken> intToken)
         {
             return new LogInt(intToken.IntValue);
         }
         
         [Production("scalar : Double")]
-        public LogSharpAST DoubleScalar(Token<LogSharpToken> doubleToken)
+        public ILogSharpAst DoubleScalar(Token<LogSharpToken> doubleToken)
         {
             return new LogDouble(doubleToken.DoubleValue);
         }

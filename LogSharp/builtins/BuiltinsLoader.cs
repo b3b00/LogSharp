@@ -34,13 +34,10 @@ namespace logSharp.builtins
         {
             var thisAssembly = Assembly.GetAssembly(typeof(PreludeBuiltins));
             LoadBuiltIns(interpreter,typeof(PreludeBuiltins));
-            ;
             var calling = Assembly.GetCallingAssembly();
             LoadBuiltIns(interpreter,calling);
-            ;
             var executing = Assembly.GetExecutingAssembly();
             LoadBuiltIns(interpreter,executing);
-            
             var entry = Assembly.GetEntryAssembly();
             LoadBuiltIns(interpreter,entry);
             

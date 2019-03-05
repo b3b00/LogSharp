@@ -7,7 +7,7 @@ using logSharp.helpers;
 
 namespace logSharp.model
 {
-    public class Term : LogSharpAST, Valuable
+    public class Term : IValuable
     {
         public const string ListConstructor = "list";
         public bool IsScalar => false;
@@ -26,22 +26,22 @@ namespace logSharp.model
         
         public Dictionary<string,object> Data { get; set; }
 
-        public List<Valuable> Parameters { get; set; }
+        public List<IValuable> Parameters { get; set; }
         
         public int Arity => Parameters.Count;
         public string Specification => $"{Name}/{Arity}";
 
-        public Term(string name) : this (name, new List<Valuable>())
+        public Term(string name) : this (name, new List<IValuable>())
         {
             ;
         }
 
-        public Term() : this(null, new List<Valuable>())
+        public Term() : this(null, new List<IValuable>())
         {
         }
         
 
-        public Term(string name, List<Valuable> parameters)
+        public Term(string name, List<IValuable> parameters)
         {
             Name = name;
             Parameters = parameters;
@@ -58,20 +58,20 @@ namespace logSharp.model
             return new Term() {Name = Term.ListConstructor};
         }
 
-        public static Term ListTerm(Valuable head, Valuable tail)
+        public static Term ListTerm(IValuable head, IValuable tail)
         {
             var list = EmptyListTerm();
             list.Parameters = ListHelper.BuildList(head, tail);
             return list;
         }
 
-        public static Term ListTerm(List<Valuable> parameters)
+        public static Term ListTerm(List<IValuable> parameters)
         {
             Term list = new Term();
             list.Name = Term.ListConstructor;
             
-            Valuable emptyTail = EmptyListTerm();
-            Valuable currentTail = emptyTail;
+            IValuable emptyTail = EmptyListTerm();
+            IValuable currentTail = emptyTail;
             
             
             for (int i = parameters.Count - 1; i >= 0; i--)
@@ -83,7 +83,7 @@ namespace logSharp.model
                 }
                 else
                 {
-                    Term term = new Term(Term.ListConstructor, new List<Valuable>() {currentParameter, currentTail});
+                    Term term = new Term(Term.ListConstructor, new List<IValuable>() {currentParameter, currentTail});
                     currentTail = term;
                 }
             }
@@ -92,15 +92,15 @@ namespace logSharp.model
             return list;
         }
 
-        public List<Valuable> ToValuableList()
+        public List<IValuable> ToValuableList()
         {
             if (IsList)
             {
                 if (Parameters.Any())
                 {
-                    var list = new List<Valuable>();
+                    var list = new List<IValuable>();
 
-                    if (Parameters[0] is Valuable headValue)
+                    if (Parameters[0] is IValuable headValue)
                     {
                         list.Add(headValue);
                     }
@@ -111,7 +111,7 @@ namespace logSharp.model
                         {
                             list.AddRange(tailList.ToValuableList());
                         }
-                        else if (Parameters[1] is Valuable tailValue)
+                        else if (Parameters[1] is IValuable tailValue)
                         {
                             list.Add(tailValue);
                         }
@@ -119,7 +119,7 @@ namespace logSharp.model
 
                     return list;
                 }
-                return new List<Valuable>();
+                return new List<IValuable>();
             }
             else
             {
@@ -128,7 +128,7 @@ namespace logSharp.model
         }
 
 
-        public Valuable ListHead()
+        public IValuable ListHead()
         {
             if (IsList)
             {

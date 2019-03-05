@@ -14,7 +14,7 @@ namespace logSharp.interpretation
 {
 
     public delegate List<Unification> PrologBuiltIn(Term builtInTerm,Interpreter interpreter, Unification unificationIn,
-        List<Valuable> parameters);
+        List<IValuable> parameters);
     
     public class Interpreter
     {
@@ -29,12 +29,12 @@ namespace logSharp.interpretation
         
         private IUnifier Unifier { get; set; }
         
-        public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
+        public Parser<LogSharpToken,ILogSharpAst> Parser { get; private set; }
         
         public Dictionary<string,PrologBuiltIn> BuiltIns { get; set; }
 
         
-        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
+        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,ILogSharpAst> parser, IUnifier unifier)
         {
             LogSharpProgram = logSharpProgram;
             Verbose = verbose;
@@ -146,7 +146,7 @@ namespace logSharp.interpretation
             }
             Goal rootGoal = new Goal(question);
             rootGoal.Goals.Add(rootGoal);
-            Trace($"stck : {rootGoal.ToString()}");
+            Trace($"stck : {rootGoal}");
             stack.Push(rootGoal);
             while (stack.Any())
             {
@@ -183,11 +183,7 @@ namespace logSharp.interpretation
                         u = Unifier.UnifyTerms(current.Head, current.Unification,
                             p.Head, p.Unification);
                     }
-                    else
-                    {
-                        ;
-                    }
-
+                    
                     if (u.IsOk)
                     {
                         p.Index++;

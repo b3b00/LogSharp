@@ -36,7 +36,7 @@ namespace logSharp.interpretation
 
         public bool IsFact => Rule != null && Rule.IsFact;
         
-        public bool IsPredicate => this.Rule != null && Rule.IsPredicate;
+        public bool IsPredicate => Rule != null && Rule.IsPredicate;
 
         public string Specification => Head.Specification;
 
@@ -95,13 +95,13 @@ namespace logSharp.interpretation
         public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
-            if (this.Rule != null)
+            if (Rule != null)
             {
-                dump.AppendLine(this.Rule.ToString() + " @ " + Index);
+                dump.AppendLine(Rule + " @ " + Index);
             }
             else
             {
-                dump.AppendLine(Head.ToString() + " @ " + Index);
+                dump.AppendLine(Head + " @ " + Index);
             }
 
             var unifStr = Unification.ToString();

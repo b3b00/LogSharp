@@ -32,8 +32,8 @@ namespace logSharp.interpretation.unification
                 {
 
                     var destArg = destination.Parameters[i];
-                    Valuable srcVal = null;
-                    Valuable destVal = null;
+                    IValuable srcVal = null;
+                    IValuable destVal = null;
 
                     srcVal = Eval(srcArg, sourceEnv);
 
@@ -46,10 +46,6 @@ namespace logSharp.interpretation.unification
                             if (destArg.Name != Variable.DiscardingVariable)
                             {
                                 unification.AddBinding(destArg as Variable, srcVal);
-                            }
-                            else
-                            {
-                                ;
                             }
                         }
                         else
@@ -99,11 +95,6 @@ namespace logSharp.interpretation.unification
                                     return Unification.Failed();
                                 }
                             }
-                            else
-                            {
-                                ;
-                            }
-
                         }
                     }
                 }
@@ -116,11 +107,11 @@ namespace logSharp.interpretation.unification
 
         public Term EvalTerm(Term term, Unification unification)
         {
-            return Eval(term as Valuable, unification, true) as Term;
+            return Eval(term, unification, true) as Term;
         }
       
 
-        public Valuable Eval(Valuable arg, Unification environment,bool preserveVariables = false)
+        public IValuable Eval(IValuable arg, Unification environment,bool preserveVariables = false)
         {
             if (arg.IsScalar)
             {
@@ -147,7 +138,7 @@ namespace logSharp.interpretation.unification
             else
             {
                 Term term = arg as Term;
-                var newParameters = new List<Valuable>();
+                var newParameters = new List<IValuable>();
                 foreach (var param in term.Parameters)
                 {
                     var p = Eval(param, environment);

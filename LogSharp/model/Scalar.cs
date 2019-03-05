@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace logSharp.model
 {
-    public abstract class Scalar : LogSharpAST, Valuable
+    public abstract class Scalar :  IValuable
     {
         public virtual object RawValue { get; }
         

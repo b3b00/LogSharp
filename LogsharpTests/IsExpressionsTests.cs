@@ -10,6 +10,7 @@ namespace ogsharpTests
 
 plusone(X,Y) :- is(X,""Y + 1"").
 cstexpr(X) :- is(X,""1 + 1""). 
+complexexpr(R,X,Y,Z) :- is(R,""X + Y * Z"").
 "; 
         
         // core builtins
@@ -44,6 +45,20 @@ cstexpr(X) :- is(X,""1 + 1"").
             var logInt = a as LogInt;
             Assert.NotNull(logInt);
             Assert.Equal(42,logInt.Value);
+        }
+        
+        [Fact]
+        public void ComplexTest()
+        {
+            var answers = GetAnswers("complexexpr(A,100,2,6)?");
+            Assert.NotNull(answers);
+            Assert.Single(answers);
+            var answer = answers[0];
+            Assert.True(answer.Environment.ContainsVariable("A"));
+            var a = answer.Environment["A"];
+            var logInt = a as LogInt;
+            Assert.NotNull(logInt);
+            Assert.Equal(112,logInt.Value);
         }
         
     }

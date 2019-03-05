@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using logSharp.helpers;
@@ -16,10 +17,10 @@ namespace Tester
     class Program
     {
         
-        public static Parser<LogSharpToken,LogSharpAST> BuildParser()
+        public static Parser<LogSharpToken,ILogSharpAst> BuildParser()
         {
             var logParser = new LogSharpParser();
-            var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
+            var builder = new ParserBuilder<LogSharpToken, ILogSharpAst>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
             CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
@@ -48,6 +49,43 @@ namespace Tester
 
         }
         
+        static void Assert()
+        {
+            string program = @"
+            gt(X,Y) :- assert(""X > Y""). 
+            lte(X,Y) :- assert(""X <= Y"").
+            eq(X,Y) :- assert(""X == Y"").
+            diff(X,Y) :- assert(""X != Y"").
+";
+            var parser = BuildParser();
+            var parsed = parser.Parse(program);
+            
+            List<string> questions = ListHelper.BuildList("gt(1, 2)?","lte(2 , 2)?","eq(3,3)?","diff(48,12)");
+
+            foreach (var q in questions)
+            {
+                
+                Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
+                
+                var r = interpreter.Search(q).ToList();
+                Console.WriteLine(q);
+                r.ForEach(u => Console.WriteLine(u.ToString())); 
+                ; 
+            }
+            
+            if (parsed.IsOk)
+            {
+                Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
+                
+                var r = interpreter.Search("get(1,2)?").ToList();
+                r.ForEach(u => Console.WriteLine(u.ToString())); 
+                ;
+            }
+
+
+
+        }
+        
         
         static void RecursiveUnificationTest()
         {
@@ -60,14 +98,14 @@ namespace Tester
 
             Unification srcEnv = new Unification();
             srcEnv.AddBinding("X",new Atom("c") );
-            srcEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+            srcEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
 
             
             var destEnv = new Unification();
             var emptyChildU = new Unification();
             
             destEnv.AddBinding("X",new Atom("c") );
-            destEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+            destEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
 
             var e1 = unifier.Eval(src, srcEnv);
             var e2 = unifier.Eval(dest, destEnv);
@@ -85,7 +123,8 @@ namespace Tester
         static void Main(string[] args)
         {
 //            PrologRepl.Loop(args);
-Is();
+//Is();
+            Assert();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
         }

@@ -31,6 +31,21 @@ namespace logSharp.builtins.expressions
         [Lexeme("\\)")] RPAREN = 10,
 
         [Lexeme("!")] FACTORIAL = 13,
+        
+        [Lexeme("==")] EQUALS = 14,
+        
+        [Lexeme("!=")] DIFFERENT = 15,
+        
+        [Lexeme(">")] GT = 16,
+        
+        [Lexeme("<")] LT = 17,
+        
+        [Lexeme(">")] GTE = 18,
+        
+        [Lexeme("<")] LTE = 19,
+        
+        
+        
 
 
         // a whitespace

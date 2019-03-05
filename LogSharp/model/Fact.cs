@@ -13,7 +13,7 @@ namespace logSharp.model
         {
         }
 
-        public Fact(string name, List<Valuable> parameters) : base(new Term(name,parameters))
+        public Fact(string name, List<IValuable> parameters) : base(new Term(name,parameters))
         {
         }
 

@@ -29,6 +29,15 @@ namespace logSharp.builtins.expressions
             return new UnaryOperation(operation.TokenID, value);
         }
 
+        
+        [Operation((int) ExpressionToken.EQUALS, Affix.InFix, Associativity.Right, 5)]
+        [Operation((int) ExpressionToken.DIFFERENT, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) ExpressionToken.GTE, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) ExpressionToken.LTE, Affix.InFix, Associativity.Left, 5)]
+        public Expression BinaryComparisonExpression(Expression left, Token<ExpressionToken> operation, Expression right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
 
 
         [Operand]

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace logSharp.model
 {
-    public class LogSharpProgram : LogSharpAST
+    public class LogSharpProgram : ILogSharpAst
     {
         public List<Rule> Rules { get; set; }
         

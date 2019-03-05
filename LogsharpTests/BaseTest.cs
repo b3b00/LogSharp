@@ -22,10 +22,10 @@ namespace ogsharpTests
             Interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
             Interpreter.LoadProgram(program);
         }
-        private Parser<LogSharpToken, LogSharpAST> BuildParser()
+        private Parser<LogSharpToken, ILogSharpAst> BuildParser()
         {
             var logParser = new LogSharpParser();
-            var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
+            var builder = new ParserBuilder<LogSharpToken, ILogSharpAst>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
             CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);

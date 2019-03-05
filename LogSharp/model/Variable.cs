@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace logSharp.model
 {
-    public class Variable : Valuable
+    public class Variable : IValuable
     {
 
         public const string DiscardingVariable = "_";

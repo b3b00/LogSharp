@@ -1,6 +1,6 @@
 namespace logSharp.model
 {
-    public interface LogSharpAST
+    public interface ILogSharpAst
     {
         string Dump();
     }

@@ -14,7 +14,7 @@ namespace logSharp.builtins
     {
         [BuiltIn("testPrim/0")]
         public static List<Unification> TestPrim(Term testTerm, Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
+            List<IValuable> parameters)
 
         {
             Unification unificationOut = DeepCopier.Copy(unificationIn);
@@ -33,7 +33,7 @@ namespace logSharp.builtins
 
         [BuiltIn("member/2")]
         public static List<Unification> Member(Term memberTerm, Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
+            List<IValuable> parameters)
 
         {
             if (parameters[0] is Scalar scalar)
@@ -74,7 +74,7 @@ namespace logSharp.builtins
 
         [BuiltIn("bag_of/3")]
         public static List<Unification> BagOf(Term bagOfTerm, Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
+            List<IValuable> parameters)
 
         {
             if (parameters[0] is Variable lookedFor)
@@ -95,7 +95,7 @@ namespace logSharp.builtins
                                 return BuildList(Unification.Failed());
                             }
 
-                            var values = new List<Valuable>();
+                            var values = new List<IValuable>();
                             foreach (var result in results)
                             {
                                 if (result != null && result.Environment.ContainsVariable(lookedFor.Name))
@@ -123,7 +123,7 @@ namespace logSharp.builtins
                             {
                                 return BuildList(Unification.Failed());
                             }
-                            var values = new List<Valuable>();
+                            var values = new List<IValuable>();
                             foreach (var result in results)
                             {
                                 if (result != null && result.Environment.ContainsVariable(lookedFor.Name))
@@ -132,7 +132,7 @@ namespace logSharp.builtins
                                 }
                             }
                             // TODO check if values and list.items == 
-                            List<Valuable> inValues = list.ToValuableList();
+                            List<IValuable> inValues = list.ToValuableList();
                             int intersectCount = inValues.Intersect(values).ToList().Count; 
                             if (intersectCount == inValues.Count && intersectCount == values.Count)
                             {

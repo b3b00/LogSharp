@@ -38,7 +38,7 @@ namespace logSharp.builtins.expressions
         // param 1 : variable / value ?
         // param 2 : expression a a string
         public static List<Unification> IsPrim(Term isTerm, Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
+            List<IValuable> parameters)
         {
             List<Unification> unifications = new List<Unification>();
             
@@ -55,7 +55,7 @@ namespace logSharp.builtins.expressions
                         isTerm.Data["compiled"] = expression;
                         var result = expression.Evaluate(unificationIn);
                         Unification unificationOut = new Unification();
-                        Valuable value = null;
+                        IValuable value = null;
                         if (result is string stringRes)
                         {
                             value = new LogString(stringRes);

@@ -33,10 +33,10 @@ namespace LogSharpTester
             {"dump", Dump}
         };
 
-        static Parser<LogSharpToken,LogSharpAST> BuildParser()
+        static Parser<LogSharpToken,ILogSharpAst> BuildParser()
         {
             var logParser = new LogSharpParser();
-            var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
+            var builder = new ParserBuilder<LogSharpToken, ILogSharpAst>();
             var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
             CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);

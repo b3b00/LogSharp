@@ -10,12 +10,12 @@ namespace LogSharpTester
 //    [BuiltIns]
     public class MyBuiltIns
     {
-//        [BuiltIn("testBuiltIn/0")]
-//        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
-//            List<Valuable> parameters)
-//
-//        {
-//            return BuildList(Unification.Success());
-//        }
+        [BuiltIn("testBuiltIn/0")]
+        public static List<Unification> TestPrim(Term term, Interpreter interpreter, Unification unificationIn,
+            List<IValuable> parameters)
+
+        {
+            return BuildList(Unification.Success());
+        }
     }
 }

@@ -6,7 +6,7 @@ using logSharp.interpretation.unification;
 namespace logSharp.builtins.expressions.model
 {
 
-    public delegate object Operation(object left, object right);
+    public delegate object Operation(ExpressionToken oper, object left, object right);
     
     public class BinaryOperation : Expression
     {
@@ -16,9 +16,51 @@ namespace logSharp.builtins.expressions.model
         private readonly ExpressionToken Operator;
         private readonly Expression RightExpression;
 
-          
-            
-        private static object Add(object left, object right)
+
+        private static object Compare(ExpressionToken oper, IComparable left, IComparable right)
+        {
+            var leftType = left.GetType();
+            var rightType = right.GetType();
+            int comparison = left.CompareTo(right);
+            switch (oper)
+            {
+                case ExpressionToken.EQUALS:
+                {
+                    return comparison == 0;
+                    break;
+                }
+                case ExpressionToken.DIFFERENT :
+                {
+                    return comparison != 0;
+                    break;
+                }
+                case ExpressionToken.GT:
+                {
+                    return comparison > 0;
+                    break;
+                }
+                case ExpressionToken.LT:
+                {
+                    return comparison < 0;
+                    break;
+                }
+                case ExpressionToken.GTE:
+                {
+                    return comparison >= 0;
+                    break;
+                }
+                case ExpressionToken.LTE:
+                {
+                    return comparison <= 0;
+                    break;
+                }
+            }
+
+            return false;
+        }
+
+
+        private static object Add(ExpressionToken oper, object left, object right)
         {
             var leftType = left.GetType();
              
@@ -42,7 +84,7 @@ namespace logSharp.builtins.expressions.model
 
         }
         
-        public static object Sub(object left, object right)
+        public static object Sub(ExpressionToken oper, object left, object right)
         {
             var leftType = left.GetType();
             var rightType = right.GetType();
@@ -58,7 +100,7 @@ namespace logSharp.builtins.expressions.model
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for subsctraction {leftType}  and {rightType}");
         }
         
-        public static object Mul(object left, object right)
+        public static object Mul(ExpressionToken oper, object left, object right)
         {
             var leftType = left.GetType();
             var rightType = right.GetType();
@@ -74,7 +116,7 @@ namespace logSharp.builtins.expressions.model
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for multiplication {leftType}  and {rightType}");
         }
         
-        public static object Div(object left, object right)
+        public static object Div(ExpressionToken oper, object left, object right)
         {
             var leftType = left.GetType();
             var rightType = right.GetType();
@@ -138,7 +180,7 @@ namespace logSharp.builtins.expressions.model
 
                 if (operation != null)
                 {
-                    return operation(left, right);
+                    return operation(Operator,left, right);
                 }
                 
             }

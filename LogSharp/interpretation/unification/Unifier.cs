@@ -27,8 +27,8 @@ namespace logSharp.interpretation.unification
             {
                 var srcArg = source.Parameters[i];
                 var destArg = destination.Parameters[i];
-                Valuable srcVal = null;
-                Valuable destVal = null;
+                IValuable srcVal = null;
+                IValuable destVal = null;
                
                 srcVal = GetValue(srcArg,sourceEnv);
 
@@ -60,9 +60,9 @@ namespace logSharp.interpretation.unification
         }
 
 
-        public Valuable GetValue(Valuable arg, Unification environment)
+        public IValuable GetValue(IValuable arg, Unification environment)
         {
-            Valuable val = null;
+            IValuable val = null;
             if (arg.IsVariable)
             {
                 var variable = arg as Variable;
