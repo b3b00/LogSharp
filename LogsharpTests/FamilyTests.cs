@@ -27,7 +27,7 @@ grandpa(X,Z) :- father(X,Y) father(Y,Z).
 gp(X,Y,Z) :- father(X,Y) father(Y,Z).
 brother(X,Y) :- father(Z,X) father(Z,Y).
 
-cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).";
+cof(X,F) :- bag_of(X,father(F,X), L) member(X,L).";
 
 
         public FamilyTests() : base(PrologProgram)
