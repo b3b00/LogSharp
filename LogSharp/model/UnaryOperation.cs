@@ -3,7 +3,7 @@ using logSharp.parser;
 
 namespace logSharp.model
 {
-    public class UnaryOperation : ILogSharpAst, IExpression
+    public class UnaryOperation : Scalar, ILogSharpAst, IExpression
     {
         private readonly LogSharpToken Operator;
         private readonly ILogSharpAst Expression;
@@ -14,7 +14,7 @@ namespace logSharp.model
             Expression = right;
         }
 
-        public object Evaluate(Unification unification)
+        public override object Evaluate(Unification unification)
         {
             var right = ((IExpression)Expression).Evaluate(unification);
 
@@ -40,7 +40,7 @@ namespace logSharp.model
             return null;
         }
 
-        public string Dump()
+        public override string Dump()
         {
             string oper = Operator == LogSharpToken.Minus ? "-" : "+";
             return $"{oper} {Expression.Dump()}";

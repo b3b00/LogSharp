@@ -10,7 +10,7 @@ namespace logSharp.model
 
     public delegate object Operation(LogSharpToken oper, IComparable left, IComparable right);
     
-    public class BinaryOperation : ILogSharpAst, IExpression
+    public class BinaryOperation : Scalar, ILogSharpAst, IExpression
     {
         private static readonly Type IntType = typeof(Int32);
 
@@ -201,9 +201,9 @@ namespace logSharp.model
         }
 
 
-        public string Dump()
+        public override string Dump()
         {
-            throw new NotImplementedException();
+            return "BinaryExpr";
         }
     }
 }

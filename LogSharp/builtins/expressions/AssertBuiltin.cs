@@ -1,12 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using logSharp.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
-using logSharp.model;
-using sly.parser;
-using sly.parser.generator;
 
 namespace logSharp.builtins.expressions
 {
@@ -14,8 +10,8 @@ namespace logSharp.builtins.expressions
     public class AssertBuiltin
     {
 
-        
-        
+
+
 
 
         [BuiltIn("assert/1")]
@@ -26,22 +22,21 @@ namespace logSharp.builtins.expressions
         {
             List<Unification> unifications = new List<Unification>();
 
-            if ((term is Question question))
+
+            if (term.Parameters.Count == 1 && term.Parameters[0] is IExpression expression)
             {
-                if (question.ParentTerm is AssertTerm assertTerm)
+                var result = expression.Evaluate(unificationIn);
+                Unification unificationOut = new Unification();
+                IValuable value = null;
+                if (result is bool boolRes)
                 {
-                    var result = assertTerm.Expression.Evaluate(unificationIn);
-                    Unification unificationOut = new Unification();
-                    IValuable value = null;
-                    if (result is bool boolRes)
+                    if (boolRes)
                     {
-                        if (boolRes)
-                        {
-                            return ListHelper.BuildList(Unification.Success());
-                        }
+                        return ListHelper.BuildList(Unification.Success());
                     }
                 }
             }
+
 
             return ListHelper.BuildList(Unification.Failed());
         }

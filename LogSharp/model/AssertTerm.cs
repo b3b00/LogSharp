@@ -14,10 +14,9 @@ namespace logSharp.model
         
         public string Specification => $"assert/1";
 
-        public AssertTerm(string name, IExpression expression) : base (name)
+        public AssertTerm(string name, IExpression expression) : base (name,ListHelper.BuildList<IValuable>(expression))
         {
             Expression = expression;
-            Parameters.Add(new LogString(""));
         }
 
        

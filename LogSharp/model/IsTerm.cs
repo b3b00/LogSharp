@@ -18,12 +18,10 @@ namespace logSharp.model
 
         public Variable Variable { get; set; }
 
-        public IsTerm(string name, Variable variable, IExpression expression) : base (name)
+        public IsTerm(string name, Variable variable, IExpression expression) : base (name,ListHelper.BuildList<IValuable>(variable,expression))
         {
             Variable = variable;
             Expression = expression;
-            Parameters.Add(Variable);
-            Parameters.Add(new LogString(""));
         }
         
         #region LISTS

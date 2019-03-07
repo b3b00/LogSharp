@@ -22,7 +22,7 @@ namespace logSharp.model
 
         public abstract string Dump();
 
-        public object Evaluate(Unification unification)
+        public virtual object Evaluate(Unification unification)
         {
             return RawValue;
         }

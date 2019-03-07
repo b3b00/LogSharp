@@ -22,36 +22,32 @@ namespace logSharp.builtins.expressions
         {
             List<Unification> unifications = new List<Unification>();
 
-            if (parameters[0] is Variable variable)
+            if (parameters.Count == 2 && parameters[0] is Variable variable && parameters[1] is IExpression expression)
             {
-                if ((term is Question question))
+//                if ((term is Question question))
+//                {
+//                    if (question.ParentTerm is IsTerm isTerm)
+//                    {
+                var result = expression.Evaluate(unificationIn);
+                Unification unificationOut = new Unification();
+                IValuable value = null;
+                if (result is string stringRes)
                 {
-                    if (question.ParentTerm is IsTerm isTerm)
-                    {
-                        var result = isTerm.Expression.Evaluate(unificationIn);
-                        Unification unificationOut = new Unification();
-                        IValuable value = null;
-                        if (result is string stringRes)
-                        {
-                            value = new LogString(stringRes);
-                        }
-                        else if (result is int intRes)
-                        {
-                            value = new LogInt(intRes);
-                        }
-                        else if (result is double doubleRes)
-                        {
-                            value = new LogDouble(doubleRes);
-                        }
-
-                        unificationOut.AddBinding(variable, value);
-                        unifications.Add(unificationOut);
-                    }
+                    value = new LogString(stringRes);
+                }
+                else if (result is int intRes)
+                {
+                    value = new LogInt(intRes);
+                }
+                else if (result is double doubleRes)
+                {
+                    value = new LogDouble(doubleRes);
                 }
 
+                unificationOut.AddBinding(variable, value);
+                unifications.Add(unificationOut);
                 return unifications;
             }
-
 
             return ListHelper.BuildList(Unification.Failed());
         }

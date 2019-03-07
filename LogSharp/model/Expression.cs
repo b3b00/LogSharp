@@ -3,7 +3,7 @@ using logSharp.model;
 
 namespace logSharp.model
 {
-    public interface IExpression : ILogSharpAst
+    public interface IExpression : IValuable
     {
         object Evaluate(Unification unification);
     }
