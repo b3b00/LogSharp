@@ -29,8 +29,6 @@ namespace logSharp.builtins.expressions
 
         // a right paranthesis )
         [Lexeme("\\)")] RPAREN = 10,
-
-        [Lexeme("!")] FACTORIAL = 13,
         
         [Lexeme("==")] EQUALS = 14,
         

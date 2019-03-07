@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using logSharp.interpretation.unification;
 
 namespace logSharp.model
 {
-    public class Variable : IValuable
+    public class Variable : IValuable, IExpression
     {
 
         public const string DiscardingVariable = "_";
@@ -35,6 +36,20 @@ namespace logSharp.model
         public override string ToString()
         {
             return Dump();
+        }
+        
+        public object Evaluate(Unification unification)
+        {
+            if (unification.Environment.ContainsVariable(Name))
+            {
+                var logValue = unification.Environment[Name];
+                if (logValue is Scalar scalar)
+                {
+                    return scalar.RawValue;
+                }
+            }
+
+            return null;
         }
     }
 }

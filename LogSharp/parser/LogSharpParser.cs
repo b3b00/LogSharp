@@ -1,67 +1,92 @@
+using System;
 using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using logSharp.model;
 using logSharp.model;
 using sly.lexer;
 using sly.parser.parser;
+using Expression = System.Linq.Expressions.Expression;
 
 namespace logSharp.parser
 {
     public class LogSharpParser
     {
-
         [Production("program : rule *")]
         public ILogSharpAst program(List<ILogSharpAst> rules)
         {
-            return new LogSharpProgram(rules.Cast<Rule>().ToList());
+            try
+            {
+                return new LogSharpProgram(rules.Cast<Rule>().ToList());
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
+        #region rules
+        
         [Production("rule : question")]
         public ILogSharpAst factRule(ILogSharpAst question)
         {
             return question;
         }
-        
+
         [Production("rule : fact")]
         public ILogSharpAst questionRule(ILogSharpAst fact)
         {
             return fact;
         }
-        
+
         [Production("rule : predicate")]
         public ILogSharpAst predicateRule(Rule predicate)
         {
             return predicate;
         }
+        
+        #endregion
+        
+        #region predicates
 
         [Production("predicate : term Imply[d] term* Dot[d]")]
         public ILogSharpAst Predicate(ILogSharpAst head, List<ILogSharpAst> clauses)
         {
             return new Predicate(head as Term, clauses.Cast<Term>().ToList());
         }
+        
+        #endregion
 
+        #region facts
 
         [Production("fact : term Dot[d]")]
         public ILogSharpAst Fact(ILogSharpAst clause)
         {
             return new Fact(clause as Term);
         }
-        
-        [Production("question : term QuestionMark[d]")]
-        public ILogSharpAst Question(ILogSharpAst clause)
-        {
-            return new Question(clause as Term);
-        }
-        
+
+
         [Production("fact : Atom Dot[d]")]
         public ILogSharpAst fact(Token<LogSharpToken> atom)
         {
             return new Fact(atom.Value);
         }
 
-        
+        #endregion
+
+        #region question
+
+        [Production("question : term QuestionMark[d]")]
+        public ILogSharpAst Question(ILogSharpAst clause)
+        {
+            return new Question(clause as Term);
+        }
+
+        #endregion
+
+        #region lists
+
         [Production("list :  LeftBrack[d]   RightBrack[d]")]
         public ILogSharpAst EmptyList()
         {
@@ -71,9 +96,9 @@ namespace logSharp.parser
         [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
         public ILogSharpAst ListTermConstructor(ILogSharpAst head, ILogSharpAst tail)
         {
-            return Term.ListTerm( new List<IValuable>() {head as IValuable, tail as IValuable});
+            return Term.ListTerm(new List<IValuable>() {head as IValuable, tail as IValuable});
         }
-        
+
         [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
         public ILogSharpAst ListTermLiteral(ILogSharpAst headParam, List<Group<LogSharpToken, ILogSharpAst>> tailParams)
         {
@@ -85,19 +110,22 @@ namespace logSharp.parser
                 parameters.Add(param);
             }
 
-            
-            
+
             return Term.ListTerm(
                 parameters
             );
         }
 
+        #endregion
+
+
+        #region terms
         
         [Production("term : Atom LeftPar[d]  RightPar[d]")]
-        public ILogSharpAst termNoArg(Token<LogSharpToken> clauseName )
+        public ILogSharpAst termNoArg(Token<LogSharpToken> clauseName)
         {
             List<IValuable> parameters = new List<IValuable>();
-            
+
             return new Term(
                 clauseName.StringWithoutQuotes,
                 parameters
@@ -105,45 +133,92 @@ namespace logSharp.parser
         }
 
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
-        public ILogSharpAst term(Token<LogSharpToken> clauseName, ILogSharpAst headParam, List<Group<LogSharpToken, ILogSharpAst>> tailParams)
+        public ILogSharpAst term(Token<LogSharpToken> clauseName, ILogSharpAst headParam,
+            List<Group<LogSharpToken, ILogSharpAst>> tailParams)
         {
-            List<IValuable> parameters = new List<IValuable>();
-            parameters.Add(headParam as IValuable);
-            foreach (var paramGroup in tailParams)
+            if (clauseName.Value == "is")
             {
-                var param = paramGroup.Value(0) as IValuable;
-                parameters.Add(param);
+                if (headParam is Variable variable)
+                {
+                    if (tailParams.Count == 1)
+                    {
+                        var secondParam = tailParams[0];
+                        if (secondParam.Count == 1)
+                        {
+                            var secondParamAst = secondParam.Value(0);
+                            var expression = secondParamAst as IExpression;
+                            if (expression != null)
+                            {
+
+                                return new IsTerm(clauseName.Value, variable, expression);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (clauseName.Value == "assert")
+            {
+                if (headParam is IExpression expression)
+                {
+                    return new AssertTerm(clauseName.Value, expression);
+                }
+            }
+            else
+            {
+                List<IValuable> parameters = new List<IValuable>();
+                parameters.Add(headParam as IValuable);
+                foreach (var paramGroup in tailParams)
+                {
+                    var param = paramGroup.Value(0) as IValuable;
+                    parameters.Add(param);
+                }
+
+                return new Term(
+                    clauseName.StringWithoutQuotes,
+                    parameters
+                );
             }
 
-            return new Term(
-                clauseName.StringWithoutQuotes,
-                parameters
-                );
+            return null;
         }
+        
+        #endregion
 
-        [Production("scalarorTerm : scalar")]
-        public ILogSharpAst scalarOrTermScalar(ILogSharpAst scal)
+        #region scalars terms and expressions
+        
+        [Production("scalarorTerm : LogSharpParser_expressions")]
+        public ILogSharpAst scalarOrTermExpression(ILogSharpAst scal)
         {
             return scal;
         }
-        
+
+//        [Production("scalarorTerm : scalar")]
+//        public ILogSharpAst scalarOrTermScalar(ILogSharpAst scal)
+//        {
+//            return scal;
+//        }
+
         [Production("scalarorTerm : term")]
         public ILogSharpAst scalarOrTermTerm(ILogSharpAst term)
         {
             return term;
         }
-        
+
         [Production("scalarorTerm : list")]
         public ILogSharpAst scalarOrTermList(ILogSharpAst list)
         {
             return list;
         }
         
+        #endregion
+
+    #region scalars
+        
         
         [Production("scalar : Variable")]
-        public ILogSharpAst AtomVariable(Token<LogSharpToken> atom)
+        public ILogSharpAst AtomVariable(Token<LogSharpToken> variable)
         {
-            return new Variable(atom.Value);
+            return new Variable(variable.Value);
         }
 
         [Production("scalar : Atom")]
@@ -151,25 +226,109 @@ namespace logSharp.parser
         {
             return new Atom(atom.Value);
         }
+
         [Production("scalar : String")]
         public ILogSharpAst StringScalar(Token<LogSharpToken> stringToken)
         {
             return new LogString(stringToken.StringWithoutQuotes);
         }
-        
+
         [Production("scalar : Integer")]
         public ILogSharpAst IntScalar(Token<LogSharpToken> intToken)
         {
             return new LogInt(intToken.IntValue);
         }
-        
+
         [Production("scalar : Double")]
         public ILogSharpAst DoubleScalar(Token<LogSharpToken> doubleToken)
         {
             return new LogDouble(doubleToken.DoubleValue);
         }
-        
-        
-        
+
+        #endregion
+
+        #region expressions
+
+        [Operation((int) LogSharpToken.Plus, Affix.InFix, Associativity.Right, 10)]
+        [Operation((int) LogSharpToken.Minus, Affix.InFix, Associativity.Left, 10)]
+        public ILogSharpAst BinaryTermExpression(ILogSharpAst left, Token<LogSharpToken> operation, ILogSharpAst right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+
+        [Operation((int) LogSharpToken.Times, Affix.InFix, Associativity.Right, 50)]
+        [Operation((int) LogSharpToken.Divide, Affix.InFix, Associativity.Left, 50)]
+        public ILogSharpAst BinaryFactorExpression(ILogSharpAst left, Token<LogSharpToken> operation, ILogSharpAst right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+
+        [Operation((int) LogSharpToken.Minus, Affix.PreFix, Associativity.Right, 100)]
+        public ILogSharpAst PreFixExpression(Token<LogSharpToken> operation, ILogSharpAst value)
+        {
+            return new UnaryOperation(operation.TokenID, value);
+        }
+
+
+        [Operation((int) LogSharpToken.EqualsTo, Affix.InFix, Associativity.Right, 5)]
+        [Operation((int) LogSharpToken.Different, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) LogSharpToken.Gt, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) LogSharpToken.Lt, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) LogSharpToken.Gte, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) LogSharpToken.Lte, Affix.InFix, Associativity.Left, 5)]
+        public ILogSharpAst BinaryComparisonExpression(ILogSharpAst left, Token<LogSharpToken> operation,
+            ILogSharpAst right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+
+        [Operand]
+        [Production("operand : primary_value")]
+        public ILogSharpAst OperandValue(ILogSharpAst value)
+        {
+            return value;
+        }
+
+
+        [Production("primary_value : Variable")]
+        public ILogSharpAst AtomExpressionVariable(Token<LogSharpToken> variable)
+        {
+            return new Variable(variable.Value);
+        }
+
+        [Production("primary_value : Atom")]
+        public ILogSharpAst AtomExpressionScalar(Token<LogSharpToken> atom)
+        {
+            return new Atom(atom.Value);
+        }
+
+        [Production("primary_value : String")]
+        public ILogSharpAst StringExpressionScalar(Token<LogSharpToken> stringToken)
+        {
+            return new LogString(stringToken.StringWithoutQuotes);
+        }
+
+        [Production("primary_value : Integer")]
+        public ILogSharpAst IntExpressionScalar(Token<LogSharpToken> intToken)
+        {
+            return new LogInt(intToken.IntValue);
+        }
+
+        [Production("primary_value : Double")]
+        public ILogSharpAst DoubleExpressionScalar(Token<LogSharpToken> doubleToken)
+        {
+            return new LogDouble(doubleToken.DoubleValue);
+        }
+
+        [Production("primary_value : LPAREN SimpleExpressionParserWithContext_expressions RPAREN")]
+        public ILogSharpAst OperandParens(Token<LogSharpToken> lparen, ILogSharpAst value, Token<LogSharpToken> rparen)
+        {
+            return value;
+        }
+
+        #endregion
     }
 }

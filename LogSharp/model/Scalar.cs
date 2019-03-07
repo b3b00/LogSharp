@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using logSharp.interpretation.unification;
 
 namespace logSharp.model
 {
-    public abstract class Scalar :  IValuable
+    public abstract class Scalar :  IValuable,  IExpression
     {
         public virtual object RawValue { get; }
         
@@ -20,5 +21,10 @@ namespace logSharp.model
         public Dictionary<string,object> Data { get; set; }
 
         public abstract string Dump();
+
+        public object Evaluate(Unification unification)
+        {
+            return RawValue;
+        }
     }
 }

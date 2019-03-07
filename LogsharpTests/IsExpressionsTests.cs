@@ -8,9 +8,9 @@ namespace ogsharpTests
     {
         public const string PrologProgram = @"
 
-plusone(X,Y) :- is(X,""Y + 1"").
-cstexpr(X) :- is(X,""1 + 1""). 
-complexexpr(R,X,Y,Z) :- is(R,""X + Y * Z"").
+plusone(X,Y) :- is(X,Y + 1).
+cstexpr(X) :- is(X,1 + 1). 
+complexexpr(R,X,Y,Z) :- is(R,X + Y * Z).
 "; 
         
         // core builtins

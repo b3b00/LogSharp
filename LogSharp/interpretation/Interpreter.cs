@@ -120,7 +120,7 @@ namespace logSharp.interpretation
 
         public IEnumerable<Unification> Search(string question, Unification unification = null)
         {
-            var parsedQuestion = Parser.Parse(question, "rule");
+            var parsedQuestion = Parser.Parse(question, "question");
             if (parsedQuestion.IsOk)
             {
                 return Search(parsedQuestion.Result as Question, unification);
@@ -209,11 +209,14 @@ namespace logSharp.interpretation
                         {
                             foreach (var builtInUnification in builtInUnifications)
                             {
-                                Goal built = new Goal(current.Rule, current, builtInUnification);
-                                built.Unification.AddBindings(current.Unification);
-                                built.Index = current.Index + 1;
-                                Trace($"stck {built} @ {built.Index}");
-                                stack.Push(built);
+                                if (builtInUnification.IsOk)
+                                {
+                                    Goal built = new Goal(current.Rule, current, builtInUnification);
+                                    built.Unification.AddBindings(current.Unification);
+                                    built.Index = current.Index + 1;
+                                    Trace($"stck {built} @ {built.Index}");
+                                    stack.Push(built);
+                                }
                             }
                         }
                     }

@@ -73,7 +73,7 @@ namespace logSharp.interpretation.unification
             }
             else
             {
-                dump.AppendLine("don't know.");
+                dump.AppendLine("no.");
             }
 
             return dump.ToString();

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using logSharp.builtins.expressions.model;
+using logSharp.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
@@ -14,44 +14,23 @@ namespace logSharp.builtins.expressions
     public class AssertBuiltin
     {
 
-        private static Parser<ExpressionToken, Expression> parser;
-
-        public static Parser<ExpressionToken, Expression> Parser
-        {
-            get
-            {
-                if (parser == null)
-                {
-                    var startingRule = $"{typeof(VariableExpressionParser).Name}_expressions";
-                    var parserInstance = new VariableExpressionParser();
-                    var builder = new ParserBuilder<ExpressionToken, Expression>();
-                    parser = builder.BuildParser(parserInstance, ParserType.LL_RECURSIVE_DESCENT, startingRule).Result;
-                }
-
-                return parser;
-            }
-        }
-
+        
+        
 
 
         [BuiltIn("assert/1")]
         // param 1 : variable / value ?
         // param 2 : expression a a string
-        public static List<Unification> AssertPrim(Term isTerm, Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> AssertPrim(Term term, Interpreter interpreter, Unification unificationIn,
             List<IValuable> parameters)
         {
             List<Unification> unifications = new List<Unification>();
 
-            if (parameters[0] is LogString source)
+            if ((term is Question question))
             {
-
-                var parseResult = Parser.Parse(source.Value, $"{typeof(VariableExpressionParser).Name}_expressions");
-
-                if (parseResult.IsOk)
+                if (question.ParentTerm is AssertTerm assertTerm)
                 {
-                    Expression expression = parseResult.Result;
-                    isTerm.Data["compiled"] = expression;
-                    var result = expression.Evaluate(unificationIn);
+                    var result = assertTerm.Expression.Evaluate(unificationIn);
                     Unification unificationOut = new Unification();
                     IValuable value = null;
                     if (result is bool boolRes)
@@ -62,12 +41,8 @@ namespace logSharp.builtins.expressions
                         }
                     }
                 }
-                else
-                {
-                    throw new ExpressionException(ExpressionError.Error,
-                        $"errors : {string.Join(" ", parseResult.Errors.Select(e => e.ErrorMessage).ToArray<string>())}");
-                }
             }
+
             return ListHelper.BuildList(Unification.Failed());
         }
 

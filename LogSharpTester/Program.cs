@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using logSharp.builtins.expressions;
-using logSharp.builtins.expressions.model;
+using logSharp.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
-using logSharp.model;
 using logSharp.parser;
-using LogSharpTester;
 using sly.lexer;
 using sly.parser;
 using sly.parser.generator;
@@ -18,24 +14,7 @@ namespace Tester
 {
     class Program
     {
-        private static Parser<ExpressionToken, Expression> expressionParser;
         
-        public static Parser<ExpressionToken, Expression> ExpressionParser
-        {
-            get
-            {
-                if (expressionParser == null)
-                {
-                    var startingRule = $"{typeof(VariableExpressionParser).Name}_expressions";
-                    var parserInstance = new VariableExpressionParser();
-                    var builder = new ParserBuilder<ExpressionToken, Expression>();
-                    expressionParser = builder.BuildParser(parserInstance, ParserType.LL_RECURSIVE_DESCENT, startingRule).Result;
-                    ;
-                }
-
-                return expressionParser;
-            }
-        }
         
         public static Parser<LogSharpToken,ILogSharpAst> BuildParser()
         {
@@ -51,11 +30,11 @@ namespace Tester
         static void Is()
         {
             string program = @"
-            plusone(X,Y) :- is(X,""1 + Y""). 
+            plusone(X,Y) :- is(X,1 + Y). 
 ";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
-            var t = parser.Parse(@"plusone(A,1)?");
+            var t = parser.Parse(@"plusone(A,1)?","question");
             if (parsed.IsOk)
             {
                 Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
@@ -72,23 +51,28 @@ namespace Tester
         static void Assert()
         {
             string program = @"
-            gt(X,Y) :- assert(""X > Y""). 
-            lte(X,Y) :- assert(""X <= Y"").
-            eq(X,Y) :- assert(""X == Y"").
-            diff(X,Y) :- assert(""X != Y"").
+            gt(X,Y) :- assert(X > Y). 
+            lte(X,Y) :- assert(X <= Y).
+            eq(X,Y) :- assert(X == Y).
+            diff(X,Y) :- assert(X != Y).
 ";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
             
-            List<string> questions = ListHelper.BuildList("gt(1, 2)?","lte(2 , 2)?","eq(3,3)?","diff(48,12)");
+            List<string> questions = ListHelper.BuildList(
+                "gt(1, 2)?",
+                "lte(2 , 2)?",
+                "eq(3,3)?",
+                "diff(48,12)?",
+                "eq(48,12)?");
 
             foreach (var q in questions)
             {
-                
+                Console.WriteLine(q);
                 Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
                 
                 var r = interpreter.Search(q).ToList();
-                Console.WriteLine(q);
+                
                 r.ForEach(u => Console.WriteLine(u.ToString())); 
                 ; 
             }
@@ -146,7 +130,7 @@ namespace Tester
 //            ;
 //            PrologRepl.Loop(args);
 //Is();
-            Assert();
+          Assert();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
         }

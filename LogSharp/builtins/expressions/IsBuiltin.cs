@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using logSharp.builtins.expressions.model;
+using logSharp.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
@@ -14,52 +14,27 @@ namespace logSharp.builtins.expressions
     public class IsBuiltin
     {
 
-        private static Parser<ExpressionToken, Expression> parser;
-
-        public static Parser<ExpressionToken, Expression> Parser
-        {
-            get
-            {
-                if (parser == null)
-                {
-                    var startingRule = $"{typeof(VariableExpressionParser).Name}_expressions";
-                    var parserInstance = new VariableExpressionParser();
-                    var builder = new ParserBuilder<ExpressionToken, Expression>();
-                    parser = builder.BuildParser(parserInstance, ParserType.LL_RECURSIVE_DESCENT, startingRule).Result;
-                }
-
-                return parser;
-            }
-        }
-
-
-
         [BuiltIn("is/2")]
         // param 1 : variable / value ?
         // param 2 : expression a a string
-        public static List<Unification> IsPrim(Term isTerm, Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> IsPrim(Term term, Interpreter interpreter, Unification unificationIn,
             List<IValuable> parameters)
         {
             List<Unification> unifications = new List<Unification>();
-            
+
             if (parameters[0] is Variable variable)
             {
-                var p1 = parameters[1];
-                if (p1 is LogString source)
+                if ((term is Question question))
                 {
-                    var parseResult = Parser.Parse(source.Value, $"{typeof(VariableExpressionParser).Name}_expressions");
-
-                    if (parseResult.IsOk)
+                    if (question.ParentTerm is IsTerm isTerm)
                     {
-                        Expression expression = parseResult.Result;
-                        isTerm.Data["compiled"] = expression;
-                        var result = expression.Evaluate(unificationIn);
+                        var result = isTerm.Expression.Evaluate(unificationIn);
                         Unification unificationOut = new Unification();
                         IValuable value = null;
                         if (result is string stringRes)
                         {
                             value = new LogString(stringRes);
-                        } 
+                        }
                         else if (result is int intRes)
                         {
                             value = new LogInt(intRes);
@@ -68,20 +43,15 @@ namespace logSharp.builtins.expressions
                         {
                             value = new LogDouble(doubleRes);
                         }
-                        unificationOut.AddBinding(variable,value);
+
+                        unificationOut.AddBinding(variable, value);
                         unifications.Add(unificationOut);
                     }
-                    else
-                    {
-                        throw new ExpressionException(ExpressionError.Error,
-                            $"errors : {string.Join(" ", parseResult.Errors.Select(e => e.ErrorMessage).ToArray<string>())}");
-                    }
-
-                     
-                    
-                    return unifications;
                 }
+
+                return unifications;
             }
+
 
             return ListHelper.BuildList(Unification.Failed());
         }
