@@ -55,6 +55,7 @@ namespace Tester
             lte(X,Y) :- assert(X <= Y).
             eq(X,Y) :- assert(X == Y).
             diff(X,Y) :- assert(X != Y).
+            gtc(X,Y) :- assert(X + Y > X * Y).     
 ";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
@@ -64,7 +65,8 @@ namespace Tester
                 "lte(2 , 2)?",
                 "eq(3,3)?",
                 "diff(48,12)?",
-                "eq(48,12)?");
+                "eq(48,12)?",
+                "gtc(2,1)?");
 
             foreach (var q in questions)
             {
