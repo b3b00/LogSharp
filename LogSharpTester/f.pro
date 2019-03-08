@@ -18,3 +18,6 @@ member_of(X,[X|_]).
 member_of(X,[_|L]) :- member_of(X,L).
 
 cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
+
+
+bro(X,Y) :- father(Z,X) father(Z,Y) assert(X != Y). 
