@@ -7,11 +7,11 @@ namespace LogsharpTests
     public class AssertExpressionsTests : BaseTest
     {
         private const string PrologProgram = @"
-            gt(X,Y) :- assert(X > Y).     
-            lte(X,Y) :- assert(X <= Y).
-            eq(X,Y) :- assert(X == Y).
-            diff(X,Y) :- assert(X != Y).
-            gtc(X,Y) :- assert(X + Y > X * Y). 
+            gt(X,Y) :- X > Y.     
+            lte(X,Y) :- X <= Y.
+            eq(X,Y) :- X == Y.
+            diff(X,Y) :- X != Y.
+            gtc(X,Y) :- X + Y > X * Y. 
 "; 
         
         

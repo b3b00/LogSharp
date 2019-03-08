@@ -30,11 +30,13 @@ namespace LogSharpTester
         static void Is()
         {
             string program = @"
-            plusone(X,Y) :- is(X,1 + Y). 
+plusone(X,Y) :- X is Y + 1 .
+cstexpr(X) :- X is 1 + 1 . 
+complexexpr(R,X,Y,Z) :- R is X + Y * Z).
 ";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
-            var t = parser.Parse(@"plusone(A,1)?","question");
+            var t = parser.Parse(@"complexexpr(A,100,2,6)?","question");
             if (parsed.IsOk)
             {
                 Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
@@ -56,6 +58,12 @@ namespace LogSharpTester
             eq(X,Y) :- assert(X == Y).
             diff(X,Y) :- assert(X != Y).
             gtc(X,Y) :- assert(X + Y > X * Y).";
+            program = @"
+            gt(X,Y) :- X > Y. 
+            lte(X,Y) :- X <= Y.
+            eq(X,Y) :- X == Y.
+            diff(X,Y) :- X != Y.
+            gtc(X,Y) :- X + Y > X * Y.";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
             
