@@ -10,7 +10,7 @@ using sly.lexer;
 using sly.parser;
 using sly.parser.generator;
 
-namespace Tester
+namespace LogSharpTester
 {
     class Program
     {
@@ -55,8 +55,7 @@ namespace Tester
             lte(X,Y) :- assert(X <= Y).
             eq(X,Y) :- assert(X == Y).
             diff(X,Y) :- assert(X != Y).
-            gtc(X,Y) :- assert(X + Y > X * Y).     
-";
+            gtc(X,Y) :- assert(X + Y > X * Y).";
             var parser = BuildParser();
             var parsed = parser.Parse(program);
             
@@ -79,16 +78,6 @@ namespace Tester
                 ; 
             }
             
-            if (parsed.IsOk)
-            {
-                Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
-                
-                var r = interpreter.Search("get(1,2)?").ToList();
-                r.ForEach(u => Console.WriteLine(u.ToString())); 
-                ;
-            }
-
-
 
         }
         
