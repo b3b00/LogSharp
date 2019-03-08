@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace ogsharpTests
+namespace LogsharpTests
 {
     public class ListTests : BaseTest
     {

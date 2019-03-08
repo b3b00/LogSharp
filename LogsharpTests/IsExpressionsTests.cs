@@ -2,7 +2,7 @@ using System;
 using logSharp.model;
 using Xunit;
 
-namespace ogsharpTests
+namespace LogsharpTests
 {
     public class IsExpressionsTests : BaseTest
     {
