@@ -29,32 +29,26 @@ namespace logSharp.model
                 case LogSharpToken.EqualsTo:
                 {
                     return comparison == 0;
-                    break;
                 }
                 case LogSharpToken.Different :
                 {
                     return comparison != 0;
-                    break;
                 }
                 case LogSharpToken.Gt:
                 {
                     return comparison > 0;
-                    break;
                 }
                 case LogSharpToken.Lt:
                 {
                     return comparison < 0;
-                    break;
                 }
                 case LogSharpToken.Gte:
                 {
                     return comparison >= 0;
-                    break;
                 }
                 case LogSharpToken.Lte:
                 {
                     return comparison <= 0;
-                    break;
                 }
             }
 

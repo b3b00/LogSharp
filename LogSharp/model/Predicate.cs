@@ -9,6 +9,7 @@ namespace logSharp.model
 
         public Predicate(Term head, List<Term> clauses) : base(head, clauses)
         {
+            ;
         }
         
         

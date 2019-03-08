@@ -52,6 +52,9 @@ namespace logSharp.parser
         [Lexeme(GenericToken.SugarToken,"?")]
         QuestionMark = 18,
         
+        [Lexeme(GenericToken.KeyWord,"is")]
+        Is = 19,
+        
         
         #endregion
         

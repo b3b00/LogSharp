@@ -1,12 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using logSharp.model;
 using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
-using logSharp.model;
-using sly.parser;
-using sly.parser.generator;
 
 namespace logSharp.builtins.expressions
 {
@@ -14,9 +12,11 @@ namespace logSharp.builtins.expressions
     public class IsBuiltin
     {
 
+        public const string IsBuiltinName = "is"; 
+        
         [BuiltIn("is/2")]
         // param 1 : variable / value ?
-        // param 2 : expression a a string
+        // param 2 : expression as an expression tree
         public static List<Unification> IsPrim(Term term, Interpreter interpreter, Unification unificationIn,
             List<IValuable> parameters)
         {
@@ -24,10 +24,7 @@ namespace logSharp.builtins.expressions
 
             if (parameters.Count == 2 && parameters[0] is Variable variable && parameters[1] is IExpression expression)
             {
-//                if ((term is Question question))
-//                {
-//                    if (question.ParentTerm is IsTerm isTerm)
-//                    {
+
                 var result = expression.Evaluate(unificationIn);
                 Unification unificationOut = new Unification();
                 IValuable value = null;

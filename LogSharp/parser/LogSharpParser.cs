@@ -2,19 +2,17 @@ using System;
 using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using logSharp.model;
+using logSharp.builtins.expressions;
 using logSharp.model;
 using sly.lexer;
 using sly.parser.parser;
-using Expression = System.Linq.Expressions.Expression;
 
 namespace logSharp.parser
 {
     public class LogSharpParser
     {
         [Production("program : rule *")]
-        public ILogSharpAst program(List<ILogSharpAst> rules)
+        public ILogSharpAst Program(List<ILogSharpAst> rules)
         {
             try
             {
@@ -29,19 +27,19 @@ namespace logSharp.parser
         #region rules
         
         [Production("rule : question")]
-        public ILogSharpAst factRule(ILogSharpAst question)
+        public ILogSharpAst FactRule(ILogSharpAst question)
         {
             return question;
         }
 
         [Production("rule : fact")]
-        public ILogSharpAst questionRule(ILogSharpAst fact)
+        public ILogSharpAst QuestionRule(ILogSharpAst fact)
         {
             return fact;
         }
 
         [Production("rule : predicate")]
-        public ILogSharpAst predicateRule(Rule predicate)
+        public ILogSharpAst PredicateRule(Rule predicate)
         {
             return predicate;
         }
@@ -61,14 +59,14 @@ namespace logSharp.parser
         #region facts
 
         [Production("fact : term Dot[d]")]
-        public ILogSharpAst Fact(ILogSharpAst clause)
+        public ILogSharpAst TermFact(ILogSharpAst clause)
         {
             return new Fact(clause as Term);
         }
 
 
         [Production("fact : Atom Dot[d]")]
-        public ILogSharpAst fact(Token<LogSharpToken> atom)
+        public ILogSharpAst AtomFact(Token<LogSharpToken> atom)
         {
             return new Fact(atom.Value);
         }
@@ -90,13 +88,13 @@ namespace logSharp.parser
         [Production("list :  LeftBrack[d]   RightBrack[d]")]
         public ILogSharpAst EmptyList()
         {
-            return Term.EmptyListTerm();
+            return model.Term.EmptyListTerm();
         }
 
         [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
         public ILogSharpAst ListTermConstructor(ILogSharpAst head, ILogSharpAst tail)
         {
-            return Term.ListTerm(new List<IValuable>() {head as IValuable, tail as IValuable});
+            return model.Term.ListTerm(new List<IValuable>() {head as IValuable, tail as IValuable});
         }
 
         [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
@@ -111,7 +109,7 @@ namespace logSharp.parser
             }
 
 
-            return Term.ListTerm(
+            return model.Term.ListTerm(
                 parameters
             );
         }
@@ -120,52 +118,45 @@ namespace logSharp.parser
 
 
         #region terms
+
+        [Production("term : Variable Is[d]  LogSharpParser_expressions")]
+        public ILogSharpAst Is(Token<LogSharpToken> variableToken,/*Token<LogSharpToken> isToken,*/ ILogSharpAst expression)
+        {
+            if (expression is IExpression expr)
+            {
+                var variable = new Variable(variableToken.Value); 
+                return new Term(IsBuiltin.IsBuiltinName, variable, expr);
+            }
+
+            return null;
+        }
+        
+        [Production("term : LogSharpParser_expressions")]
+        public ILogSharpAst Assert(ILogSharpAst expr)
+        {
+            if (expr is IExpression expression)
+            {
+                return new Term(AssertBuiltin.AssertBuiltinName,expression);
+            }
+
+            return null;
+        }
         
         [Production("term : Atom LeftPar[d]  RightPar[d]")]
-        public ILogSharpAst termNoArg(Token<LogSharpToken> clauseName)
+        public ILogSharpAst TermNoArg(Token<LogSharpToken> clauseName)
         {
             List<IValuable> parameters = new List<IValuable>();
 
             return new Term(
-                clauseName.StringWithoutQuotes,
-                parameters
+                clauseName.StringWithoutQuotes
             );
         }
 
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
-        public ILogSharpAst term(Token<LogSharpToken> clauseName, ILogSharpAst headParam,
-            List<Group<LogSharpToken, ILogSharpAst>> tailParams)
+        public ILogSharpAst Term(Token<LogSharpToken> clauseName, ILogSharpAst headParam,
+            IEnumerable<Group<LogSharpToken, ILogSharpAst>> tailParams)
         {
-            if (clauseName.Value == "is")
-            {
-                if (headParam is Variable variable)
-                {
-                    if (tailParams.Count == 1)
-                    {
-                        var secondParam = tailParams[0];
-                        if (secondParam.Count == 1)
-                        {
-                            var secondParamAst = secondParam.Value(0);
-                            var expression = secondParamAst as IExpression;
-                            if (expression != null)
-                            {
-
-                                return new IsTerm(clauseName.Value, variable, expression);
-                            }
-                        }
-                    }
-                }
-            }
-            else if (clauseName.Value == "assert")
-            {
-                if (headParam is IExpression expression)
-                {
-                    return new AssertTerm(clauseName.Value, expression);
-                }
-            }
-            else
-            {
-                List<IValuable> parameters = new List<IValuable>();
+                var parameters = new List<IValuable>();
                 parameters.Add(headParam as IValuable);
                 foreach (var paramGroup in tailParams)
                 {
@@ -175,11 +166,8 @@ namespace logSharp.parser
 
                 return new Term(
                     clauseName.StringWithoutQuotes,
-                    parameters
+                    parameters.ToArray()
                 );
-            }
-
-            return null;
         }
         
         #endregion
@@ -187,25 +175,19 @@ namespace logSharp.parser
         #region scalars terms and expressions
         
         [Production("scalarorTerm : LogSharpParser_expressions")]
-        public ILogSharpAst scalarOrTermExpression(ILogSharpAst scal)
+        public ILogSharpAst ScalarOrTermExpression(ILogSharpAst scal)
         {
             return scal;
         }
 
-//        [Production("scalarorTerm : scalar")]
-//        public ILogSharpAst scalarOrTermScalar(ILogSharpAst scal)
-//        {
-//            return scal;
-//        }
-
         [Production("scalarorTerm : term")]
-        public ILogSharpAst scalarOrTermTerm(ILogSharpAst term)
+        public ILogSharpAst ScalarOrTermTerm(ILogSharpAst term)
         {
             return term;
         }
 
         [Production("scalarorTerm : list")]
-        public ILogSharpAst scalarOrTermList(ILogSharpAst list)
+        public ILogSharpAst ScalarOrTermList(ILogSharpAst list)
         {
             return list;
         }

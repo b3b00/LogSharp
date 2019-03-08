@@ -10,7 +10,7 @@ namespace logSharp.builtins.expressions
     public class AssertBuiltin
     {
 
-
+        public const string AssertBuiltinName = "assert";
 
 
 
@@ -27,7 +27,6 @@ namespace logSharp.builtins.expressions
             {
                 var result = expression.Evaluate(unificationIn);
                 Unification unificationOut = new Unification();
-                IValuable value = null;
                 if (result is bool boolRes)
                 {
                     if (boolRes)

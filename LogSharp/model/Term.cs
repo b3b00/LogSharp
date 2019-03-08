@@ -31,20 +31,25 @@ namespace logSharp.model
         public int Arity => Parameters.Count;
         public string Specification => $"{Name}/{Arity}";
 
-        public Term(string name) : this (name, new List<IValuable>())
-        {
-            ;
-        }
-
-        public Term() : this(null, new List<IValuable>())
-        {
-        }
-        
-
-        public Term(string name, List<IValuable> parameters)
+        public Term(string name)
         {
             Name = name;
-            Parameters = parameters;
+            Parameters = new List<IValuable>();
+        }
+
+        public Term() : this(null)
+        {
+        }
+
+        public Term(string name, List<IValuable> parameters) : this(name, parameters.ToArray())
+        {
+        }
+
+
+        public Term(string name, params IValuable[] parameters)
+        {
+            Name = name;
+            Parameters = parameters.ToList<IValuable>();
             Data = new Dictionary<string, object>();
         }
         
