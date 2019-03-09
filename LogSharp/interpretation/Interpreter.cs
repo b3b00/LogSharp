@@ -165,6 +165,18 @@ namespace logSharp.interpretation
                         if (current.Unification.IsOk)
                         {
                             resultFound = true;
+                            // restrict unification to free vars 
+                            var outVars = current.Head.FreeVariable;
+                            var toRemove = new List<string>();
+                            foreach (var binding in current.Unification.Environment.Environment)
+                            {
+                                if (!outVars.Contains(binding.Key))
+                                {
+                                    toRemove.Add(binding.Key);
+                                    
+                                }
+                            }
+                            toRemove.ForEach(b => current.Unification.Environment.Environment.Remove(b));
                             yield return current.Unification;
                         }
 

@@ -118,10 +118,31 @@ complexexpr(R,X,Y,Z) :- R is X + Y * Z).
             var res = unifier.UnifyTerms(src, srcEnv, dest, new Unification());
             ;
 
-
-
-
         }
+
+        static void ChildOf()
+        {
+            
+            var parser = BuildParser();
+            
+           
+            
+           
+                Interpreter interpreter = new Interpreter(false,null, parser, new NestedTermUnifier());
+
+                interpreter.LoadProgramFile("f.pro");
+
+                interpreter.Verbose = true;
+                interpreter.DebugOutput = "log.log";
+                var unifications = interpreter.Search("cof(olivier,christian)?").ToList();
+
+                foreach (var u in unifications)
+                {
+                    Console.WriteLine(u);
+                }
+                ;
+
+        } 
         
         static void Main(string[] args)
         {
@@ -129,7 +150,8 @@ complexexpr(R,X,Y,Z) :- R is X + Y * Z).
 //            ;
 //            PrologRepl.Loop(args);
 //Is();
-          Assert();
+          //Assert();
+          ChildOf();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
         }

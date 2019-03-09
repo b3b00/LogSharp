@@ -99,6 +99,14 @@ namespace logSharp.interpretation.unification
                     }
                 }
             }
+            
+            foreach (var binding in sourceEnv.Environment.Environment)
+            {
+                if (!unification.Environment.ContainsVariable(binding.Key))
+                {
+                    unification.AddBinding(binding.Key,binding.Value);
+                }
+            }
 
             unification.IsOk = true;
             return unification;

@@ -9,6 +9,26 @@ namespace logSharp.model
 {
     public class Term : IValuable
     {
+        public List<string> FreeVariable
+        {
+            get
+            {
+                var variables = new List<string>();
+                foreach (var parameter in Parameters)
+                {
+                    if (parameter is Variable variable)
+                    {
+                        variables.Add(variable.Name);
+                    }
+                    else if (parameter is Term term)
+                    {
+                        variables.AddRange(term.FreeVariable);
+                    }
+                }
+
+                return variables;
+            }
+        }
         public const string ListConstructor = "list";
         public bool IsScalar => false;
 

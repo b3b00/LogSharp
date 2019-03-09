@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace logSharp.interpretation
         public int Count => Goals.Count;
 
         public bool IsOk => Unification.IsOk;
+
+        public int Depth => Parent == null ? 0 : Parent.Depth + 1; 
 
 
         public bool IsFact => Rule != null && Rule.IsFact;
@@ -95,17 +98,16 @@ namespace logSharp.interpretation
         public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
+            var tabs = new String('\t', Depth);
             if (Rule != null)
             {
-                dump.AppendLine(Rule + " @ " + Index);
+                dump.AppendLine($"{tabs}Depth>{Depth}<  {Rule}  @ {Index} {Unification.Environment.ToString()}");
             }
             else
             {
-                dump.AppendLine(Head + " @ " + Index);
+                dump.AppendLine($"{tabs}Depth>{Depth}< {Head}  @ {Index} {Unification.Environment.ToString()}");
             }
 
-            var unifStr = Unification.ToString();
-            dump.AppendLine(unifStr);
             return dump.ToString();
         }
 

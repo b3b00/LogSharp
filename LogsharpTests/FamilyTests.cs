@@ -27,7 +27,7 @@ grandpa(X,Z) :- father(X,Y) father(Y,Z).
 gp(X,Y,Z) :- father(X,Y) father(Y,Z).
 brother(X,Y) :- father(Z,X) father(Z,Y).
 
-cof(X,F) :- bag_of(X,father(F,X), L) member(X,L).";
+cof(X,F) :- bag_of(ANY,father(F,ANY), L) member(X,L).";
 
 
         public FamilyTests() : base(PrologProgram)
@@ -78,7 +78,7 @@ cof(X,F) :- bag_of(X,father(F,X), L) member(X,L).";
         [Fact]
         public void ChildOfTest()
         {
-            var answers = GetAnswers("cof(christian,olivier)?");
+            var answers = GetAnswers("cof(olivier,christian)?");
             Assert.NotNull(answers);
             Assert.True(answers[0].IsOk);
             Assert.Empty(answers[0].Environment.Environment);
