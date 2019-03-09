@@ -12,27 +12,10 @@ namespace logSharp.builtins
     [BuiltIns]
     public class PreludeBuiltins
     {
-        [BuiltIn("testPrim/0")]
-        public static List<Unification> TestPrim(Term testTerm, Interpreter interpreter, Unification unificationIn,
-            List<IValuable> parameters)
-
-        {
-            Unification unificationOut = DeepCopier.Copy(unificationIn);
-            unificationOut.AddBinding("SOMEDUMMYPRIMITIVEEFFECT", new Atom("Hello, World!"));
-            foreach (var p in parameters)
-            {
-                if (p is Variable v)
-                {
-                    unificationOut.AddBinding(v, new Atom($"atom is >{v.Name.ToLower()}<"));
-                }
-            }
-
-            ;
-            return BuildList(unificationOut);
-        }
+       
 
         [BuiltIn("member/2")]
-        public static List<Unification> Member(Term memberTerm, Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> MemberPrim(Term memberTerm, Interpreter interpreter, Unification unificationIn,
             List<IValuable> parameters)
 
         {
@@ -73,7 +56,7 @@ namespace logSharp.builtins
         }
 
         [BuiltIn("bag_of/3")]
-        public static List<Unification> BagOf(Term bagOfTerm, Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> BagOfPrim(Term bagOfTerm, Interpreter interpreter, Unification unificationIn,
             List<IValuable> parameters)
 
         {
