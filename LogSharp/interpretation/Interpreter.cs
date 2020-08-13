@@ -23,6 +23,8 @@ namespace logSharp.interpretation
         
         public bool Verbose { get; set; }
         
+        public bool VeryVerbose { get; set; }
+        
         public string DebugOutput { get; set; }
         
         public LogSharpProgram LogSharpProgram { get; set; }
@@ -82,9 +84,21 @@ namespace logSharp.interpretation
 
        
 
-        public void Trace(string message)
+        public void Debug(string message)
         {
             if (Verbose)
+            {
+                Console.WriteLine(message);
+                if (DebugOutput != null)
+                {
+                    File.AppendAllText(DebugOutput, message + "\n");
+                }
+            }
+        }
+        
+        public void Trace(string message)
+        {
+            if (VeryVerbose)
             {
                 Console.WriteLine(message);
                 if (DebugOutput != null)
@@ -132,13 +146,28 @@ namespace logSharp.interpretation
             }
             
         }
-        
-        
+
         public IEnumerable<Unification> Search(Question question, Unification unification = null)
+        {
+            var result = DoSearch(question, unification).ToList();
+            //var dedup = result.Distinct();
+            List<Unification> dedup = new List<Unification>();
+            foreach (var unif in result)
+            {
+                if (!dedup.Contains(unif))
+                {
+                    dedup.Add(unif);
+                }
+            }
+            
+            return dedup;
+        }
+        
+        private IEnumerable<Unification> DoSearch(Question question, Unification unification = null)
         {
             bool resultFound = false;
             Stack<Goal> stack = new Stack<Goal>();
-            Trace($"search question {question}");
+            Debug($"search question {question}");
             if (unification != null && unification.IsOk)
             {
                 Term evaled = Unifier.EvalTerm(question,unification);
@@ -166,14 +195,14 @@ namespace logSharp.interpretation
                         {
                             resultFound = true;
                             // restrict unification to free vars 
-                            var outVars = current.Head.FreeVariable;
+                            var outVars = current.Head.FreeVariables;
                             var toRemove = new List<string>();
                             foreach (var binding in current.Unification.Environment.Environment)
                             {
-                                if (!outVars.Contains(binding.Key))
+                                
+                                if (!outVars.Any(x => x.Name == binding.Key))
                                 {
                                     toRemove.Add(binding.Key);
-                                    
                                 }
                             }
                             toRemove.ForEach(b => current.Unification.Environment.Environment.Remove(b));
@@ -205,16 +234,14 @@ namespace logSharp.interpretation
                     }
                     continue;
                 }
-
-                var parent = DeepCopier.Copy(current.Parent);
+                
                 var term = current.Goals[current.Index];
-
 
                 if (TryGetBuiltIn(term.Specification, out var builtIn))
                 {
                     var builtInTerm = DeepCopier.Copy(term.Head);
                     builtInTerm = Unifier.EvalTerm(builtInTerm,current.Unification);
-                    Trace($"calling built-in {term.Specification}");
+                    Debug($"calling built-in {term.Specification}");
                     var builtInUnifications = builtIn(term.Head, this, current.Unification, builtInTerm.Parameters);
                     if (current.Rule != null) {
                         if (builtInUnifications != null && builtInUnifications.Any())
@@ -246,7 +273,7 @@ namespace logSharp.interpretation
                     List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
                     foreach (var applicable in (applicableRules))
                     {
-                        Trace($"trying rule {applicable.Head}");
+                        Debug($"trying rule {applicable.Head} against {term.Head}");
 //                        if (!applicable.Equals(current.Rule))
 //                        {
                             Goal child = new Goal(applicable, current, current.Unification);
@@ -257,6 +284,7 @@ namespace logSharp.interpretation
                             {
                                 child.Unification = unif;
                                 Trace($"stck {child} @ {child.Index}");
+                                child.Index = current.Index + 1;
                                 stack.Push(child);
                             }
                             else

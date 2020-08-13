@@ -129,5 +129,31 @@ namespace logSharp.interpretation
         {
             return Head.GetHashCode() + Unification.GetHashCode();
         }
+
+
+        private string Tab(int d)
+        {
+            string tab = "";
+            for (int i = 0; i < d; i++)
+            {
+                tab += "\t";
+            }
+
+            return tab;
+        }
+        
+        public string StackTrace()
+        {
+            StringBuilder builder = new StringBuilder();
+            Goal current = this;
+            while (current != null)
+            {
+                builder.Append(Tab(current.Depth))
+                    .AppendLine(current.ToString());
+                current = current.Parent;
+            }
+
+            return builder.ToString();
+        }
     }
 }
