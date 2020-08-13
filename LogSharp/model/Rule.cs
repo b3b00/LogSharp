@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using logSharp.interpretation.unification;
 
 namespace logSharp.model
 {
@@ -31,6 +33,17 @@ namespace logSharp.model
         public int Arity => Head.Parameters.Count;
 
         public string Specification => $"{Name}/{Arity}";
+
+        public virtual IEnumerable<Variable> FreeVariables =>
+            Head.FreeVariables.Concat(Clauses.SelectMany(c => c.FreeVariables));
+        
+        public virtual bool IsFullyUnified(Unification unification)
+        {
+            var frees = FreeVariables;
+            return  frees.Select(x => x.IsDiscardableVariable || unification.Environment.ContainsVariable(x.Name))
+                .Aggregate((bool b1, bool b2) => b1 && b2);;
+        }
+        
         public abstract string Dump();
     }
 }

@@ -9,20 +9,20 @@ namespace logSharp.model
 {
     public class Term : IValuable
     {
-        public List<string> FreeVariable
+        public IEnumerable<Variable> FreeVariables
         {
             get
             {
-                var variables = new List<string>();
+                var variables = new List<Variable>();
                 foreach (var parameter in Parameters)
                 {
                     if (parameter is Variable variable)
                     {
-                        variables.Add(variable.Name);
+                        variables.Add(variable);
                     }
                     else if (parameter is Term term)
                     {
-                        variables.AddRange(term.FreeVariable);
+                        variables.AddRange(term.FreeVariables);
                     }
                 }
 
@@ -104,7 +104,7 @@ namespace logSharp.model
                 var currentParameter = parameters[i];
                 if (currentTail == emptyTail && currentParameter.IsVariable)
                 {
-                    currentTail = currentParameter;
+                    currentTail = new Term(Term.ListConstructor, new List<IValuable>() {currentParameter, emptyTail});
                 }
                 else
                 {

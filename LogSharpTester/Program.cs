@@ -27,6 +27,44 @@ namespace LogSharpTester
         }
 
 
+        static void Members()
+        {
+            string program = @"
+member_of(X,[X]).
+member_of(X,[X|_]).
+member_of(X,[_|L]) :- member_of(X,L).";
+         
+         
+            var parser = BuildParser();
+            var parsed = parser.Parse(program);
+            if (parsed.IsOk)
+            {
+                Interpreter interpreter = new Interpreter(false,parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
+                interpreter.Verbose = true;
+                var r = interpreter.Search("member_of(c,[c])?").ToList();
+                if (r != null)
+                {
+                    int i = 0;
+                    foreach (var unification in r)
+                    {
+                        Console.WriteLine($"unification #{i}");
+                        if (unification.IsOk)
+                        {
+                            Console.WriteLine("\tOK");
+                            Console.WriteLine($"\t{unification}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\tKO");
+                        }
+                    }
+                }
+                r.ForEach(u => Console.WriteLine(u.ToString())); 
+                ;
+            }
+         
+        }
+        
         static void Is()
         {
             string program = @"
@@ -151,9 +189,10 @@ complexexpr(R,X,Y,Z) :- R is X + Y * Z).
 //            PrologRepl.Loop(args);
 //Is();
           //Assert();
-          ChildOf();
+          //ChildOf();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
+            Members();
         }
     }
 }

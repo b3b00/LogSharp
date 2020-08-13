@@ -58,7 +58,7 @@ namespace logSharp.parser
         
         #endregion
         
-        #region expression 50 -> 
+        #region expression 50 -> 100
         
         // the + operator
         [Lexeme(GenericToken.SugarToken,"+")] Plus = 50,
@@ -93,8 +93,16 @@ namespace logSharp.parser
 
         
         
+        #endregion 
+        
+        #region comments 101 -> 
+        
+        [SingleLineComment("#")] 
+        SINGlE_LINE_COMMENT,
+        
+        [MultiLineComment("/#","#/")] 
+        Multi_LINE_COMMENT,
+        
         #endregion
-        
-        
     }
 }

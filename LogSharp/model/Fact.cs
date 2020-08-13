@@ -7,7 +7,10 @@ namespace logSharp.model
     public class Fact : Rule
     {
 
-        
+        public override IEnumerable<Variable> FreeVariables => Head.FreeVariables;
+
+
+       
         
         public Fact(Term clause) : base(clause, null)
         {

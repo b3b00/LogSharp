@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -5,7 +6,7 @@ using logSharp.model;
 
 namespace logSharp.interpretation.unification
 {
-    public class Unification
+    public class Unification : IEquatable<Unification>
     {
         public TermEnvironment Environment { get; set; }
 
@@ -79,36 +80,39 @@ namespace logSharp.interpretation.unification
             return dump.ToString();
         }
 
-        public override bool Equals(object obj)
+
+        // bool IEquatable<Unification>.Equals(Unification u)
+        // {
+        //     return Equals(u);
+        // }
+        public bool Equals(Unification unification)
         {
-            if (obj != null)
+            if (unification != null)
             {
-                if (obj is Unification unification)
+
+                var dico1 = Environment.Environment;
+                var dico2 = unification.Environment.Environment;
+                int count = dico1.Count;
+                if (count == dico2.Count)
                 {
-                    var dico1 = Environment.Environment;
-                    var dico2 = unification.Environment.Environment;
-                    int count = dico1.Count; 
-                    if (count == dico2.Count)
+                    var keys1 = dico1.Keys.ToList();
+                    var keys2 = dico2.Keys.ToList();
+                    var intersection = keys1.Intersect(keys2);
+                    if (intersection.Count() == count)
                     {
-                        var keys1 = dico1.Keys.ToList();
-                        var keys2 = dico2.Keys.ToList();
-                        var intersection = keys1.Intersect(keys2);
-                        if (intersection.Count() == count)
+                        foreach (var pair in dico1)
                         {
-                            foreach (var pair in dico1)
+                            if (dico2.ContainsKey(pair.Key))
                             {
-                                if (dico2.ContainsKey(pair.Key))
+                                var value = dico2[pair.Key];
+                                if (!value.Equals(pair.Value))
                                 {
-                                    var value = dico2[pair.Key];
-                                    if (!value.Equals(pair.Value))
-                                    {
-                                        return false;
-                                    }
+                                    return false;
                                 }
                             }
-
-                            return true;
                         }
+
+                        return true;
                     }
                 }
             }
