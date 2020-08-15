@@ -273,7 +273,7 @@ namespace logSharp.interpretation
                     List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
                     foreach (var applicable in (applicableRules))
                     {
-                        Debug($"trying rule {applicable.Head} against {term.Head}");
+                        Debug($"trying rule {applicable} against {term.Head} with {current.Unification}");
 //                        if (!applicable.Equals(current.Rule))
 //                        {
                             Goal child = new Goal(applicable, current, current.Unification);

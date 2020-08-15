@@ -94,7 +94,7 @@ namespace logSharp.parser
         [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
         public ILogSharpAst ListTermConstructor(ILogSharpAst head, ILogSharpAst tail)
         {
-            return model.Term.ListTerm(new List<IValuable>() {head as IValuable, tail as IValuable});
+            return model.Term.ListTerm(head as IValuable, tail as IValuable);
         }
 
         [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
@@ -109,9 +109,7 @@ namespace logSharp.parser
             }
 
 
-            return model.Term.ListTerm(
-                parameters
-            );
+            return model.Term.LiteralListTerm(parameters);
         }
 
         #endregion

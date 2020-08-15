@@ -40,7 +40,9 @@ namespace logSharp.model
         
         public bool IsList => Name == ListConstructor && (Parameters.Count == 2 || Parameters.Count == 0);
 
-        public bool IsConstantList => ListTail() == null || (!ListTail().IsVariable && ListTail().IsConstantList);
+        public bool IsConstantList => IsReallyConstantList && (ListTail() == null || (!ListTail().IsVariable && ListTail().IsConstantList));
+        
+        public bool IsReallyConstantList { get; set; }
 
         public string Name { get; set; }
         
@@ -86,13 +88,25 @@ namespace logSharp.model
         public static Term ListTerm(IValuable head, IValuable tail)
         {
             var list = EmptyListTerm();
-            list.Parameters = ListHelper.BuildList(head, tail);
+            var parameters = ListHelper.BuildList<IValuable>(head, tail);
+            if (tail is Variable || tail.IsList )
+            {
+                list.Parameters = parameters;
+            }
+            else
+            {
+                list = LiteralListTerm(parameters);
+            }
+
             return list;
         }
 
-        public static Term ListTerm(List<IValuable> parameters)
+       
+        
+        public static Term LiteralListTerm(List<IValuable> parameters)
         {
             Term list = new Term();
+            list.IsReallyConstantList = true;
             list.Name = Term.ListConstructor;
             
             IValuable emptyTail = EmptyListTerm();
@@ -220,7 +234,14 @@ namespace logSharp.model
                     if (IsConstantList)
                     {
                         var items = ToValuableList();
-                        dump.Append(string.Join(", ", items.Select(i => i.Dump())));
+                        if (items.Count == 1)
+                        {
+                            dump.Append(items.First()).Append(" | ").Append("[]");
+                        }
+                        else
+                        {
+                            dump.Append(string.Join(", ", items.Select(i => i.Dump())));
+                        }
                     }
                     else
                     {

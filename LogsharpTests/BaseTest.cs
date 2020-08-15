@@ -9,7 +9,7 @@ using sly.parser;
 using sly.parser.generator;
 using Xunit;
 
-namespace LogsharpTests
+namespace logsharpTests
 {
     public class BaseTest
     {
@@ -46,6 +46,7 @@ namespace LogsharpTests
         protected List<Unification> GetAnswers(string questionString)
         {
             var question = GetQuestion(questionString);
+            Interpreter.Verbose = true;
             var answers = Interpreter.Search(question).ToList();
             return answers;
         }

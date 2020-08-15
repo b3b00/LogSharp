@@ -2,7 +2,7 @@ using System;
 using logSharp.model;
 using Xunit;
 
-namespace LogsharpTests
+namespace logsharpTests
 {
     public class AssertExpressionsTests : BaseTest
     {

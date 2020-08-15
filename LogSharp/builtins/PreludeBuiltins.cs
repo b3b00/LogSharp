@@ -87,7 +87,7 @@ namespace logSharp.builtins
                                 }
                             }
 
-                            Term list = Term.ListTerm(values);
+                            Term list = Term.LiteralListTerm(values);
                             var unificationOut = new Unification();
                             unificationOut.IsOk = true;
                             unificationOut.AddBinding(outputVar, list);

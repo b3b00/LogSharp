@@ -1,4 +1,4 @@
-namespace ogsharpTests
+namespace logsharpTests
 {
     public class BuiltInTests
     {

@@ -139,14 +139,14 @@ complexexpr(R,X,Y,Z) :- R is X + Y * Z).
 
             Unification srcEnv = new Unification();
             srcEnv.AddBinding("X",new Atom("c") );
-            srcEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
+            srcEnv.AddBinding("L",Term.LiteralListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
 
             
             var destEnv = new Unification();
             var emptyChildU = new Unification();
             
             destEnv.AddBinding("X",new Atom("c") );
-            destEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
+            destEnv.AddBinding("L",Term.LiteralListTerm(ListHelper.BuildList<IValuable>(new Atom("b"),new Atom("c") )));
 
             var e1 = unifier.Eval(src, srcEnv);
             var e2 = unifier.Eval(dest, destEnv);
