@@ -1,3 +1,6 @@
-**/bin/*
+./**/bin/*
 **/obj/*
 .vscode/*
+.idea/**
+./LogSharpTester/bin/*
+**/[o[O]bj/*

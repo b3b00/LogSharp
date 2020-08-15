@@ -284,7 +284,7 @@ namespace logSharp.interpretation
                             {
                                 child.Unification = unif;
                                 Trace($"stck {child} @ {child.Index}");
-                                child.Index = current.Index + 1;
+                                //child.Index = current.Index + 1;
                                 stack.Push(child);
                             }
                             else
