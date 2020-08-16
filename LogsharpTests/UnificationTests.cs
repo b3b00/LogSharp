@@ -111,7 +111,12 @@ namespace logsharpTests
             var destEnv = new Unification();
             
             var unification = unifier.UnifyTerms(singleton, sourceEnv, trailer, destEnv);
-            ;
+            Assert.True(unification.IsOk);
+            var l = unification.Environment["L"];
+            Assert.NotNull(l);
+            Assert.IsType<Term>(l);
+            var lt = l as Term;
+            Assert.Equal("list/0",lt.Specification);
         }
         
     }
