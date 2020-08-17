@@ -149,6 +149,18 @@ namespace logSharp.parser
                 clauseName.StringWithoutQuotes
             );
         }
+        
+        [Production("term :  LeftPar[d]  RightPar[d]")]
+        public ILogSharpAst NilTerm()
+        {
+            return Nil.Instance;
+        }
+
+        [Production("term: Nil[d]")]
+        public ILogSharpAst NilKeywordTerm()
+        {
+            return Nil.Instance;
+        }
 
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
         public ILogSharpAst Term(Token<LogSharpToken> clauseName, ILogSharpAst headParam,

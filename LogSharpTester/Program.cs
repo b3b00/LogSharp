@@ -64,7 +64,47 @@ member_of(X,[_|L]) :- member_of(X,L).";
             }
          
         }
-        
+
+        static void NestedQuestion()
+        {
+
+            string PrologProgram = @"
+is_in(X,l(X,_)).
+is_in(X,l(_,L)) :- is_in(X,L).";
+            //string questionString = "is_in(K,l(a,l(b,l(c,l(d,l(e,()))))))?";
+            string questionString = "is_in(K,l(a,l(b,l(c,()))))?";
+
+
+            var parser = BuildParser();
+            var parsed = parser.Parse(PrologProgram);
+            if (parsed.IsOk)
+            {
+                Interpreter interpreter = new Interpreter(false, parsed.Result as LogSharpProgram, parser,
+                    new NestedTermUnifier());
+
+                var questionParse = parser.Parse(questionString, "question");
+                var question = questionParse.Result as Question;
+                
+
+                interpreter.Verbose = true;
+                var answers = interpreter.Search(question).ToList();
+                ;
+
+                if (answers != null && answers.Any() && answers.First().IsOk)
+                {
+                    Console.WriteLine("OK");
+                    foreach (var answer in answers)
+                    {
+                        Console.WriteLine(answer);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("KO");
+                }
+            }
+        }
+
         static void Is()
         {
             string program = @"
@@ -192,7 +232,8 @@ complexexpr(R,X,Y,Z) :- R is X + Y * Z).
           //ChildOf();
 //            AnonymiseTest();
             //RecursiveUnificationTest();
-            Members();
+            //Members();
+            NestedQuestion();
         }
     }
 }

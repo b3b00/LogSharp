@@ -63,7 +63,7 @@ namespace logSharp.interpretation.unification
             StringBuilder dump = new StringBuilder();
             if (IsOk)
             {
-                dump.AppendLine("yes.");
+                dump.Append("yes.");
                 if (Environment.Environment.Any())
                 {
                     string envStr = Environment.ToString();
@@ -74,7 +74,7 @@ namespace logSharp.interpretation.unification
             }
             else
             {
-                dump.AppendLine("no.");
+                dump.Append("no.");
             }
 
             return dump.ToString();

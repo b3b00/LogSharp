@@ -19,7 +19,7 @@ is_in(X,l(_,L)) :- is_in(X,L).";
         [Fact]
         public void IsInSingle()
         {
-            var answers = GetAnswers("is_in(a,l(a,())?");
+            var answers = GetAnswers("is_in(a,l(a,()))?");
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
@@ -27,7 +27,7 @@ is_in(X,l(_,L)) :- is_in(X,L).";
         [Fact]
         public void IsInFirstTest()
         {
-            var answers = GetAnswers("is_in(a,l(a,l(b,c))?");
+            var answers = GetAnswers("is_in(a,l(a,l(b,c)))?");
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
@@ -35,7 +35,7 @@ is_in(X,l(_,L)) :- is_in(X,L).";
         [Fact]
         public void MemberSecondTest()
         {
-            var answers = GetAnswers("is_in(b,l(a,l(b,c))?");
+            var answers = GetAnswers("is_in(b,l(a,l(b,c)))?");
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
@@ -43,7 +43,7 @@ is_in(X,l(_,L)) :- is_in(X,L).";
         [Fact]
         public void MemberThirdTest()
         {
-            var answers = GetAnswers("is_in(c,l(a,l(b,c))?");
+            var answers = GetAnswers("is_in(c,l(a,l(b,c)))?");
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }

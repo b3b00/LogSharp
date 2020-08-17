@@ -21,6 +21,9 @@ namespace logSharp.parser
         [Lexeme(GenericToken.Double)]
         Double = 6,
         
+        [Lexeme(GenericToken.KeyWord,"nil")]
+        Nil = 7,
+        
         #endregion
         
         #region sugar

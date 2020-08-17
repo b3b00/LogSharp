@@ -274,22 +274,21 @@ namespace logSharp.interpretation
                     foreach (var applicable in (applicableRules))
                     {
                         Debug($"trying rule {applicable} against {term.Head} with {current.Unification}");
-//                        if (!applicable.Equals(current.Rule))
-//                        {
                             Goal child = new Goal(applicable, current, current.Unification);
 
                             var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head,
                                 child.Unification);
                             if (unif.IsOk)
                             {
+                                Debug("\tOk.\n");
                                 child.Unification = unif;
                                 Trace($"stck {child} @ {child.Index}");
-                                //child.Index = current.Index + 1;
+                                child.Index = current.Index;
                                 stack.Push(child);
                             }
                             else
                             {
-                                Trace("unification failed.");
+                                Debug("\tunification failed.\n");
                             }
 
 //                        }
