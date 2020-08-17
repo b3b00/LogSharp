@@ -8,5 +8,6 @@ namespace logSharp.interpretation.unification
             Unification destEnv);
 
         Term EvalTerm(Term term, Unification unification);
+        Rule EvalRule(Rule rule, Unification unification);
     }
 }

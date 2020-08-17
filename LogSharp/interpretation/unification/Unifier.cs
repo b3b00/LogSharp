@@ -59,6 +59,11 @@ namespace logSharp.interpretation.unification
             return term;
         }
 
+        public Rule EvalRule(Rule rule, Unification unification)
+        {
+            return null;
+        }
+
 
         public IValuable GetValue(IValuable arg, Unification environment)
         {

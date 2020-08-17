@@ -25,7 +25,7 @@ namespace logSharp.model
 
         public override string Dump()
         {
-            return Name;
+            return "()";
         }
 
         public override string ToString()

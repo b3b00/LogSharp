@@ -133,7 +133,21 @@ namespace logSharp.interpretation.unification
         {
             return Eval(term, unification, true) as Term;
         }
-      
+
+        public Rule EvalRule(Rule rule, Unification unification)
+        {
+            if (rule is Fact fact)
+            {
+                return new Fact(EvalTerm(fact.Head, unification));
+            }
+            else
+            {
+                var head = EvalTerm(rule.Head, unification);
+                var clauses = rule.Clauses.Select(c => EvalTerm(c, unification)).ToList();
+                return new Predicate(head,clauses);
+            }
+        }
+
 
         public IValuable Eval(IValuable arg, Unification environment,bool preserveVariables = false)
         {
@@ -161,6 +175,10 @@ namespace logSharp.interpretation.unification
             }
             else
             {
+                if (arg is Nil)
+                {
+                    return arg;
+                }
                 Term term = arg as Term;
                 var newParameters = new List<IValuable>();
                 foreach (var param in term.Parameters)
@@ -185,5 +203,7 @@ namespace logSharp.interpretation.unification
                 return new Term(term.Name,newParameters);
             }
         }
+        
+       
     }
 }

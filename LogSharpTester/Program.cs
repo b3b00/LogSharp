@@ -68,19 +68,45 @@ member_of(X,[_|L]) :- member_of(X,L).";
         static void NestedQuestion()
         {
 
+//             string PrologProgram = @"
+// is_in(X,l(X,_)).
+// is_in(X,l(_,TAIL)) :- is_in(X,TAIL).";
+//             //string questionString = "is_in(K,l(a,l(b,l(c,l(d,l(e,()))))))?";
+//             string questionString = "is_in(c,l(a,l(b,l(c,()))))?";
+
             string PrologProgram = @"
-is_in(X,l(X,_)).
-is_in(X,l(_,L)) :- is_in(X,L).";
-            //string questionString = "is_in(K,l(a,l(b,l(c,l(d,l(e,()))))))?";
-            string questionString = "is_in(K,l(a,l(b,l(c,()))))?";
+member_of(X,[X|_]).
+member_of(X,[_|L]) :- member_of(X,L).";
+
+            string questionString = "member_of(c,[a,b,c])?";
+            //questionString = "member_of(c, [b|[c|[]]])?";
+        
 
 
             var parser = BuildParser();
             var parsed = parser.Parse(PrologProgram);
+
+            // var prog = parsed.Result as LogSharpProgram;
+            // int i = 0;
+            // foreach (var rule in prog.Rules)
+            // {
+            //     Console.WriteLine(rule.Dump());
+            //     foreach (var free in rule.FreeVariables)
+            //     {
+            //         if (!free.IsDiscardableVariable)
+            //         {
+            //             free.Name = free.Name + "_" + i;
+            //         }
+            //     }
+            //     Console.WriteLine(rule.Dump());
+            //     i++;
+            // }
+            
             if (parsed.IsOk)
             {
                 Interpreter interpreter = new Interpreter(false, parsed.Result as LogSharpProgram, parser,
                     new NestedTermUnifier());
+                interpreter.VeryVerbose = true;
 
                 var questionParse = parser.Parse(questionString, "question");
                 var question = questionParse.Result as Question;
