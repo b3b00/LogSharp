@@ -168,8 +168,11 @@ namespace logSharp.interpretation
                     }
                     else if (current.Index >= current.Count)
                     {
+                        var destination = current.IsContinuation
+                            ? p.Head
+                            : p.Goals[p.Index].Head;
                         u = Unifier.UnifyTerms(current.Head, current.Unification,
-                            p.Head, p.Unification);
+                            destination, p.Unification);
                     }
                     else
                     {
@@ -188,7 +191,7 @@ namespace logSharp.interpretation
 
                 var parent = DeepCopier.Copy(current.Parent);
                 var term = current.Goals[current.Index];
-
+                
 
                 if (TryGetBuiltIn(term.Specification, out var builtIn))
                 {
@@ -201,7 +204,7 @@ namespace logSharp.interpretation
                         {
                             foreach (var builtInUnification in builtInUnifications)
                             {
-                                Goal built = new Goal(current.Rule, current, builtInUnification);
+                                Goal built = new Goal(current.Rule, current, builtInUnification, false);
                                 built.Unification.AddBindings(current.Unification);
                                 built.Index = current.Index + 1;
                                 Trace($"stck {built} @ {built.Index}");

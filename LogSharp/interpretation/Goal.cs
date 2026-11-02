@@ -25,6 +25,8 @@ namespace logSharp.interpretation
         public Term Head;
 
         public int Index { get; set; } 
+
+        public bool IsContinuation { get; set; }
         
         public Unification Unification { get; set; }
         
@@ -50,9 +52,11 @@ namespace logSharp.interpretation
             Index = 0;
         }
 
-        public Goal(Rule rule, Goal parent, Unification environment)
+        public Goal(Rule rule, Goal parent, Unification environment, bool freshenVariables = true)
         {
-            Rule = rule;
+            IsContinuation = !freshenVariables;
+            Id = NextGoalId;
+            NextGoalId++;
             Parent = parent;
             if (Unification != null)
             {
@@ -62,12 +66,13 @@ namespace logSharp.interpretation
             {
                 Unification = DeepCopier.Copy(environment);
             }
+            Rule = freshenVariables ? FreshenRule(rule, Id) : rule;
             Goals = new List<Goal>();
 
-            Head = rule.Head;
-            if (rule.Clauses != null && rule.Clauses.Any())
+            Head = Rule.Head;
+            if (Rule.Clauses != null && Rule.Clauses.Any())
             {
-                foreach (var t in rule.Clauses)
+                foreach (var t in Rule.Clauses)
                 {
                     if (t != null)
                     {
@@ -86,8 +91,53 @@ namespace logSharp.interpretation
             }
 
             Index = 0;
-            Id = NextGoalId;
-            NextGoalId++;
+        }
+
+        private static Rule FreshenRule(Rule rule, int invocationId)
+        {
+            var variables = new Dictionary<string, Variable>();
+            var head = FreshenTerm(rule.Head, variables, invocationId);
+            if (rule.Clauses == null)
+            {
+                return new Fact(head);
+            }
+
+            var clauses = rule.Clauses
+                .Select(clause => FreshenTerm(clause, variables, invocationId))
+                .ToList();
+            return new Predicate(head, clauses);
+        }
+
+        private static Term FreshenTerm(Term term, Dictionary<string, Variable> variables, int invocationId)
+        {
+            var parameters = term.Parameters.Select(parameter => FreshenValue(parameter, variables, invocationId)).ToList();
+            return new Term(term.Name, parameters);
+        }
+
+        private static Valuable FreshenValue(Valuable value, Dictionary<string, Variable> variables, int invocationId)
+        {
+            if (value is Variable variable)
+            {
+                if (variable.IsDiscardableVariable)
+                {
+                    return variable;
+                }
+
+                if (!variables.TryGetValue(variable.Name, out var freshVariable))
+                {
+                    freshVariable = new Variable($"__goal{invocationId}_{variable.Name}");
+                    variables.Add(variable.Name, freshVariable);
+                }
+
+                return freshVariable;
+            }
+
+            if (value is Term term)
+            {
+                return FreshenTerm(term, variables, invocationId);
+            }
+
+            return value;
         }
 
 

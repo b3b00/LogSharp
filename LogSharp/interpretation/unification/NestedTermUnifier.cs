@@ -17,13 +17,14 @@ namespace logSharp.interpretation.unification
             {
                 return Unification.Failed();
             }
-        
-            Unification unification = DeepCopier.Copy(destEnv);
-            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
+
             if (source.Name != destination.Name || source.Parameters.Count != destination.Parameters.Count)
             {
-                unification = Unification.Failed();
+                return Unification.Failed();
             }
+
+            Unification unification = DeepCopier.Copy(destEnv);
+            unification.Environment = DeepCopier.Copy(destEnv.Environment); 
 
             for (int i = 0; i < source.Parameters.Count; i++)
             {
