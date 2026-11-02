@@ -1,3 +1,55 @@
-**/bin/*
-**/obj/*
-.vscode/*
+**/coverage-report/*
+lcov.*
+coverage.info
+.env
+.localhistory/*
+.VSCodeCounter
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+TestResults
+
+#profiling sessions
+*.psess
+*.vspx
+*.vsp
+
+
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+build/
+[Bb]in/
+[Oo]bj/
+packages/
+.vscode/
+.vs/
+tools/
+.idea/
+*opencover*
+
+# git  shit
+*.orig
+
+dotnet.psess
+my_app_coverage.xml
+sly.xml
+sly_coverage.xml
+ParserTests/lcov.info
+ParserTests/lcov.info.info
+
+#coverage and such
+coverage.json
+ruleset1.ruleset
+opencov.bat
+BenchmarkDotNet.Artifacts
+
+*.nupkg
+*.snupkg
+*.swp
+AotTester/*
+*.dtp
+*.dtp.state
+src/samples/HandMadeExpres*
