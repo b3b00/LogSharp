@@ -57,6 +57,22 @@ namespace logSharp.interpretation.unification
             }
         }
 
+        public bool HasBinding(string variableName)
+        {
+            return Environment.Environment.ContainsKey(variableName);
+        }
+
+        public Valuable GetBinding(string variableName)
+        {
+            if (Environment.Environment.ContainsKey(variableName))
+            {
+                return Environment.Environment[variableName];
+            }
+
+            return null;
+        }
+        
+
         public override string ToString()
         {
             StringBuilder dump = new StringBuilder();
@@ -68,8 +84,6 @@ namespace logSharp.interpretation.unification
                     string envStr = Environment.ToString();
                     dump.Append(envStr.Trim());
                 }
-
-                return dump.ToString();
             }
             else
             {

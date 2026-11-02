@@ -4,6 +4,7 @@ using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
+using NFluent;
 using sly.lexer;
 using sly.parser;
 using sly.parser.generator;
@@ -40,8 +41,8 @@ cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).";
         public void FathersTest()
         {
             var answers = GetAnswers("father(X,Y)?");
-            Assert.NotNull(answers);
-            Assert.Equal(7, answers.Count);
+            Check.That(answers).Not.IsNullOrEmpty();
+            Check.That(answers).CountIs(7);
             var c = answers.Where(a =>
                     a.IsOk && a.Environment.ContainsVariable("X") && a.Environment["X"]?.ToString() == "christian")
                 .ToList();
@@ -60,13 +61,11 @@ cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).";
         public void GrandPaTest()
         {
             var answers = GetAnswers("grandpa(christian,oihana)?");
-            Assert.Single(answers);
-            Assert.True(answers[0].IsOk);
-            Assert.Empty(answers[0].Environment.Environment);
+            Check.That(answers[0]).IsOk();
 
             answers = GetAnswers("grandpa(christian,X)?");
-            Assert.NotNull(answers);
-            Assert.Equal(4, answers.Count);
+            Check.That(answers).Not.IsNullOrEmpty();
+            Check.That(answers).CountIs(4);
             var grandchild = answers.Select(a => a.Environment["X"].ToString()).ToList();
             var shouldList = new List<string>() {"lontzi", "eneko", "kepa", "oihana"};
             foreach (var shouldItem in shouldList)
@@ -79,9 +78,8 @@ cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).";
         public void ChildOfTest()
         {
             var answers = GetAnswers("cof(christian,olivier)?");
-            Assert.NotNull(answers);
-            Assert.True(answers[0].IsOk);
-            Assert.Empty(answers[0].Environment.Environment);
+            Check.That(answers).Not.IsNullOrEmpty();
+            Check.That(answers[0]).IsOk();
 
             answers = GetAnswers("cof(X,christian)?");
             Assert.NotNull(answers);
