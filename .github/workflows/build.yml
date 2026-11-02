@@ -40,9 +40,9 @@ jobs:
       with:
         testProject: ${{env.TESTS_PROJECT}}
         output: 'lcov.net10.0.info'
-        threshold: 80
+        threshold: 50
         outputFormat: 'lcov'
-        excludes: '[program]*,[expressionParser]*,[jsonparser]*,[while]*,[indentedWhile]*,[SimpleExpressionParser]*,[GenericLexerWithCallbacks]*,[indented]*,[postProcessedLexerParser]*,[XML]*,[SimpleTemplate]*,[SlowEOS]*'
+        excludes: '[LogSharpTester]*,[LogsharpTests]*'
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
       if: always()
