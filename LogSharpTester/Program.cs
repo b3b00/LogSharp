@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using logSharp.helpers;
+using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
@@ -53,16 +56,57 @@ namespace Tester
             var res = unifier.UnifyTerms(src, srcEnv, dest, new Unification());
             ;
 
+        }
 
 
+        static void TestMemberOf()
+        {
+            string program = @"
+member_of(X,[X|_]).
+member_of(X,[_|L]) :- member_of(X,L).
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+           // PrintAnswers(answers);
+           var answers = GetAnswers("member_of(c,[a,b,c])?");
+           PrintAnswers(answers);
+        }
+        
+        static Interpreter Interpreter;
+        
+      
 
+
+        static Question GetQuestion(string questionString)
+        {
+            var questionParse = Interpreter.Parser.Parse(questionString, "question");
+            var question = questionParse.Result as Question;
+            return question;
+        }
+
+        static List<Unification> GetAnswers(string questionString)
+        {
+            var question = GetQuestion(questionString);
+            var answers = Interpreter.Search(question).ToList();
+            return answers;
+        }
+
+        static void PrintAnswers(List<Unification> answers)
+        {
+            foreach (var answer in answers)
+            {
+                Console.WriteLine(answer);
+            }
         }
         
         static void Main(string[] args)
         {
-            PrologRepl.Loop(args);
+            //PrologRepl.Loop(args);
+            TestMemberOf();
 //            AnonymiseTest();
-            //RecursiveUnificationTest();
+            // RecursiveUnificationTest();
         }
     }
 }

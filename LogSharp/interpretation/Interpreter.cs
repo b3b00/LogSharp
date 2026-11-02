@@ -119,6 +119,11 @@ namespace logSharp.interpretation
         
         public IEnumerable<Unification> Search(Question question, Unification unification = null)
         {
+            Trace("*****************************************");
+            Trace("***");
+            Trace($"*** {question}");
+            Trace("***");
+            Trace("*****************************************");
             bool resultFound = false;
             Stack<Goal> stack = new Stack<Goal>();
             Trace($"search question {question}");

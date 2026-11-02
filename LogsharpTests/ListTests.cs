@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace ogsharpTests
@@ -33,14 +34,7 @@ member_of(X,[_|L]) :- member_of(X,L).
         [Fact]
         public void MemberThirdTest()
         {
-            Console.WriteLine("=== MemberThirdTest starting ===");
             var answers = GetAnswers("member_of(c,[a,b,c])?");
-            Console.WriteLine($"=== Number of answers: {answers.Count} ===");
-            foreach (var a in answers)
-            {
-                Console.WriteLine($"=== Answer IsOk: {a.IsOk} ===");
-                Console.WriteLine($"=== Answer: {a} ===");
-            }
             Assert.Single(answers);
             Assert.True(answers[0].IsOk);
         }
