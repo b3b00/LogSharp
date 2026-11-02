@@ -39,7 +39,7 @@ member_of(X,[_|L]) :- member_of(X,L).
             Assert.True(answers[0].IsOk);
         }
         
-        Fact]
+        [Fact]
         public void MemberFirstTest()
         {
             var answers = GetAnswers("member(a,[a,b,c])?");
