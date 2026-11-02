@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 #
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSharp", "LogSharp\LogSharp.csproj", "{D6B6FFCD-7184-4A26-917B-0AFE2C77C431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSharp", "LogSharp\LogSharp.csproj", "{D6B6FFCD-7184-4A26-917B-0AFE2C77C431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSharpTester", "LogSharpTester\LogSharpTester.csproj", "{A45BCB7C-32E1-4F4A-87DC-33DE479B41AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSharpTester", "LogSharpTester\LogSharpTester.csproj", "{A45BCB7C-32E1-4F4A-87DC-33DE479B41AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsharpTests", "LogsharpTests\LogsharpTests.csproj", "{E6FD533B-4CEF-4232-BF73-F8260D419991}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogsharpTests", "LogsharpTests\LogsharpTests.csproj", "{E6FD533B-4CEF-4232-BF73-F8260D419991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
