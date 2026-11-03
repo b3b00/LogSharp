@@ -74,6 +74,23 @@ member_of(X,[_|L]) :- member_of(X,L).
            PrintAnswers(answers);
         }
         
+        static void TestMapList()
+        {
+            string program = @"
+mapper(a,aa).
+mapper(b,bb).
+mapper(c,cc).
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.Verbose = true;
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+            // PrintAnswers(answers);
+            var answers = GetAnswers("map_list([a,b,c], mapper(X,Y), L)?");
+            PrintAnswers(answers);
+        }
+        
         static Interpreter Interpreter;
         
       
@@ -104,7 +121,8 @@ member_of(X,[_|L]) :- member_of(X,L).
         static void Main(string[] args)
         {
             //PrologRepl.Loop(args);
-            TestMemberOf();
+            //TestMemberOf();
+            TestMapList();
 //            AnonymiseTest();
             // RecursiveUnificationTest();
         }

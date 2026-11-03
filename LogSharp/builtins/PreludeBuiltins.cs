@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DeepCopy;
+using logSharp.helpers;
 using logSharp.model;
 using String = logSharp.model.String;
 using logSharp.interpretation;
@@ -13,25 +14,7 @@ namespace logSharp.builtins
     [BuiltIns]
     public class PreludeBuiltins
     {
-        [BuiltIn("testPrim/0")]
-        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
-
-        {
-            Unification unificationOut = DeepCopier.Copy(unificationIn);
-            unificationOut.AddBinding("SOMEDUMMYPRIMITIVEEFFECT", new Atom("Hello, World!"));
-            foreach (var p in parameters)
-            {
-                if (p is Variable v)
-                {
-                    unificationOut.AddBinding(v, new Atom($"atom is >{v.Name.ToLower()}<"));
-                }
-            }
-
-            ;
-            return BuildList(unificationOut);
-        }
-
+        // member/2 : member(Needle,Haystack) : Needle is member of list Haystack 
         [BuiltIn("member/2")]
         public static List<Unification> Member(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
@@ -73,10 +56,11 @@ namespace logSharp.builtins
             return BuildList(Unification.Failed());
         }
 
+        // bag_of/3 : bag_of(OutputPredicateValue,Predicate,OutputList)
+        // getting list of OutputPredicateValue that match Predicate in OutputList
         [BuiltIn("bag_of/3")]
         public static List<Unification> BagOf(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
-
         {
             if (parameters[0] is Variable lookedFor)
             {
@@ -143,6 +127,57 @@ namespace logSharp.builtins
                             {
                                 return BuildList(Unification.Failed());
                             }
+                    }
+                }
+            }
+
+            return BuildList(Unification.Failed());
+        }
+
+        // map_list/3 : map_list(InList,Mapper, OutList). mapper is mapper/2 with mapper(In,Out)
+        [BuiltIn("map_list/3")]
+        
+        public static List<Unification> MapList(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+        {
+            if (parameters[0] is Term inList && inList.IsList)
+            {
+                if (parameters[1] is Term query && query.Arity == 2 && query.Parameters[0] is Variable In &&
+                    query.Parameters[1] is Variable Out) // TODO query args are both variable
+                {
+                    if (parameters[2] is Variable outputVar)
+                    {
+                        
+                        
+                        bool previousVerbosity = interpreter.Verbose;
+                        interpreter.Verbose = false;
+                        var toBeMapped = inList.ToValuableList();
+                        List<Valuable> mapped = new List<Valuable>();
+                        foreach (var x in  toBeMapped)
+                        {
+                            var selector = DeepCopier.Copy(query);
+                            selector.Parameters[0] = x;
+                            var question =  new Question(selector);
+                            var results = interpreter.Search(question, unificationIn).ToList();
+                            if (results.Count > 0 && results[0].IsOk)
+                            {
+                                var value =  results[0].Environment.Environment[Out.Name];
+                                mapped.Add(value);
+                            }
+                            else
+                            {
+                                return BuildList(Unification.Failed());
+                            }
+                        }
+
+                        var output = Term.ListTerm(mapped);
+                        var unificationOut = new Unification();
+                        unificationOut.IsOk = true;
+                        unificationOut.AddBinding(outputVar, output);
+                        return BuildList(unificationOut);
+                        
+                        
+                        return BuildList(Unification.Success());
                     }
                 }
             }
