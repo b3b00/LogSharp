@@ -4,6 +4,7 @@ using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
+using NFluent;
 using sly.lexer;
 using sly.parser;
 using sly.parser.generator;
@@ -19,8 +20,16 @@ namespace ogsharpTests
         public BaseTest(string program)
         {
             var parser = BuildParser();
-            Interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
-            Interpreter.LoadProgram(program);
+            var parsed = parser.Parse(program);
+            Check.That(parsed).IsNotNull();
+            Check.That(parsed.IsOk).IsTrue();
+            Check.That(parsed.Result).IsNotNull();
+            Check.That(parsed.Result).IsInstanceOf<LogSharpProgram>();
+            
+            
+            ;
+            Interpreter = new Interpreter(false, parsed.Result as LogSharpProgram, parser, new NestedTermUnifier());
+            
         }
         private Parser<LogSharpToken, LogSharpAST> BuildParser()
         {

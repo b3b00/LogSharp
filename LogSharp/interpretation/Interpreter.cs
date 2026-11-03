@@ -31,7 +31,7 @@ namespace logSharp.interpretation
         public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
         
         public Dictionary<string,PrologBuiltIn> BuiltIns { get; set; }
-
+        
         
         public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
         {
@@ -77,6 +77,11 @@ namespace logSharp.interpretation
             {
                 LogSharpProgram.Append(program);
             }
+        }
+
+        public bool HasRule(string name)
+        {
+            return LogSharpProgram.RulesBySpec.ContainsKey(name);
         }
 
        

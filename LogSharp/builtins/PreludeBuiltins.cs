@@ -184,5 +184,37 @@ namespace logSharp.builtins
 
             return BuildList(Unification.Failed());
         }
+        
+      
+       
+        
+        
+        public static PrologBuiltIn Call_X(int count)
+        {
+            return (Interpreter interpreter, Unification unificationIn,
+                List<Valuable> parameters) =>
+            {
+                if (parameters[0] is Atom goal &&
+                    interpreter.HasRule(goal.Name + $"/{count - 1}"))
+                {
+
+                    Term goalTerm = new Term(goal.Name, parameters.Skip(1).ToList());
+                    var question = new Question(goalTerm);
+                    var results = interpreter.Search(question, unificationIn).ToList();
+                    return results;
+                }
+
+                return BuildList(Unification.Failed());
+            };
+        }
+
+        [BuiltInBuilder]
+        public static void BuildCallBuiltIns(Interpreter interpreter)
+        {
+            for (int i = 1; i < 10; i++)
+            {
+                interpreter.AddBuiltIn($"call/{i}", Call_X(i));    
+            }
+        }
     }
 }

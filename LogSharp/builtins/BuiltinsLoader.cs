@@ -25,6 +25,7 @@ namespace logSharp.builtins
                     if (attribute.AttributeType == typeof(BuiltInsAttribute))
                     {
                         LoadBuiltIns(interpreter, type);
+                        LoadBuiltInsBuilder(interpreter, type);
                     }
                 }
             }
@@ -46,6 +47,21 @@ namespace logSharp.builtins
             
 
 
+        }
+
+        public static void LoadBuiltInsBuilder(Interpreter interpreter, Type builtInClass)
+        {
+            var methods = builtInClass.GetMethods().ToList();
+            methods.ForEach(method =>
+            {
+                var attributes = method.GetCustomAttributes().ToList();
+                var attr = attributes.Find(a => a.GetType() == typeof(BuiltInBuilderAttribute));
+                if (attr != null && attr is BuiltInBuilderAttribute)
+                {
+                    method.Invoke(null,new object[] {interpreter});
+                    //interpreter.AddBuiltIn(builtInAttribute.Signature, builtin);
+                }
+            });
         }
 
         public static void LoadBuiltIns(Interpreter interpreter, Type builtInClass)

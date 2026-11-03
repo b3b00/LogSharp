@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using logSharp.model;
 using NFluent;
 using Xunit;
@@ -20,6 +21,17 @@ relation(a,aa).
 relation(a,aaa).
 relation(b,bb).
 relation(c,cc).
+
+single(a).
+single(b).
+
+callable_0.
+
+five(a,b,c,d,e).
+five(f,g,h,j,k).
+five(l,m,n,o,p).
+
+callable_1(X) :- single(X).
 
 ";
 
@@ -59,7 +71,47 @@ relation(c,cc).
         Check.That(lst.Count).IsEqualTo(3);
         Check.That(lst.Extracting(x => x.ToString())).IsEquivalentTo("a","aa","aaa");
         Check.That(value).IsNotNull();
-    } 
+    }
+
+    [Fact]
+    public void Call_0Test()
+    {
+        var answers = GetAnswers("call(callable_0)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsNotNull();
+        var unification = answers[0];
+        Check.That(unification).IsOk();
+    }
+    
+    [Fact]
+    public void Call_1Test()
+    {
+        var answers = GetAnswers("call(single,X)?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers).CountIs(2);
+        Check.That(answers.Extracting(x => x.GetBinding("X").ToString()))
+            .IsEquivalentTo(new List<string>() { "a", "b" });
+    }
+    
+    [Fact]
+    public void Call_2Test()
+    {
+        var answers = GetAnswers("call(relation,X,Y)?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers).CountIs(5);
+        Check.That(answers.Extracting(x => x.GetBinding("X")+"-"+x.GetBinding("Y")))
+            .IsEquivalentTo(new List<string>() { "a-a", "a-aa","a-aaa","b-bb","c-cc" });
+    }
+    
+    [Fact]
+    public void Call_6Test()
+    {
+        var answers = GetAnswers("call(five,X,Y,Z,W, K)?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers).CountIs(3);
+        Check.That(answers.Extracting(x => x.GetBinding("X")+"-"+x.GetBinding("Y")+"-"+x.GetBinding("Z")+"-"+x.GetBinding("W")+"-"+x.GetBinding("K")))
+            .IsEquivalentTo(new List<string>() { "a-b-c-d-e","f-g-h-j-k","l-m-n-o-p"});
+    }
     
     [Fact]
     public void MemberFirstTest()
@@ -84,4 +136,6 @@ relation(c,cc).
         Assert.Single(answers);
         Assert.True(answers[0].IsOk);
     }
+    
+    
 }

@@ -91,6 +91,72 @@ mapper(c,cc).
             PrintAnswers(answers);
         }
         
+        static void TestCall_1()
+        {
+            Console.WriteLine("************************************************");
+            Console.WriteLine("***");
+            Console.WriteLine("*** call/1");
+            Console.WriteLine("***");
+            Console.WriteLine("************************************************");
+            string program = @"
+callable.
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.Verbose = true;
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+            // PrintAnswers(answers);
+            var answers = GetAnswers("call(callable)?");
+            PrintAnswers(answers);
+        }
+        
+        static void TestCall_2()
+        {
+            Console.WriteLine("************************************************");
+            Console.WriteLine("***");
+            Console.WriteLine("*** call/2");
+            Console.WriteLine("***");
+            Console.WriteLine("************************************************");
+            string program = @"
+single(a).
+single(b).
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.Verbose = true;
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+            // PrintAnswers(answers);
+            var answers = GetAnswers("call(single,X)?");
+            PrintAnswers(answers);
+        }
+        
+        static void TestCall_3()
+        {
+            //return;
+            Console.WriteLine("************************************************");
+            Console.WriteLine("***");
+            Console.WriteLine("*** call/3");
+            Console.WriteLine("***");
+            Console.WriteLine("************************************************");
+            string program = @"
+relation(a,a).
+relation(a,aa).
+relation(a,aaa).
+relation(b,bb).
+relation(c,cc).
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.Verbose = false;
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+            // PrintAnswers(answers);
+            var answers = GetAnswers("call(relation,X,Y)?");
+            PrintAnswers(answers);
+        }
+        
         static Interpreter Interpreter;
         
       
@@ -122,7 +188,10 @@ mapper(c,cc).
         {
             //PrologRepl.Loop(args);
             //TestMemberOf();
-            TestMapList();
+            // TestMapList();
+            TestCall_1();
+            TestCall_2();
+            TestCall_3();
 //            AnonymiseTest();
             // RecursiveUnificationTest();
         }
