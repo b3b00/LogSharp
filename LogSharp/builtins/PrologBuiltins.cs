@@ -12,7 +12,7 @@ using static logSharp.helpers.ListHelper;
 namespace logSharp.builtins
 {
     [BuiltIns]
-    public class PreludeBuiltins
+    public class PrologBuiltins
     {
         // member/2 : member(Needle,Haystack) : Needle is member of list Haystack 
         [BuiltIn("member/2")]
@@ -97,36 +97,34 @@ namespace logSharp.builtins
                     }
                     else if (parameters[2].IsList && parameters[2] is Term list)
                     {
-                            Question question = new Question(query);
-                            bool previousVerbosity = interpreter.Verbose;
-                            interpreter.Verbose = false;
-                            var results = interpreter.Search(question, unificationIn).ToList();
-                            interpreter.Verbose = previousVerbosity;
-                            bool fullyFailed = results.Select(r => r.IsOk)
-                                .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
-                            if (fullyFailed)
+                        Question question = new Question(query);
+                        bool previousVerbosity = interpreter.Verbose;
+                        interpreter.Verbose = false;
+                        var results = interpreter.Search(question, unificationIn).ToList();
+                        interpreter.Verbose = previousVerbosity;
+                        bool fullyFailed = results.Select(r => r.IsOk)
+                            .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
+                        if (fullyFailed)
+                        {
+                            return BuildList(Unification.Failed());
+                        }
+
+                        var values = new List<Valuable>();
+                        foreach (var result in results)
+                        {
+                            if (result != null && result.Environment.ContainsVariable(lookedFor.Name))
                             {
-                                return BuildList(Unification.Failed());
+                                values.Add(result.Environment.Environment[lookedFor.Name]);
                             }
-                            var values = new List<Valuable>();
-                            foreach (var result in results)
-                            {
-                                if (result != null && result.Environment.ContainsVariable(lookedFor.Name))
-                                {
-                                    values.Add(result.Environment.Environment[lookedFor.Name]);
-                                }
-                            }
-                            // TODO check if values and list.items == 
-                            List<Valuable> inValues = list.ToValuableList();
-                            int intersectCount = inValues.Intersect(values).ToList().Count; 
-                            if (intersectCount == inValues.Count && intersectCount == values.Count)
-                            {
-                                return BuildList(Unification.Success());
-                            }
-                            else
-                            {
-                                return BuildList(Unification.Failed());
-                            }
+                        }
+
+                        // TODO check if values and list.items == 
+                        List<Valuable> inValues = list.ToValuableList();
+                        int intersectCount = inValues.Intersect(values).ToList().Count;
+                        if (intersectCount == inValues.Count && intersectCount == values.Count)
+                        {
+                            return BuildList(Unification.Success());
+                        }
                     }
                 }
             }
@@ -176,8 +174,6 @@ namespace logSharp.builtins
                         unificationOut.AddBinding(outputVar, output);
                         return BuildList(unificationOut);
                         
-                        
-                        return BuildList(Unification.Success());
                     }
                 }
             }
@@ -186,6 +182,50 @@ namespace logSharp.builtins
         }
         
       
+        // length/2 : length(list,len) len is length of list
+        [BuiltIn("length/2")]
+        public static List<Unification> Length(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+        {
+            if (parameters[0] is Term inList && inList.IsList)
+            {
+                if (parameters[1] is Valuable value)
+                {
+                    var toBeMapped = inList.ToValuableList();
+                    List<Valuable> mapped = new List<Valuable>();
+
+                    int realLength = inList.ToValuableList().Count;
+
+                    var unificationOut = new Unification();
+                    //interpreter.Unifier.UnifyTerms(term, unificationIn, new Term(new Int(realLength)), unificationOut);
+                    if (value is Variable v )
+                    {
+                        if (unificationIn.HasBinding(v.Name))
+                        {
+                            var boundValue = unificationIn.GetBinding(v.Name);
+                            if (boundValue != null && boundValue is Int i && i.Value != realLength)
+                            {
+                                return BuildList(Unification.Failed());
+                            }
+                        }
+                        else
+                        {
+                            unificationOut.AddBinding(v, new Int(realLength));
+                            return BuildList(unificationOut);
+                        }
+                    }
+
+                    if (value is Int expectedLength && expectedLength.Value == realLength)
+                    {
+                        return BuildList(Unification.Success());
+                    }
+
+                }
+            }
+
+
+            return BuildList(Unification.Failed());
+        }
        
         
         

@@ -10,12 +10,7 @@ namespace logSharp.builtins
 {
     public class BuiltinsLoader
     {
-        public static void LoadPreludeBuiltIns(Interpreter interpreter)
-        {
-            LoadBuiltIns(interpreter,typeof(PreludeBuiltins));
-        }
-
-
+     
         public static void LoadBuiltIns(Interpreter interpreter, Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
@@ -33,8 +28,8 @@ namespace logSharp.builtins
 
         public static void LoadBuiltIns(Interpreter interpreter)
         {
-            var thisAssembly = Assembly.GetAssembly(typeof(PreludeBuiltins));
-            LoadBuiltIns(interpreter,typeof(PreludeBuiltins));
+            var thisAssembly = Assembly.GetAssembly(typeof(PrologBuiltins));
+            LoadBuiltIns(interpreter,typeof(PrologBuiltins));
             ;
             var calling = Assembly.GetCallingAssembly();
             LoadBuiltIns(interpreter,calling);

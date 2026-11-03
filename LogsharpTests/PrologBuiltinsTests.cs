@@ -5,9 +5,9 @@ using Xunit;
 
 namespace ogsharpTests;
 
-public class PreludeBuiltinsTests : BaseTest
+public class PrologBuiltinsTests : BaseTest
 {
-    public PreludeBuiltinsTests() : base(PrologProgram)
+    public PrologBuiltinsTests() : base(PrologProgram)
     {
     }
     
@@ -135,6 +135,29 @@ callable_1(X) :- single(X).
         var answers = GetAnswers("member(c,[a,b,c])?");
         Assert.Single(answers);
         Assert.True(answers[0].IsOk);
+    }
+    
+    [Fact]
+    public void LengthToVariableTest()
+    {
+        var answers = GetAnswers("length([a,b,c],L)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).IsOk();
+        var unification = answers[0];
+        Check.That(unification.HasBinding("L")).IsTrue();
+        var value =  unification.GetBinding("L");
+        Check.That(value).IsNotNull();
+        Check.That(value.ToString()).IsEqualTo("3");
+    }
+    
+    [Fact]
+    public void CheckLengthTest()
+    {
+        var answers = GetAnswers("length([a,b,c],3)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).IsOk();
     }
     
     
