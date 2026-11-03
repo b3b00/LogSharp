@@ -7,6 +7,7 @@ using logSharp.builtins;
 using logSharp.interpretation.unification;
 using logSharp.model;
 using logSharp.parser;
+using LogSharp.prelude;
 using sly.parser;
 
 namespace logSharp.interpretation
@@ -26,7 +27,7 @@ namespace logSharp.interpretation
         
         public LogSharpProgram LogSharpProgram { get; set; }
         
-        private IUnifier Unifier { get; set; }
+        public IUnifier Unifier { get; set; }
         
         public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
         
@@ -41,6 +42,7 @@ namespace logSharp.interpretation
             Unifier = unifier;
             BuiltIns = new Dictionary<string, PrologBuiltIn>();
             BuiltinsLoader.LoadBuiltIns(this);
+            PreludeLoader.LoadPrelude(this);
         }
 
         public void AddBuiltIn(string spec, PrologBuiltIn builtIn)

@@ -228,7 +228,6 @@ namespace logSharp.builtins
         }
        
         
-        
         public static PrologBuiltIn Call_X(int count)
         {
             return (Interpreter interpreter, Unification unificationIn,

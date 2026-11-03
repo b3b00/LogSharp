@@ -5,7 +5,11 @@
   <ItemGroup>
     <PackageReference Include="DeepCopy" Version="1.0.3" />
     <PackageReference Include="ReadLine" Version="2.0.1" />
-    <PackageReference Include="sly" Version="2.2.5.1" />
+    <PackageReference Include="sly" Version="3.8.1" />
     <PackageReference Include="Utility.CommandLine.Arguments" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="prelude\prelude.pro" />
+    <EmbeddedResource Include="prelude\prelude.pro" />
   </ItemGroup>
 </Project>
