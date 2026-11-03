@@ -14,4 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LogSharp\LogSharp.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="programs\sudoku.pro" />
+    <EmbeddedResource Include="programs\sudoku.pro" />
+  </ItemGroup>
 </Project>

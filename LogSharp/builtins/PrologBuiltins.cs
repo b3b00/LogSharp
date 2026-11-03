@@ -183,48 +183,189 @@ namespace logSharp.builtins
         
       
         // length/2 : length(list,len) len is length of list
+        // supports 2 ways binding :
+        //   way 1 : length(boundList, ???) -> compute length, bind or check second argument
+        //   way 2 : length(freeList, boundLength) -> generate a list of BoundLength fresh variables
         [BuiltIn("length/2")]
         public static List<Unification> Length(Interpreter interpreter, Unification unificationIn,
             List<Valuable> parameters)
         {
-            if (parameters[0] is Term inList && inList.IsList)
+            Valuable first = ResolveParameter(parameters[0], unificationIn);
+            Valuable second = ResolveParameter(parameters[1], unificationIn);
+
+            // way 1 : list is bound -> compute length, bind or check second argument
+            if (first is Term inList && inList.IsList)
             {
-                if (parameters[1] is Valuable value)
+                int realLength = inList.ToValuableList().Count;
+
+                // way 1a : length is a free variable -> bind it
+                if (second is Variable lengthOut)
                 {
-                    var toBeMapped = inList.ToValuableList();
-                    List<Valuable> mapped = new List<Valuable>();
-
-                    int realLength = inList.ToValuableList().Count;
-
                     var unificationOut = new Unification();
-                    //interpreter.Unifier.UnifyTerms(term, unificationIn, new Term(new Int(realLength)), unificationOut);
-                    if (value is Variable v )
-                    {
-                        if (unificationIn.HasBinding(v.Name))
-                        {
-                            var boundValue = unificationIn.GetBinding(v.Name);
-                            if (boundValue != null && boundValue is Int i && i.Value != realLength)
-                            {
-                                return BuildList(Unification.Failed());
-                            }
-                        }
-                        else
-                        {
-                            unificationOut.AddBinding(v, new Int(realLength));
-                            return BuildList(unificationOut);
-                        }
-                    }
+                    unificationOut.AddBinding(lengthOut.Name, new Int(realLength));
+                    return BuildList(unificationOut);
+                }
 
-                    if (value is Int expectedLength && expectedLength.Value == realLength)
+                // way 1b : length is already bound -> check it
+                if (second is Int expectedLength)
+                {
+                    if (expectedLength.Value == realLength)
                     {
                         return BuildList(Unification.Success());
                     }
 
+                    return BuildList(Unification.Failed());
                 }
             }
 
+            // way 2 : length is bound and list is a free variable -> generate list of fresh variables
+            if (second is Int lengthIn && lengthIn.Value >= 0 && first is Variable list)
+            {
+                if (list.IsDiscardableVariable)
+                {
+                    return BuildList(Unification.Success());
+                }
+
+                Term generated = Term.EmptyListTerm();
+                for (int i = lengthIn.Value; i >= 1; i--)
+                {
+                    generated = Term.ListTerm(new Variable(BuildFreshVariableName(list.Name, i)), generated);
+                }
+
+                var unificationOut = new Unification();
+                unificationOut.AddBinding(list.Name, generated);
+                return BuildList(unificationOut);
+            }
 
             return BuildList(Unification.Failed());
+        }
+
+        // sort/2 : sort(list,sorted) sorted is list sorted and free of duplicates
+        // supports 2 ways binding :
+        //   way 1 : sort(boundList, ???) -> sort list, bind or check second argument
+        //   way 2 : sort(freeList, boundSortedList) -> bind free variable to its sorted value
+        [BuiltIn("sort/2")]
+        public static List<Unification> Sort(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+        {
+            Valuable first = ResolveParameter(parameters[0], unificationIn);
+            Valuable second = ResolveParameter(parameters[1], unificationIn);
+
+            // way 1 : list is bound -> sort it, bind or check second argument
+            if (first is Term inList && inList.IsList)
+            {
+                List<Valuable> sortedItems = SortValues(inList.ToValuableList());
+                Term sortedList = Term.ListTerm(sortedItems);
+
+                // way 1a : sorted list is a free variable -> bind it
+                if (second is Variable sortedOut)
+                {
+                    var unificationOut = new Unification();
+                    unificationOut.AddBinding(sortedOut.Name, sortedList);
+                    return BuildList(unificationOut);
+                }
+
+                // way 1b : sorted list is already bound -> check it
+                if (second is Term expected && expected.IsList)
+                {
+                    if (AreSameList(sortedItems, expected.ToValuableList()))
+                    {
+                        return BuildList(Unification.Success());
+                    }
+
+                    return BuildList(Unification.Failed());
+                }
+            }
+
+            // way 2 : sorted list is bound and list is a free variable
+            // the only canonical input is the sorted list itself (sorted and duplicate free)
+            if (second is Term boundOutput && boundOutput.IsList && first is Variable input)
+            {
+                List<Valuable> items = boundOutput.ToValuableList();
+                if (AreSameList(SortValues(items), items))
+                {
+                    if (input.IsDiscardableVariable)
+                    {
+                        return BuildList(Unification.Success());
+                    }
+
+                    var unificationOut = new Unification();
+                    unificationOut.AddBinding(input.Name, boundOutput);
+                    return BuildList(unificationOut);
+                }
+            }
+
+            return BuildList(Unification.Failed());
+        }
+
+        // replaces a parameter variable by its bound value when it already carries a binding
+        private static Valuable ResolveParameter(Valuable parameter, Unification unification)
+        {
+            if (parameter is Variable variable && variable.Name != Variable.DiscardingVariable
+                && unification.HasBinding(variable.Name))
+            {
+                return unification.GetBinding(variable.Name);
+            }
+
+            return parameter;
+        }
+
+        // sorts and removes duplicated values
+        private static List<Valuable> SortValues(List<Valuable> items)
+        {
+            List<Valuable> sorted = new List<Valuable>(items);
+            sorted.Sort(CompareValuables);
+
+            // List<Valuable> distinct = new List<Valuable>();
+            // foreach (var item in sorted)
+            // {
+            //     if (!distinct.Any(d => CompareValuables(d, item) == 0))
+            //     {
+            //         distinct.Add(item);
+            //     }
+            // }
+
+            return sorted;
+        }
+
+        // numbers first, then values ordered by their dumping
+        private static int CompareValuables(Valuable x, Valuable y)
+        {
+            if (x is Int xInt)
+            {
+                return y is Int yInt ? xInt.Value.CompareTo(yInt.Value) : -1;
+            }
+
+            if (y is Int)
+            {
+                return 1;
+            }
+
+            return string.CompareOrdinal(x.Dump(), y.Dump());
+        }
+
+        private static bool AreSameList(List<Valuable> left, List<Valuable> right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Count; i++)
+            {
+                if (CompareValuables(left[i], right[i]) != 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // fresh variables created by builtins are prefixed with __ to avoid name clashes with parsed programs
+        private static string BuildFreshVariableName(string variableName, int index)
+        {
+            return $"__{variableName}_length_{index}";
         }
        
         
