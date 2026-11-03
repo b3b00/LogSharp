@@ -27,12 +27,6 @@ namespace logSharp.interpretation.unification
             IsOk = true;
         }
 
-        public Unification(TermEnvironment environment)
-        {
-            Environment = environment;
-            IsOk = true;
-        }
-
         public Unification(bool ok)
         {
             Environment = new TermEnvironment();
