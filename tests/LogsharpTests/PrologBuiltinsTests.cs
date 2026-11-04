@@ -269,15 +269,38 @@ callable_1(X) :- single(X).
     public void TrickierSortTwoWaysBindingWithDiscardBindingsTest()
     {
         // two ways binding : sorted result is bound, list is free
-        var answers = GetAnswers("sort([a,b,c,d,e,f],[_,[X|T]])?");
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, T])?");
         Check.That(answers).CountIs(1);
         var answer = answers[0];
         Check.That(answer.IsOk).IsTrue();
-        var X = answer.GetBinding("X");
-        Check.That(X).IsNotNull();
-        Check.That(X.ToString()).IsEqualTo("b");
-        var T = answer.GetBinding("T");
-        Check.That(T).IsNotNull();
+        Check.That(answer).Contains("X","b");
+        Check.That(answer).Contains("T", "[c, d, e, f]");
+    }
+    
+    [Fact]
+    public void TrickierSortTwoWaysBindingWithDiscardBindingsTest2()
+    {
+        // two ways binding : sorted result is bound, list is free
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, Y, T])?");
+        Check.That(answers).CountIs(1);
+        var answer = answers[0];
+        Check.That(answer.IsOk).IsTrue();
+        Check.That(answer).Contains("X","b");
+        Check.That(answer).Contains("Y","c");
+        Check.That(answer).Contains("T", "[d, e, f]");
+    }
+    
+    [Fact]
+    public void TrickierSortTwoWaysBindingWithDiscardBindingsTest3()
+    {
+        // two ways binding : sorted result is bound, list is free
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, _, Y, T])?");
+        Check.That(answers).CountIs(1);
+        var answer = answers[0];
+        Check.That(answer.IsOk).IsTrue();
+        Check.That(answer).Contains("X","b");
+        Check.That(answer).Contains("Y","d");
+        Check.That(answer).Contains("T", "[e, f]");
     }
     
     

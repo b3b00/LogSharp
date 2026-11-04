@@ -250,7 +250,7 @@ namespace logSharp.builtins
         {
             Valuable first = ResolveParameter(parameters[0], unificationIn);
             Valuable second = ResolveParameter(parameters[1], unificationIn);
-
+            
             // way 1 : list is bound -> sort it, bind or check second argument
             if (first is Term inList && inList.IsList)
             {

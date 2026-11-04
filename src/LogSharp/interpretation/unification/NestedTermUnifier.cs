@@ -10,6 +10,8 @@ namespace logSharp.interpretation.unification
     public class NestedTermUnifier : IUnifier
     {
 
+
+        
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
             Unification destEnv)
         {
@@ -47,10 +49,6 @@ namespace logSharp.interpretation.unification
                             if (destArg.Name != Variable.DiscardingVariable)
                             {
                                 unification.AddBinding(destArg as Variable, srcVal);
-                            }
-                            else
-                            {
-                                ;
                             }
                         }
                         else
@@ -100,11 +98,6 @@ namespace logSharp.interpretation.unification
                                     return Unification.Failed();
                                 }
                             }
-                            else
-                            {
-                                ;
-                            }
-
                         }
                     }
                 }

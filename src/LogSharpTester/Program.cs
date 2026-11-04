@@ -196,7 +196,7 @@ relation(c,cc).
             return xParsed.Result;
         }
         
-        static void TwoWayBinding()
+        static void SortTwoWayBinding()
         {
             Console.WriteLine("************************************************");
             Console.WriteLine("***");
@@ -208,7 +208,9 @@ relation(c,cc).
             //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
             // var answers = GetAnswers("member_of(a,[a,b,c])?");
             // PrintAnswers(answers);
-            var answers = GetAnswers("sort([a,b,c],[a,X,c])?");
+            var answers = GetAnswers("sort([a,b,c,d,e,f],list (_,list(X,T)))?");
+            PrintAnswers(answers);
+            answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, T])?");
             PrintAnswers(answers);
             ;
         }
@@ -218,7 +220,7 @@ relation(c,cc).
             //PrologRepl.Loop(args);
             //TestMemberOf();
             // TestMapList();
-            TwoWayBinding();
+            SortTwoWayBinding();
             // TestCall_1();
             // TestCall_2();
             // TestCall_3();
