@@ -35,5 +35,13 @@ public static class NFluentExtensions
         return ExtensibilityHelper.BuildCheckLink(context);
     }
     
+    public static ICheckLink<ICheck<Unification>>Contains(this ICheck<Unification> context, string name)
+    {
+        ExtensibilityHelper.BeginCheck(context)
+            .FailWhen(sut => !sut.HasBinding(name), $"unification does not contain {name} variable.")
+            .OnNegate("unification expected to fail.");
+        return ExtensibilityHelper.BuildCheckLink(context);
+    }
+    
      
 }

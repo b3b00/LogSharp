@@ -268,12 +268,8 @@ namespace logSharp.builtins
                 // way 1b : sorted list is already bound -> check it
                 if (second is Term expected && expected.IsList)
                 {
-                    if (AreSameList(sortedItems, expected.ToValuableList()))
-                    {
-                        return BuildList(Unification.Success());
-                    }
-
-                    return BuildList(Unification.Failed());
+                    var unified = interpreter.UnifyTerms(sortedList, unificationIn, expected, new Unification());
+                    return BuildList(unified);
                 }
             }
 
@@ -310,21 +306,11 @@ namespace logSharp.builtins
             return parameter;
         }
 
-        // sorts and removes duplicated values
+        // sorts values
         private static List<Valuable> SortValues(List<Valuable> items)
         {
             List<Valuable> sorted = new List<Valuable>(items);
             sorted.Sort(CompareValuables);
-
-            // List<Valuable> distinct = new List<Valuable>();
-            // foreach (var item in sorted)
-            // {
-            //     if (!distinct.Any(d => CompareValuables(d, item) == 0))
-            //     {
-            //         distinct.Add(item);
-            //     }
-            // }
-
             return sorted;
         }
 

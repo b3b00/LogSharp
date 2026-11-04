@@ -183,15 +183,45 @@ relation(c,cc).
                 Console.WriteLine(answer);
             }
         }
+
+
+        static LogSharpAST Parse(string source, string from = "scalarorTerm")
+        {
+            var parser = BuildParser();
+            var xParsed = parser.Parse(source, from);
+            if (xParsed.IsError)
+            {
+                throw new Exception(string.Join("\n", xParsed.Errors.Select(x => x.ErrorMessage)));
+            }
+            return xParsed.Result;
+        }
+        
+        static void TwoWayBinding()
+        {
+            Console.WriteLine("************************************************");
+            Console.WriteLine("***");
+            Console.WriteLine("*** 2-way binding sort sort/2");
+            Console.WriteLine("***");
+            Console.WriteLine("************************************************");
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.Verbose = false;
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            // var answers = GetAnswers("member_of(a,[a,b,c])?");
+            // PrintAnswers(answers);
+            var answers = GetAnswers("sort([a,b,c],[a,X,c])?");
+            PrintAnswers(answers);
+            ;
+        }
         
         static void Main(string[] args)
         {
             //PrologRepl.Loop(args);
             //TestMemberOf();
             // TestMapList();
-            TestCall_1();
-            TestCall_2();
-            TestCall_3();
+            TwoWayBinding();
+            // TestCall_1();
+            // TestCall_2();
+            // TestCall_3();
 //            AnonymiseTest();
             // RecursiveUnificationTest();
         }

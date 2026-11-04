@@ -266,5 +266,9 @@ namespace logSharp.interpretation
                 yield return Unification.Failed();
             }
         }
+
+        public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
+            Unification destEnv)
+        => Unifier.UnifyTerms(source, sourceEnv, destination, destEnv);
     }
 }

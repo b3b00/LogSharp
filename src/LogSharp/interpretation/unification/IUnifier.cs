@@ -8,5 +8,7 @@ namespace logSharp.interpretation.unification
             Unification destEnv);
 
         Term EvalTerm(Term term, Unification unification);
+
+        Valuable Eval(Valuable arg, Unification environment, bool preserveVariables = false);
     }
 }

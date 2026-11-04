@@ -12,7 +12,7 @@
         <PackageReference Include="coverlet.msbuild" Version="6.0.4"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogSharp\LogSharp.csproj" />
+    <ProjectReference Include="..\..\src\LogSharp\LogSharp.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="programs\sudoku.pro" />

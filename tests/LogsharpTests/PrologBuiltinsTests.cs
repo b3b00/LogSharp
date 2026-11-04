@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using logSharp.model;
 using NFluent;
 using Xunit;
@@ -159,6 +160,130 @@ callable_1(X) :- single(X).
         Check.That(answers[0]).IsNotNull();
         Check.That(answers[0]).IsOk();
     }
+
+    [Fact]
+    public void LengthFromBoundListToFreeVariableTest()
+    {
+        var answers = GetAnswers("length([a,b,c],L)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        Check.That(answers[0].GetBinding("L")).IsEqualTo(new Int(3));
+    }
+
+    [Fact]
+    public void LengthGeneratedListTest()
+    {
+        // two ways binding : length is bound, list is free
+        var answers = GetAnswers("length(L,3)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        var boundList = answers[0].GetBinding("L") as Term;
+        Check.That(boundList).IsNotNull();
+        Check.That(boundList.IsList).IsTrue();
+        Check.That(boundList.ToValuableList().Count).IsEqualTo(3);
+    }
+
+    [Fact]
+    public void LengthGeneratedEmptyListTest()
+    {
+        var answers = GetAnswers("length(L,0)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        Check.That(answers[0].GetBinding("L")).IsEqualTo(Term.ListTerm(new List<Valuable>()));
+    }
+
+    [Fact]
+    public void SortToVariableTest()
+    {
+        var answers = GetAnswers("sort([c,a,b],S)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        var sorted = answers[0].GetBinding("S") as Term;
+        Check.That(sorted).IsNotNull();
+        Check.That(string.Join(",", sorted.ToValuableList().Select(i => i.Dump()))).IsEqualTo("a,b,c");
+    }
+
+    [Fact]
+    public void SortCheckBoundResultTest()
+    {
+        var answers = GetAnswers("sort([c,a,b],[a,b,c])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+    }
+
+    [Fact]
+    public void SortWrongBoundResultTest()
+    {
+        var answers = GetAnswers("sort([c,a,b],[c,b,a])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
+    [Fact]
+    public void SortRemovesDuplicatesTest()
+    {
+        var answers = GetAnswers("sort([b,a,b,c,a],S)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        var sorted = answers[0].GetBinding("S") as Term;
+        Check.That(sorted).IsNotNull();
+        Check.That(string.Join(",", sorted.ToValuableList().Select(i => i.Dump()))).IsEqualTo("a,a,b,b,c");
+    }
+
+    [Fact]
+    public void SortNumbersTest()
+    {
+        var answers = GetAnswers("sort([3,1,2],S)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        var sorted = answers[0].GetBinding("S") as Term;
+        Check.That(sorted).IsNotNull();
+        Check.That(string.Join(",", sorted.ToValuableList().Select(i => i.Dump()))).IsEqualTo("1,2,3");
+    }
+
+    [Fact]
+    public void SortTwoWaysBindingTest()
+    {
+        // two ways binding : sorted result is bound, list is free
+        var answers = GetAnswers("sort(L,[a,b,c])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        var boundList = answers[0].GetBinding("L") as Term;
+        Check.That(boundList).IsNotNull();
+        Check.That(string.Join(",", boundList.ToValuableList().Select(i => i.Dump()))).IsEqualTo("a,b,c");
+    }
+    
+    [Fact]
+    public void TrickierSortTwoWaysBindingTest()
+    {
+        // two ways binding : sorted result is bound, list is free
+        var answers = GetAnswers("sort([a,b,c],[A,B,C])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsOk();
+        Check.That(answers[0]).Contains("A","a");
+        Check.That(answers[0]).Contains("B","b");
+        Check.That(answers[0]).Contains("C","c");
+    }
+    
+    [Fact]
+    public void TrickierSortTwoWaysBindingWithDiscardBindingsTest()
+    {
+        // two ways binding : sorted result is bound, list is free
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_,[X|T]])?");
+        Check.That(answers).CountIs(1);
+        var answer = answers[0];
+        Check.That(answer.IsOk).IsTrue();
+        var X = answer.GetBinding("X");
+        Check.That(X).IsNotNull();
+        Check.That(X.ToString()).IsEqualTo("b");
+        var T = answer.GetBinding("T");
+        Check.That(T).IsNotNull();
+    }
+    
+    
+    
+    
     
     
 }
+
