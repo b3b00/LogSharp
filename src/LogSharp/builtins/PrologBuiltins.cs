@@ -294,6 +294,8 @@ namespace logSharp.builtins
             return BuildList(Unification.Failed());
         }
 
+        
+        
         // replaces a parameter variable by its bound value when it already carries a binding
         private static Valuable ResolveParameter(Valuable parameter, Unification unification)
         {
@@ -353,33 +355,97 @@ namespace logSharp.builtins
         {
             return $"__{variableName}_length_{index}";
         }
-       
+
+
+
+  
         
+        [BuiltIn("call/1")]
+        public static List<Unification> Call1(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+        {
+            var call = Call_X(2);
+            if (parameters[0] is Term term)
+            {
+                // TODO : build the parameter list
+                List<Valuable> calleeParameters = new List<Valuable>();
+                calleeParameters.Add(new Atom(term.Name));
+                calleeParameters.AddRange(term.Parameters);
+                return call(interpreter, unificationIn, calleeParameters);
+            }
+            else
+            {
+                Valuable first = ResolveParameter(parameters[0], unificationIn);
+                return call(interpreter, unificationIn, parameters);
+            }
+        }
+
+        [BuiltIn("not/1")]
+        public static List<Unification> Not1(Interpreter interpreter, Unification unificationIn,
+            List<Valuable> parameters)
+        {
+
+            var result = Call1(interpreter, unificationIn, parameters);
+            if (result.Any(x => x.IsOk))
+            {
+                return BuildList(Unification.Failed());
+            }
+            else
+            {
+                return BuildList(Unification.Success());
+            }
+        }
+
+
+
+
         public static PrologBuiltIn Call_X(int count)
         {
             return (Interpreter interpreter, Unification unificationIn,
                 List<Valuable> parameters) =>
             {
-                if (parameters[0] is Atom goal &&
-                    interpreter.HasRule(goal.Name + $"/{count - 1}"))
+                if (parameters[0] is Atom goal)
                 {
-
-                    Term goalTerm = new Term(goal.Name, parameters.Skip(1).ToList());
-                    var question = new Question(goalTerm);
-                    var results = interpreter.Search(question, unificationIn).ToList();
-                    return results;
+                    if (interpreter.HasRule(goal.Name + $"/{count - 1}")
+                        || interpreter.HasBuiltin(goal.Name + $"/{count - 1}"))
+                    {
+                        Term goalTerm = new Term(goal.Name, parameters.Skip(1).ToList());
+                        var question = new Question(goalTerm);
+                        var results = interpreter.Search(question, unificationIn).ToList();
+                        return results;
+                    }
                 }
 
+
                 return BuildList(Unification.Failed());
+            };
+        }
+        
+        public static PrologBuiltIn Not_X(int count)
+        {
+            return (Interpreter interpreter, Unification unificationIn,
+                List<Valuable> parameters) =>
+            {
+                var call = Call_X(count);
+                var result = call(interpreter, unificationIn, parameters);
+                if (result.Any(x => x.IsOk))
+                {
+                    return BuildList(Unification.Failed());
+                }
+                else
+                {
+                    return BuildList(Unification.Success());
+                }
             };
         }
 
         [BuiltInBuilder]
         public static void BuildCallBuiltIns(Interpreter interpreter)
         {
-            for (int i = 1; i < 10; i++)
+            for (int i = 2; i < 10; i++)
             {
-                interpreter.AddBuiltIn($"call/{i}", Call_X(i));    
+                interpreter.AddBuiltIn($"call/{i}", Call_X(i));
+                interpreter.AddBuiltIn($"not/{i}", Not_X(i));
             }
         }
     }

@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 #
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSharp", "src\LogSharp\LogSharp.csproj", "{D6B6FFCD-7184-4A26-917B-0AFE2C77C431}"
@@ -6,6 +6,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSharpTester", "src\LogSharpTester\LogSharpTester.csproj", "{A45BCB7C-32E1-4F4A-87DC-33DE479B41AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogsharpTests", "tests\LogsharpTests\LogsharpTests.csproj", "{E6FD533B-4CEF-4232-BF73-F8260D419991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toplevel", "src\Toplevel\Toplevel.csproj", "{B6D8D2E6-9FF7-4300-A05C-1955EE38AD01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,5 +31,9 @@ Global
 		{E6FD533B-4CEF-4232-BF73-F8260D419991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6FD533B-4CEF-4232-BF73-F8260D419991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6FD533B-4CEF-4232-BF73-F8260D419991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D8D2E6-9FF7-4300-A05C-1955EE38AD01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D8D2E6-9FF7-4300-A05C-1955EE38AD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D8D2E6-9FF7-4300-A05C-1955EE38AD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D8D2E6-9FF7-4300-A05C-1955EE38AD01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

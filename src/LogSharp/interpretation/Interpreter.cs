@@ -86,6 +86,11 @@ namespace logSharp.interpretation
             return LogSharpProgram.RulesBySpec.ContainsKey(name);
         }
 
+        public bool HasBuiltin(string name)
+        {
+            return BuiltIns.ContainsKey(name);
+        }
+
        
 
         public void Trace(string message)
@@ -102,7 +107,13 @@ namespace logSharp.interpretation
 
         public void LoadProgramFile(string program)
         {
-            string prog = File.ReadAllText(program);
+            string prog = "";
+            if (File.Exists(program)) 
+                prog = File.ReadAllText(program);
+            else if (File.Exists(program + ".pl"))
+                prog = File.ReadAllText(program + ".pl");
+            else if (File.Exists(program + ".pro"))
+                prog = File.ReadAllText(program + ".pro");
             LoadProgram(prog);
         }
         

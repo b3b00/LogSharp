@@ -87,7 +87,7 @@ callable_1(X) :- single(X).
     [Fact]
     public void Call_1Test()
     {
-        var answers = GetAnswers("call(single,X)?");
+        var answers = GetAnswers("call(single(X))?");
         Check.That(answers[0]).IsNotNull();
         Check.That(answers).CountIs(2);
         Check.That(answers.Extracting(x => x.GetBinding("X").ToString()))
@@ -107,11 +107,35 @@ callable_1(X) :- single(X).
     [Fact]
     public void Call_6Test()
     {
+        var answers = GetAnswers("not(five,a,b,c,d,e)?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).Not.IsOk();
+        answers = GetAnswers("not(five,whatever,nothing,nope,_,U)?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).Not.IsOk();
+        
+    }
+
+    [Fact]
+    public void Not_1test()
+    {
+        var answers = GetAnswers("call(single(a))?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).Not.IsOk();
+        answers = GetAnswers("call(single(whatever))?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).Not.IsOk();
+    }
+    
+    [Fact]
+    public void Not_6test()
+    {
         var answers = GetAnswers("call(five,X,Y,Z,W, K)?");
         Check.That(answers[0]).IsNotNull();
-        Check.That(answers).CountIs(3);
-        Check.That(answers.Extracting(x => x.GetBinding("X")+"-"+x.GetBinding("Y")+"-"+x.GetBinding("Z")+"-"+x.GetBinding("W")+"-"+x.GetBinding("K")))
-            .IsEquivalentTo(new List<string>() { "a-b-c-d-e","f-g-h-j-k","l-m-n-o-p"});
+        Check.That(answers[0]).Not.IsOk();
+        answers = GetAnswers("call(single(whatever))?");
+        Check.That(answers[0]).IsNotNull();
+        Check.That(answers[0]).Not.IsOk();
     }
     
     [Fact]
