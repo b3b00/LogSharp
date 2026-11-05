@@ -333,4 +333,3 @@ callable_1(X) :- single(X).
     
     
 }
-

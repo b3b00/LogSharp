@@ -1,8 +1,12 @@
+using logSharp.interpretation.unification;
+
 namespace logSharp.model
 {
-    public class Int : Scalar
+    public class Int : Scalar, IExpression
     {
         public int Value { get; set; }
+        
+        public override object RawValue => Value;
 
         public Int(int value)
         {
@@ -13,7 +17,9 @@ namespace logSharp.model
         {
             return Value.ToString();
         }
-        
+
+        public object Evaluate(Unification unification) => RawValue;
+
         public override string ToString()
         {
             return Dump();

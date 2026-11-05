@@ -4,8 +4,11 @@ namespace logSharp.model
 {
     public sealed class Number : LogSharpAST
     {
+        
         private readonly int Value;
 
+        
+        
         public Number(int value)
         {
             Value = value;

@@ -1,15 +1,20 @@
 using System;
+using logSharp.interpretation.unification;
 
 namespace logSharp.model
 {
-    public class Double : Scalar
+    public class Double : Scalar, IExpression
     {
         public double Value { get; set; }
+        
+        public override object RawValue => Value;
 
         public Double(double value)
         {
             Value = value;
         }
+        
+        public object Evaluate(Unification unification) => RawValue;
 
         public override string Dump()
         {
