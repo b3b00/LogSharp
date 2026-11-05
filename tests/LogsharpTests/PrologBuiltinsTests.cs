@@ -26,7 +26,7 @@ relation(c,cc).
 single(a).
 single(b).
 
-callable_0.
+callable_0().
 
 five(a,b,c,d,e).
 five(f,g,h,j,k).

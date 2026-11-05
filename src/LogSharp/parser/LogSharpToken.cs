@@ -49,6 +49,45 @@ namespace logSharp.parser
 
         #endregion
 
+        [Lexeme(GenericToken.KeyWord,"is")]
+        Is = 20,
 
+        #region expression 50 -> 100
+        
+        // the + operator
+        [Lexeme(GenericToken.SugarToken,"+")] Plus = 50,
+
+        // the - operator
+        [Lexeme(GenericToken.SugarToken,"-")]
+        Minus = 51,
+
+        // the * operator
+        [Lexeme(GenericToken.SugarToken,"*")]
+        Times = 52,
+
+        //  the  / operator
+        [Lexeme(GenericToken.SugarToken,"/")]
+        Divide = 53,
+
+   
+        
+        [Lexeme(GenericToken.SugarToken,"==")]
+        EqualsTo = 54,
+        
+        [Lexeme(GenericToken.SugarToken,"!=")] Different = 55,
+        
+        [Lexeme(GenericToken.SugarToken,">")] Gt = 56,
+        
+        [Lexeme(GenericToken.SugarToken,"<")] Lt = 57,
+        
+        [Lexeme(GenericToken.SugarToken,">=")] Gte = 58,
+        
+        [Lexeme(GenericToken.SugarToken,"<=")] Lte = 59,
+        
+
+        
+        
+        #endregion 
+        
     }
 }

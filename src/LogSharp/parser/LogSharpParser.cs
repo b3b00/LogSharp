@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using logSharp.builtins.expressions;
 using logSharp.model;
 using sly.lexer;
 using sly.parser.parser;
@@ -94,6 +95,29 @@ namespace logSharp.parser
             );
         }
 
+        [Production("term : Variable Is[d]  LogSharpParser_expressions")]
+        public LogSharpAST Is(Token<LogSharpToken> variableToken,/*Token<LogSharpToken> isToken,*/ LogSharpAST expression)
+        {
+            if (expression is IExpression expr)
+            {
+                var variable = new Variable(variableToken.Value); 
+                return new Term(IsBuiltin.IsBuiltinName, new List<Valuable>(){variable, expr});
+            }
+
+            return null;
+        }
+        
+        [Production("term : LogSharpParser_expressions")]
+        public LogSharpAST Assert(LogSharpAST expr)
+        {
+            if (expr is IExpression expression)
+            {
+                return new Term(AssertBuiltin.AssertBuiltinName,new List<Valuable>(){expression});
+            }
+
+            return null;
+        }
+        
         
         [Production("term : [Atom|AtomicString] LeftPar[d]  RightPar[d]")]
         public LogSharpAST termNoArg(Token<LogSharpToken> clauseName )
@@ -171,7 +195,87 @@ namespace logSharp.parser
             return new LogDouble(doubleToken.DoubleValue);
         }*/
         
-        
+        #region expressions
+
+        [Infix("Plus", Associativity.Right,10)]
+        [Infix("Minus", Associativity.Right,10)]
+        public LogSharpAST BinaryTermExpression(LogSharpAST left, Token<LogSharpToken> operation, LogSharpAST right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+        [Infix("Times", Associativity.Right, 50)]
+        [Infix("Divide", Associativity.Right, 50)]
+        public LogSharpAST BinaryFactorExpression(LogSharpAST left, Token<LogSharpToken> operation, LogSharpAST right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+        [Prefix("Minus", Associativity.Right,100)]
+        public LogSharpAST PreFixExpression(Token<LogSharpToken> operation, LogSharpAST value)
+        {
+            return new UnaryOperation(operation.TokenID, value);
+        }
+
+
+        [Infix("EqualsTo", Associativity.Right,5)]
+        [Infix("Different", Associativity.Right,5)]
+        [Infix("Gt", Associativity.Right,5)]
+        [Infix("Lt", Associativity.Right,5)]
+        [Infix("Gte", Associativity.Right,5)]
+        [Infix("Lte", Associativity.Right,5)]
+        public LogSharpAST BinaryComparisonExpression(LogSharpAST left, Token<LogSharpToken> operation,
+            LogSharpAST right)
+        {
+            return new BinaryOperation(left, operation.TokenID, right);
+        }
+
+
+        [Operand]
+        [Production("operand : primary_value")]
+        public LogSharpAST OperandValue(LogSharpAST value)
+        {
+            return value;
+        }
+
+
+        [Production("primary_value : Variable")]
+        public LogSharpAST AtomExpressionVariable(Token<LogSharpToken> variable)
+        {
+            return new Variable(variable.Value);
+        }
+
+        [Production("primary_value : Atom")]
+        public LogSharpAST AtomExpressionScalar(Token<LogSharpToken> atom)
+        {
+            return new Atom(atom.Value);
+        }
+
+        [Production("primary_value : String")]
+        public LogSharpAST StringExpressionScalar(Token<LogSharpToken> stringToken)
+        {
+            return new String(stringToken.StringWithoutQuotes);
+        }
+
+        [Production("primary_value : Integer")]
+        public LogSharpAST IntExpressionScalar(Token<LogSharpToken> intToken)
+        {
+            return new Int(intToken.IntValue);
+        }
+
+        [Production("primary_value : Double")]
+        public LogSharpAST DoubleExpressionScalar(Token<LogSharpToken> doubleToken)
+        {
+            return new Double(doubleToken.DoubleValue);
+        }
+
+        [Production("primary_value : LeftPar LogSharpParser_expressions RightPar")]
+        public LogSharpAST OperandParens(Token<LogSharpToken> lparen, LogSharpAST value, Token<LogSharpToken> rparen)
+        {
+            return value;
+        }
+
+        #endregion
         
     }
 }
