@@ -55,11 +55,13 @@ namespace logSharp.parser
             return new Question(clause as Term);
         }
         
-        [Production("fact : Atom Dot[d]")]
+        [Production("fact : [Atom|AtomicString] Dot[d]")]
         public LogSharpAST fact(Token<LogSharpToken> atom)
         {
-            return new Fact(atom.Value);
+            return new Fact(atom.StringWithoutQuotes);
         }
+        
+        
 
         
         [Production("list :  LeftBrack[d]   RightBrack[d]")]
@@ -93,7 +95,7 @@ namespace logSharp.parser
         }
 
         
-        [Production("term : Atom LeftPar[d]  RightPar[d]")]
+        [Production("term : [Atom|AtomicString] LeftPar[d]  RightPar[d]")]
         public LogSharpAST termNoArg(Token<LogSharpToken> clauseName )
         {
             List<Valuable> parameters = new List<Valuable>();
@@ -104,7 +106,7 @@ namespace logSharp.parser
             );
         }
 
-        [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
+        [Production("term : [Atom|AtomicString] LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
         public LogSharpAST term(Token<LogSharpToken> clauseName, LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
             List<Valuable> parameters = new List<Valuable>();
@@ -141,15 +143,15 @@ namespace logSharp.parser
         
         
         [Production("scalar : Variable")]
-        public LogSharpAST AtomVariable(Token<LogSharpToken> atom)
+        public LogSharpAST AtomVariable(Token<LogSharpToken> variable)
         {
-            return new Variable(atom.Value);
+            return new Variable(variable.Value);
         }
 
-        [Production("scalar : Atom")]
+        [Production("scalar : [Atom|AtomicString]")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
         {
-            return new Atom(atom.Value);
+            return new Atom(atom.StringWithoutQuotes);
         }
         [Production("scalar : String")]
         public LogSharpAST StringScalar(Token<LogSharpToken> stringToken)

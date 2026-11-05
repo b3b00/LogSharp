@@ -13,6 +13,8 @@ namespace logSharp.parser
         Atom = 3,
 
         [String("\"")] String = 4,
+        [String("'")] AtomicString = 41,
+        
 
         [Int] Integer = 5,
 
