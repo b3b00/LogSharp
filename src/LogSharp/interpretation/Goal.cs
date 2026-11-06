@@ -179,8 +179,6 @@ namespace logSharp.interpretation
                 dump.AppendLine(Head.ToString() + " @ " + Index);
             }
 
-            var unifStr = Unification.ToString();
-            dump.AppendLine(unifStr);
             return dump.ToString();
         }
     }

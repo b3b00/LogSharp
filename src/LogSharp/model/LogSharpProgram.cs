@@ -17,17 +17,7 @@ namespace logSharp.model
 
         private void SetRulesBySpec()
         {
-            RulesBySpec = new Dictionary<string, List<Rule>>();
-            foreach (var rule in Rules)
-            {
-                List<Rule> currentRules;
-                if (!RulesBySpec.TryGetValue(rule.Specification, out currentRules))
-                {
-                    currentRules = new List<Rule>();
-                }
-                currentRules.Add(rule);
-                RulesBySpec[rule.Specification] = currentRules;
-            }
+            RulesBySpec = Rules.GroupBy(r => r.Specification).ToDictionary(g =>  g.Key, g => g.ToList());
         }
 
         public void Append(Rule rule)
@@ -40,7 +30,7 @@ namespace logSharp.model
         {
             if (program != null && program.Rules != null && program.Rules.Any())
             {
-                Rules.AddRange(program.Rules);
+                Rules = program.Rules;
                 SetRulesBySpec();
             }
         }
