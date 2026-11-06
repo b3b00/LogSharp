@@ -153,7 +153,7 @@ public class PrologRepl
             }
         }
         
-        Interpreter interpreter = new Interpreter(false, program, parser, new NestedTermUnifier());
+        Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
 
 
         if (!string.IsNullOrEmpty(LogFile))
