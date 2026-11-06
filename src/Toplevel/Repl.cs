@@ -116,7 +116,28 @@ public class PrologRepl
     {
         Arguments.Populate();
         var parser = BuildParser();
-        Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
+
+        LogSharpProgram program = null;
+        if (args.Length > 0)
+        {
+            var source = File.ReadAllText(args[0]);
+            var ast = parser.Parse(source);
+            if (ast.IsOk)
+            {
+                program = ast.Result as LogSharpProgram;
+            }
+            else
+            {
+                Console.WriteLine($"source file {args[0]} is invalid.");
+                foreach (var error in ast.Errors)
+                {
+                    Console.Error.WriteLine(error.ErrorMessage);
+                }
+                Environment.Exit(1);
+            }
+        }
+        
+        Interpreter interpreter = new Interpreter(false, program, parser, new NestedTermUnifier());
 
 
         if (!string.IsNullOrEmpty(LogFile))

@@ -171,9 +171,9 @@ namespace logSharp.model
             LeftExpresion = left;
             Operator = op;
             RightExpression = right;
-
-            
         }
+
+
 
         public object Evaluate(Unification unification)
         {
@@ -197,7 +197,7 @@ namespace logSharp.model
 
         public override string Dump()
         {
-            return "BinaryExpr";
+            return $"{LeftExpresion.Dump()} {OperatorsHelper.TokenToOperator(Operator)} {RightExpression.Dump()}";
         }
     }
 }
