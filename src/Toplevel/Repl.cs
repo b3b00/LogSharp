@@ -37,6 +37,15 @@ public class PrologRepl
         var logParser = new LogSharpParser();
         var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
         var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
+        if (parser.IsError)
+        {
+            Console.WriteLine("error building prolog parser");
+            foreach (var error in parser.Errors)
+            {
+                Console.WriteLine(error.Message);
+            }
+            Environment.Exit(1);
+        }
         var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
         CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
         return parser.Result;
@@ -107,8 +116,15 @@ public class PrologRepl
 
     static void Dump(Interpreter interpreter, Question ask)
     {
-        interpreter.LogSharpProgram.Rules.ForEach(r => Console.WriteLine(r));
-        interpreter.BuiltIns.Keys.ToList().ForEach(b => Console.WriteLine(b));
+        if (ask.Parameters.Count == 0 || (ask.Parameters.Count == 1 &&  ask.Parameters[0] is Atom rulesAtom && (rulesAtom.Name == "all" || rulesAtom.Name=="rules"))) {
+            interpreter.LogSharpProgram.Rules.ForEach(r => Console.WriteLine(r));
+        }
+
+        if (ask.Parameters.Count == 0 || (ask.Parameters.Count == 1 && ask.Parameters[0] is Atom builtinAtoms &&
+                                          (builtinAtoms.Name == "all" || builtinAtoms.Name == "builtin" || builtinAtoms.Name == "prim" || builtinAtoms.Name == "primitives")))
+        {
+            interpreter.BuiltIns.Keys.ToList().ForEach(b => Console.WriteLine(b));
+        }
     }
 
 
