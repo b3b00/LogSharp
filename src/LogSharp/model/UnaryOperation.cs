@@ -5,22 +5,27 @@ namespace logSharp.model
 {
     public class UnaryOperation : Scalar, LogSharpAST, IExpression
     {
-        private readonly LogSharpToken Operator;
-        private readonly LogSharpAST Expression;
+        private readonly LogSharpToken _operator;
+        
+        public LogSharpToken Operator => _operator;
+        
+        private readonly LogSharpAST _expression;
+        
+        public LogSharpAST Expression => _expression;
 
         public UnaryOperation(LogSharpToken op, LogSharpAST right)
         {
-            Operator = op;
-            Expression = right;
+            _operator = op;
+            _expression = right;
         }
 
         public object Evaluate(Unification unification)
         {
-            var right = ((IExpression)Expression).Evaluate(unification);
+            var right = ((IExpression)_expression).Evaluate(unification);
 
             if (right != null && right is int i)
             {
-                switch (Operator)
+                switch (_operator)
                 {
                     case LogSharpToken.Plus:
                     {
@@ -42,8 +47,8 @@ namespace logSharp.model
 
         public override string Dump()
         {
-            string oper = Operator == LogSharpToken.Minus ? "-" : "+";
-            return $"{oper} {Expression.Dump()}";
+            string oper = _operator == LogSharpToken.Minus ? "-" : "+";
+            return $"{oper} {_expression.Dump()}";
         }
     }
 }

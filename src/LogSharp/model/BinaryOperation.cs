@@ -14,13 +14,27 @@ namespace logSharp.model
     {
         private static readonly Type IntType = typeof(Int32);
 
-        private readonly LogSharpAST LeftExpresion;
-        private readonly LogSharpToken Operator;
-        private readonly LogSharpAST RightExpression;
-
+        private readonly LogSharpAST _leftExpression;
+        public LogSharpAST LeftExpresion => _leftExpression;
+        
+        private readonly LogSharpToken _operator;
+        public LogSharpToken Operator => _operator;
+        
+        private readonly LogSharpAST _rightExpression;
+        public  LogSharpAST RightExpression => _rightExpression;
+            
+        
 
         private static object Compare(LogSharpToken oper, IComparable left, IComparable right)
         {
+            
+            var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
+            {
+                var result = f(left, right);
+                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
+                return result;
+            };
+            
             var leftType = left.GetType();
             var rightType = right.GetType();
             int comparison = left.CompareTo(right);
@@ -28,27 +42,27 @@ namespace logSharp.model
             {
                 case LogSharpToken.EqualsTo:
                 {
-                    return comparison == 0;
+                    return logAndReturn("==",(object l , object r ) => comparison == 0);
                 }
                 case LogSharpToken.Different :
                 {
-                    return comparison != 0;
+                    return logAndReturn("!=",(object l , object r ) => comparison != 0);
                 }
                 case LogSharpToken.Gt:
                 {
-                    return comparison > 0;
+                    return logAndReturn(">",(object l , object r ) => comparison > 0);
                 }
                 case LogSharpToken.Lt:
                 {
-                    return comparison < 0;
+                    return logAndReturn("<",(object l , object r ) => comparison < 0);
                 }
                 case LogSharpToken.Gte:
                 {
-                    return comparison >= 0;
+                    return logAndReturn(">=",(object l , object r ) => comparison >= 0);return comparison >= 0;
                 }
                 case LogSharpToken.Lte:
                 {
-                    return comparison <= 0;
+                    return logAndReturn("<=",(object l , object r ) => comparison <= 0);
                 }
             }
 
@@ -58,23 +72,31 @@ namespace logSharp.model
 
         private static object Add(LogSharpToken oper, object left, object right)
         {
+
+            var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
+            {
+                var result = f(left, right);
+                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
+                return result;
+            };
+            
             var leftType = left.GetType();
              
             var rightType = right.GetType();
 
             if (leftType == typeof(string) || rightType == typeof(string))
             {
-                return left.ToString() + right.ToString();
+                return logAndReturn("+",(object l , object r ) => l.ToString() + r.ToString());
             }
             
             if (leftType == typeof(double) || rightType == typeof(double))
             {
-                return (double)left + (double)right;
+                return logAndReturn("+",(object l , object r ) => (double)l + (double)r);
             }
 
             if (leftType == typeof(int) && rightType == typeof(int))
             {
-                return (int) left + (int) right;
+                return logAndReturn("+",(object l , object r ) => (int)l + (int)r);
             }
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for addition {leftType}  and {rightType}");
 
@@ -82,48 +104,70 @@ namespace logSharp.model
         
         public static object Sub(LogSharpToken oper, object left, object right)
         {
+            
+            var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
+            {
+                var result = f(left, right);
+                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
+                return result;
+            };
+            
             var leftType = left.GetType();
             var rightType = right.GetType();
             if (leftType == typeof(double) || rightType == typeof(double))
             {
-                return (double)left - (double)right;
+                return logAndReturn("-",(object l , object r ) => (double)l - (double)r);
             }
 
             if (leftType == typeof(int) && rightType == typeof(int))
             {
-                return (int) left - (int) right;
+                return logAndReturn("-",(object l , object r ) => (int)l - (int)r);
             }
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for subsctraction {leftType}  and {rightType}");
         }
         
         public static object Mul(LogSharpToken oper, object left, object right)
         {
+            var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
+            {
+                var result = f(left, right);
+                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
+                return result;
+            };
+            
             var leftType = left.GetType();
             var rightType = right.GetType();
             if (leftType == typeof(double) || rightType == typeof(double))
             {
-                return (double)left * (double)right;
+                return logAndReturn("*",(object l , object r ) => (double)l * (double)r);
             }
 
             if (leftType == typeof(int) && rightType == typeof(int))
             {
-                return (int) left * (int) right;
+                return logAndReturn("*",(object l , object r ) => (int)l * (int)r);
             }
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for multiplication {leftType}  and {rightType}");
         }
         
         public static object Div(LogSharpToken oper, object left, object right)
         {
+            var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
+            {
+                var result = f(left, right);
+                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
+                return result;
+            };
+            
             var leftType = left.GetType();
             var rightType = right.GetType();
             if (leftType == typeof(double) || rightType == typeof(double))
             {
-                return (double)left / (double)right;
+                return logAndReturn("-",(object l , object r ) => (double)l / (double)r);
             }
 
             if (leftType == typeof(int) && rightType == typeof(int))
             {
-                return (int) left / (int) right;
+                return logAndReturn("-",(object l , object r ) => (int)l - (int)r);
             }
             throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for division {leftType}  and {rightType}");
         }
@@ -168,9 +212,9 @@ namespace logSharp.model
 
         public BinaryOperation(LogSharpAST left, LogSharpToken op, LogSharpAST right)
         {
-            LeftExpresion = left;
-            Operator = op;
-            RightExpression = right;
+            _leftExpression = left;
+            _operator = op;
+            _rightExpression = right;
         }
 
 
@@ -199,5 +243,7 @@ namespace logSharp.model
         {
             return $"{LeftExpresion.Dump()} {OperatorsHelper.TokenToOperator(Operator)} {RightExpression.Dump()}";
         }
+
+        public string ToString(string format, IFormatProvider formatProvider) => Dump();
     }
 }

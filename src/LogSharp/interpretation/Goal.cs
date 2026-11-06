@@ -136,10 +136,35 @@ namespace logSharp.interpretation
             {
                 return FreshenTerm(term, variables, invocationId);
             }
+            
+            // TODO expressions
+            if (value is IExpression expression)
+            {
+                
+                return FreshenExpression(expression, variables, invocationId);
+            }
 
             return value;
         }
 
+        private static Valuable FreshenExpression(IExpression expression, Dictionary<string, Variable> variables, int invocationId)
+        {
+            // TODO
+            return expression switch
+            {
+                BinaryOperation binary => new BinaryOperation(
+                    FreshenValue(binary.LeftExpresion as Valuable, variables, invocationId),
+                    binary.Operator,
+                    FreshenValue(binary.RightExpression as Valuable, variables, invocationId)
+                ),
+                UnaryOperation unary => new UnaryOperation(
+                    unary.Operator,
+                    FreshenValue(unary.Expression as Valuable, variables, invocationId)
+                ),
+                Variable variable => variables[variable.Name],
+                _ => expression
+            };
+        }
 
 
         public override string ToString()
