@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using DeepCopy;
 using logSharp.model;
 
@@ -112,7 +110,6 @@ namespace logSharp.interpretation.unification
         {
             return Eval(term as Valuable, unification, true) as Term;
         }
-      
 
         public Valuable Eval(Valuable arg, Unification environment,bool preserveVariables = false)
         {

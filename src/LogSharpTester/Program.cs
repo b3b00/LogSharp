@@ -214,13 +214,39 @@ relation(c,cc).
             PrintAnswers(answers);
             ;
         }
+
+        static void TestMaths()
+        {
+        //return;
+        Console.WriteLine("************************************************");
+        Console.WriteLine("***");
+        Console.WriteLine("*** call/3");
+        Console.WriteLine("***");
+        Console.WriteLine("************************************************");
+        string program = @"
+plusOne(X,Y) :- Y is X + 1.
+conditionalAdd(X,Y) :- X < 10 Y is X + 1.
+conditionalAdd(X,Y) :- X >= 10 Y is X + 10.
+complex(X,Y) :- Y is (X + 69) * 12 - 4.
+";
+        Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+        Interpreter.Verbose = false;
+        //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+        Interpreter.LoadProgram(program);
+        // var answers = GetAnswers("member_of(a,[a,b,c])?");
+        // PrintAnswers(answers);
+        var answers = GetAnswers("conditionalAdd(42,Q43)?");
+        PrintAnswers(answers);
+        
+        }
         
         static void Main(string[] args)
         {
+            TestMaths();
             //PrologRepl.Loop(args);
             //TestMemberOf();
             // TestMapList();
-            SortTwoWayBinding();
+            //SortTwoWayBinding();
             // TestCall_1();
             // TestCall_2();
             // TestCall_3();
