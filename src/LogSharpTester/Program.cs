@@ -230,8 +230,8 @@ conditionalAdd(X,Y) :- X >= 10 Y is X + 10.
 complex(X,Y) :- Y is (X + 69) * 12 - 4.
 ";
         Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
-        Interpreter.Verbose = false;
-        //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+        Interpreter.Verbose = true;
+        Interpreter.DebugOutput = "c:/tmp/math.log";
         Interpreter.LoadProgram(program);
         // var answers = GetAnswers("member_of(a,[a,b,c])?");
         // PrintAnswers(answers);
