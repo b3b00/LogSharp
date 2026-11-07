@@ -19,6 +19,9 @@ namespace logSharp.interpretation
         public Goal Parent { get; set; }
 
         public bool IsRootGoal => Parent == null;
+
+        
+        public int Depth => IsRootGoal ? 0 : Parent?.Depth ?? 0;
         
         public List<Goal> Goals = new List<Goal>();
 

@@ -47,6 +47,39 @@ namespace logSharp.builtins.expressions
                 return unifications;
             }
 
+            if (parameters.Count == 2 && parameters[0] is IExpression left && parameters[1] is IExpression right)
+            {
+
+                var leftValue = left.Evaluate(unificationIn);
+                var rightValue = right.Evaluate(unificationIn);
+                if (leftValue.Equals(rightValue))
+                {
+                    return ListHelper.BuildList(Unification.Success());
+                }
+                else
+                {
+                    return ListHelper.BuildList(Unification.Failed());
+                }
+                // Unification unificationOut = new Unification();
+                // Valuable value = null;
+                // if (result is string stringRes)
+                // {
+                //     value = new model.String(stringRes);
+                // }
+                // else if (result is int intRes)
+                // {
+                //     value = new model.Int(intRes);
+                // }
+                // else if (result is double doubleRes)
+                // {
+                //     value = new model.Double(doubleRes);
+                // }
+                //
+                // unificationOut.AddBinding(variable, value);
+                // unifications.Add(unificationOut);
+                // return unifications;
+            }
+
             return ListHelper.BuildList(Unification.Failed());
         }
     }
