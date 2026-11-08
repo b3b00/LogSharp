@@ -201,8 +201,28 @@ namespace logSharp.interpretation
 
                     if (u.IsOk)
                     {
-                        p.Index++;
-                        p.Unification = u;
+                        if (current.IsContinuation)
+                        {
+                            // A continuation goal has already executed ALL the remaining
+                            // goals of its parent (from Index+1 to Count). So the parent
+                            // must be re-pushed past those goals (at Count), NOT at
+                            // Index+1 which would re-execute them.
+                            // Also, the parent must inherit the whole continuation
+                            // unification, not only the head-parameter bindings returned
+                            // by UnifyTerms, otherwise body-local bindings (like the
+                            // list built by bag_of/3) are lost for the next conjuncts.
+                            var merged = new Unification();
+                            merged.AddBindings(p.Unification);
+                            merged.AddBindings(current.Unification);
+                            merged.AddBindings(u);
+                            p.Unification = merged;
+                            p.Index = current.Count;
+                        }
+                        else
+                        {
+                            p.Index++;
+                            p.Unification = u;
+                        }
                         Trace($"stck {p} @ {p.Index}");
                         stack.Push(p);
                     }
