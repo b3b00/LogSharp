@@ -12,11 +12,11 @@ using static logSharp.helpers.ListHelper;
 namespace logSharp.builtins
 {
     [BuiltIns]
-    public class PrologBuiltins
+    public class ListBuiltins
     {
         // member/2 : member(Needle,Haystack) : Needle is member of list Haystack 
         [BuiltIn("member/2")]
-        public static List<Unification> Member(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> Member(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
 
         {
@@ -59,7 +59,7 @@ namespace logSharp.builtins
         // bag_of/3 : bag_of(OutputPredicateValue,Predicate,OutputList)
         // getting list of OutputPredicateValue that match Predicate in OutputList
         [BuiltIn("bag_of/3")]
-        public static List<Unification> BagOf(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> BagOf(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             if (parameters[0] is Variable lookedFor)
@@ -71,7 +71,7 @@ namespace logSharp.builtins
                             Question question = new Question(query);
                             bool previousVerbosity = interpreter.Verbose;
                             interpreter.Verbose = false;
-                            var results = interpreter.Search(question, unificationIn).ToList();
+                            var results = interpreter.Search(question, goal.Unification).ToList();
                             interpreter.Verbose = previousVerbosity;
                             bool fullyFailed = !results.Any(r => r != null && r.IsOk);
                             if (fullyFailed)
@@ -99,7 +99,7 @@ namespace logSharp.builtins
                         Question question = new Question(query);
                         bool previousVerbosity = interpreter.Verbose;
                         interpreter.Verbose = false;
-                        var results = interpreter.Search(question, unificationIn).ToList();
+                        var results = interpreter.Search(question, goal.Unification).ToList();
                         interpreter.Verbose = previousVerbosity;
                         bool fullyFailed = results.Select(r => r.IsOk)
                             .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
@@ -134,7 +134,7 @@ namespace logSharp.builtins
         // map_list/3 : map_list(InList,Mapper, OutList). mapper is mapper/2 with mapper(In,Out)
         [BuiltIn("map_list/3")]
         
-        public static List<Unification> MapList(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> MapList(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             if (parameters[0] is Term inList && inList.IsList)
@@ -155,7 +155,7 @@ namespace logSharp.builtins
                             var selector = DeepCopier.Copy(query);
                             selector.Parameters[0] = x;
                             var question =  new Question(selector);
-                            var results = interpreter.Search(question, unificationIn).ToList();
+                            var results = interpreter.Search(question, goal.Unification).ToList();
                             if (results.Count > 0 && results[0].IsOk)
                             {
                                 var value =  results[0].Environment.Environment[Out.Name];
@@ -186,11 +186,11 @@ namespace logSharp.builtins
         //   way 1 : length(boundList, ???) -> compute length, bind or check second argument
         //   way 2 : length(freeList, boundLength) -> generate a list of BoundLength fresh variables
         [BuiltIn("length/2")]
-        public static List<Unification> Length(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> Length(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
-            Valuable first = ResolveParameter(parameters[0], unificationIn);
-            Valuable second = ResolveParameter(parameters[1], unificationIn);
+            Valuable first = ResolveParameter(parameters[0], goal.Unification);
+            Valuable second = ResolveParameter(parameters[1], goal.Unification);
 
             // way 1 : list is bound -> compute length, bind or check second argument
             if (first is Term inList && inList.IsList)
@@ -244,11 +244,11 @@ namespace logSharp.builtins
         //   way 1 : sort(boundList, ???) -> sort list, bind or check second argument
         //   way 2 : sort(freeList, boundSortedList) -> bind free variable to its sorted value
         [BuiltIn("sort/2")]
-        public static List<Unification> Sort(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> Sort(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
-            Valuable first = ResolveParameter(parameters[0], unificationIn);
-            Valuable second = ResolveParameter(parameters[1], unificationIn);
+            Valuable first = ResolveParameter(parameters[0], goal.Unification);
+            Valuable second = ResolveParameter(parameters[1], goal.Unification);
             
             // way 1 : list is bound -> sort it, bind or check second argument
             if (first is Term inList && inList.IsList)
@@ -267,7 +267,7 @@ namespace logSharp.builtins
                 // way 1b : sorted list is already bound -> check it
                 if (second is Term expected && expected.IsList)
                 {
-                    var unified = interpreter.UnifyTerms(sortedList, unificationIn, expected, new Unification());
+                    var unified = interpreter.UnifyTerms(sortedList, goal.Unification, expected, new Unification());
                     return BuildList(unified);
                 }
             }
@@ -296,7 +296,7 @@ namespace logSharp.builtins
         
         
         // replaces a parameter variable by its bound value when it already carries a binding
-        private static Valuable ResolveParameter(Valuable parameter, Unification unification)
+        public static Valuable ResolveParameter(Valuable parameter, Unification unification)
         {
             if (parameter is Variable variable && variable.Name != Variable.DiscardingVariable
                 && unification.HasBinding(variable.Name))
@@ -353,99 +353,6 @@ namespace logSharp.builtins
         private static string BuildFreshVariableName(string variableName, int index)
         {
             return $"__{variableName}_length_{index}";
-        }
-
-
-
-  
-        
-        [BuiltIn("call/1")]
-        public static List<Unification> Call1(Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
-        {
-            var call = Call_X(2);
-            if (parameters[0] is Term term)
-            {
-                // TODO : build the parameter list
-                List<Valuable> calleeParameters = new List<Valuable>();
-                calleeParameters.Add(new Atom(term.Name));
-                calleeParameters.AddRange(term.Parameters);
-                return call(interpreter, unificationIn, calleeParameters);
-            }
-            else
-            {
-                Valuable first = ResolveParameter(parameters[0], unificationIn);
-                return call(interpreter, unificationIn, parameters);
-            }
-        }
-
-        [BuiltIn("not/1")]
-        public static List<Unification> Not1(Interpreter interpreter, Unification unificationIn,
-            List<Valuable> parameters)
-        {
-
-            var result = Call1(interpreter, unificationIn, parameters);
-            if (result.Any(x => x.IsOk))
-            {
-                return BuildList(Unification.Failed());
-            }
-            else
-            {
-                return BuildList(Unification.Success());
-            }
-        }
-
-
-
-
-        public static PrologBuiltIn Call_X(int count)
-        {
-            return (Interpreter interpreter, Unification unificationIn,
-                List<Valuable> parameters) =>
-            {
-                if (parameters[0] is Atom goal)
-                {
-                    if (interpreter.HasRule(goal.Name + $"/{count - 1}")
-                        || interpreter.HasBuiltin(goal.Name + $"/{count - 1}"))
-                    {
-                        Term goalTerm = new Term(goal.Name, parameters.Skip(1).ToList());
-                        var question = new Question(goalTerm);
-                        var results = interpreter.Search(question, unificationIn).ToList();
-                        return results;
-                    }
-                }
-
-
-                return BuildList(Unification.Failed());
-            };
-        }
-        
-        public static PrologBuiltIn Not_X(int count)
-        {
-            return (Interpreter interpreter, Unification unificationIn,
-                List<Valuable> parameters) =>
-            {
-                var call = Call_X(count);
-                var result = call(interpreter, unificationIn, parameters);
-                if (result.Any(x => x.IsOk))
-                {
-                    return BuildList(Unification.Failed());
-                }
-                else
-                {
-                    return BuildList(Unification.Success());
-                }
-            };
-        }
-
-        [BuiltInBuilder]
-        public static void BuildCallBuiltIns(Interpreter interpreter)
-        {
-            for (int i = 2; i < 10; i++)
-            {
-                interpreter.AddBuiltIn($"call/{i}", Call_X(i));
-                interpreter.AddBuiltIn($"not/{i}", Not_X(i));
-            }
         }
     }
 }

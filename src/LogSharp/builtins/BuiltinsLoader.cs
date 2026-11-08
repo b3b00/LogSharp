@@ -28,8 +28,8 @@ namespace logSharp.builtins
 
         public static void LoadBuiltIns(Interpreter interpreter)
         {
-            var thisAssembly = Assembly.GetAssembly(typeof(PrologBuiltins));
-            LoadBuiltIns(interpreter,typeof(PrologBuiltins));
+            var thisAssembly = Assembly.GetAssembly(typeof(ListBuiltins));
+            LoadBuiltIns(interpreter,typeof(ListBuiltins));
             ;
             var calling = Assembly.GetCallingAssembly();
             LoadBuiltIns(interpreter,calling);

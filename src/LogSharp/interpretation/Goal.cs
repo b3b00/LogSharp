@@ -45,6 +45,12 @@ namespace logSharp.interpretation
 
         public string Specification => Head.Specification;
 
+        private List<Goal> _children = new List<Goal>();
+        public List<Goal> Children => _children;
+
+        private bool _isCut = false;
+        public bool IsCut => _isCut;
+        
         public Goal(Question question)
         {
             Parent = null;
@@ -53,6 +59,16 @@ namespace logSharp.interpretation
             Unification = new Unification();
             Unification.IsOk = false;
             Index = 0;
+        }
+
+        public void AddChild(Goal child)
+        {
+            _children.Add(child);
+        }
+
+        public void Cut()
+        {
+            _isCut = true;
         }
 
         public Goal(Rule rule, Goal parent, Unification environment, bool freshenVariables = true)

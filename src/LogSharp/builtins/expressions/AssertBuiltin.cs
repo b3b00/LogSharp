@@ -18,7 +18,7 @@ namespace logSharp.builtins.expressions
         [BuiltIn("assert/1")]
         // param 1 : variable / value ?
         // param 2 : expression a a string
-        public static List<Unification> AssertPrim(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> AssertPrim(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             List<Unification> unifications = new List<Unification>();
@@ -26,7 +26,7 @@ namespace logSharp.builtins.expressions
 
             if (parameters.Count == 1 && parameters[0] is IExpression expression)
             {
-                var result = expression.Evaluate(unificationIn);
+                var result = expression.Evaluate(goal.Unification);
                 Unification unificationOut = new Unification();
                 if (result is bool boolRes)
                 {

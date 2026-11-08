@@ -18,7 +18,7 @@ namespace logSharp.builtins.expressions
         [BuiltIn("is/2")]
         // param 1 : variable / value ?
         // param 2 : expression as an expression tree
-        public static List<Unification> IsPrim(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> IsPrim(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             List<Unification> unifications = new List<Unification>();
@@ -26,7 +26,7 @@ namespace logSharp.builtins.expressions
             if (parameters.Count == 2 && parameters[0] is Variable variable && parameters[1] is IExpression expression)
             {
 
-                var result = expression.Evaluate(unificationIn);
+                var result = expression.Evaluate(goal.Unification);
                 Unification unificationOut = new Unification();
                 Valuable value = null;
                 if (result is string stringRes)
@@ -50,8 +50,8 @@ namespace logSharp.builtins.expressions
             if (parameters.Count == 2 && parameters[0] is IExpression left && parameters[1] is IExpression right)
             {
 
-                var leftValue = left.Evaluate(unificationIn);
-                var rightValue = right.Evaluate(unificationIn);
+                var leftValue = left.Evaluate(goal.Unification);
+                var rightValue = right.Evaluate(goal.Unification);
                 if (leftValue.Equals(rightValue))
                 {
                     return ListHelper.BuildList(Unification.Success());
