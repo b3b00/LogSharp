@@ -73,8 +73,7 @@ namespace logSharp.builtins
                             interpreter.Verbose = false;
                             var results = interpreter.Search(question, unificationIn).ToList();
                             interpreter.Verbose = previousVerbosity;
-                            bool fullyFailed = results.Select(r => r.IsOk)
-                                .Aggregate(false, (bool b1, bool b2) => !b1 && !b2);
+                            bool fullyFailed = !results.Any(r => r != null && r.IsOk);
                             if (fullyFailed)
                             {
                                 return BuildList(Unification.Failed());

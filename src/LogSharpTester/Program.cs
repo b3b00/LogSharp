@@ -156,6 +156,75 @@ relation(c,cc).
             var answers = GetAnswers("call(relation,X,Y)?");
             PrintAnswers(answers);
         }
+
+        static void TestCof()
+        {
+            //return;
+            Console.WriteLine("************************************************");
+            Console.WriteLine("***");
+            Console.WriteLine("*** call/3");
+            Console.WriteLine("***");
+            Console.WriteLine("************************************************");
+            string program = @"
+father(christian,olivier).
+father(christian,frederic).
+father(christian,julien).
+father(frederic,lontzi).
+father(frederic,eneko).
+father(frederic,kepa).
+father(julien,oihana).
+grandpa(X,Z) :- father(X,Y) father(Y,Z).
+gp(X,Y,Z) :- father(X,Y) father(Y,Z).
+brother(X,Y) :- father(Z,X) father(Z,Y).
+
+childrenOf(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
+";
+            Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+            //Interpreter.DebugOutput = "c:/tmp/prolog/member.log";
+            Interpreter.LoadProgram(program);
+            
+            // childrenOf(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
+            // ️️⚠️ L variable (from bag_of()) does not get passed to member(C,L) /!\ ⚠️️️️ 
+            // this is again a case of conjonction issue like with MathTest.TestComplexExpression
+            
+            var answers = GetAnswers("childrenOf(X,Y)?");
+            
+            if (answers.Count == 0 || !answers[0].IsOk)
+            {
+                Console.WriteLine("ERROR there are father with children");
+            }
+            else
+            {
+                
+                foreach (var answer in answers)
+                {
+                    Console.WriteLine($"{answer.GetBinding("Y")} is the child of {answer.GetBinding("X")}");
+                }
+            }
+            
+            answers = GetAnswers("childrenOf(christian,olivier)?");
+            if (answers.Count == 0 || !answers[0].IsOk)
+            {
+                Console.WriteLine("ERROR christian is really the father of olivier");
+            }
+
+            answers = GetAnswers("childrenOf(X,christian)?");
+            
+            if (answers.Count == 0 || !answers[0].IsOk)
+            {
+                Console.WriteLine("ERROR christian has children ! ");
+            }
+            else
+            {
+                var children = answers.Select(a => a.GetBinding("X").ToString()).ToList();
+                foreach (var child in children)
+                {
+                    Console.WriteLine($"{child} is the child of christian");
+                }
+            }
+            
+            
+        }
         
         static Interpreter Interpreter;
         
@@ -214,13 +283,40 @@ relation(c,cc).
             PrintAnswers(answers);
             ;
         }
+
+        static void TestMaths()
+        {
+        //return;
+        Console.WriteLine("************************************************");
+        Console.WriteLine("***");
+        Console.WriteLine("*** call/3");
+        Console.WriteLine("***");
+        Console.WriteLine("************************************************");
+        string program = @"
+plusOne(X,Y) :- Y is X + 1.
+conditionalAdd(X,Y) :- X < 10 Y is X + 1.
+conditionalAdd(X,Y) :- X >= 10 Y is X + 10.
+complex(X,Y) :- Y is (X + 69) * 12 - 4.
+";
+        Interpreter = new Interpreter(true, null, BuildParser(), new NestedTermUnifier());
+        Interpreter.Verbose = true;
+        Interpreter.DebugOutput = "c:/tmp/math.log";
+        Interpreter.LoadProgram(program);
+        // var answers = GetAnswers("member_of(a,[a,b,c])?");
+        // PrintAnswers(answers);
+        var answers = GetAnswers("conditionalAdd(42,Q43)?");
+        PrintAnswers(answers);
+        
+        }
         
         static void Main(string[] args)
         {
+            TestCof();
+            //TestMaths();
             //PrologRepl.Loop(args);
             //TestMemberOf();
             // TestMapList();
-            SortTwoWayBinding();
+            //SortTwoWayBinding();
             // TestCall_1();
             // TestCall_2();
             // TestCall_3();

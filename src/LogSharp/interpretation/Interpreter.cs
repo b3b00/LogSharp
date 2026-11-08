@@ -135,7 +135,7 @@ namespace logSharp.interpretation
             }
         }
         
-        public IEnumerable<Unification> Search(Question question, Unification unification = null)
+        public IList<Unification> Search(Question question, Unification unification = null)
         {
             Trace("*****************************************");
             Trace("***");
@@ -154,6 +154,8 @@ namespace logSharp.interpretation
             rootGoal.Goals.Add(rootGoal);
             Trace($"stck : {rootGoal.ToString()}");
             stack.Push(rootGoal);
+
+            List<Unification> results = new List<Unification>();
             while (stack.Any())
             {
                 var stackAsList = stack.ToList();
@@ -171,7 +173,7 @@ namespace logSharp.interpretation
                         if (current.Unification.IsOk)
                         {
                             resultFound = true;
-                            yield return current.Unification;
+                            results.Add(current.Unification);
                         }
 
                         continue;
@@ -199,8 +201,28 @@ namespace logSharp.interpretation
 
                     if (u.IsOk)
                     {
-                        p.Index++;
-                        p.Unification = u;
+                        if (current.IsContinuation)
+                        {
+                            // A continuation goal has already executed ALL the remaining
+                            // goals of its parent (from Index+1 to Count). So the parent
+                            // must be re-pushed past those goals (at Count), NOT at
+                            // Index+1 which would re-execute them.
+                            // Also, the parent must inherit the whole continuation
+                            // unification, not only the head-parameter bindings returned
+                            // by UnifyTerms, otherwise body-local bindings (like the
+                            // list built by bag_of/3) are lost for the next conjuncts.
+                            var merged = new Unification();
+                            merged.AddBindings(p.Unification);
+                            merged.AddBindings(current.Unification);
+                            merged.AddBindings(u);
+                            p.Unification = merged;
+                            p.Index = current.Count;
+                        }
+                        else
+                        {
+                            p.Index++;
+                            p.Unification = u;
+                        }
                         Trace($"stck {p} @ {p.Index}");
                         stack.Push(p);
                     }
@@ -215,18 +237,26 @@ namespace logSharp.interpretation
                 {
                     var builtInTerm = DeepCopier.Copy(term.Head);
                     builtInTerm = Unifier.EvalTerm(builtInTerm,current.Unification);
-                    Trace($"calling built-in {term.Specification}");
+                    Trace($"calling built-in {term.Specification} {term.ToString()} with {current.Unification}");
                     var builtInUnifications = builtIn(this, current.Unification, builtInTerm.Parameters);
+                    foreach (var builtInUnification in builtInUnifications)
+                    {
+                        Trace($"        >>> {builtInUnification.ToString()}");
+                    }
                     if (current.Rule != null) {
                         if (builtInUnifications != null && builtInUnifications.Any())
                         {
                             foreach (var builtInUnification in builtInUnifications)
                             {
-                                Goal built = new Goal(current.Rule, current, builtInUnification, false);
-                                built.Unification.AddBindings(current.Unification);
-                                built.Index = current.Index + 1;
-                                Trace($"stck {built} @ {built.Index}");
-                                stack.Push(built);
+                                if (builtInUnification.IsOk)
+                                {
+                                    Goal built = new Goal(current.Rule, current, builtInUnification, false);
+                                    built.Unification.AddBindings(current.Unification);
+
+                                    built.Index = current.Index + 1;
+                                    Trace($"stck {built} @ {built.Index}");
+                                    stack.Push(built);
+                                }
                             }
                         }
                     }
@@ -235,7 +265,7 @@ namespace logSharp.interpretation
                         resultFound = true;
                         foreach (var builtInUnification in builtInUnifications)
                         {
-                            yield return builtInUnification;
+                            results.Add(builtInUnification);
                         }
                     }
                 }
@@ -244,7 +274,7 @@ namespace logSharp.interpretation
                     List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
                     foreach (var applicable in (applicableRules))
                     {
-                        Trace($"trying rule {applicable.Head}");
+                        Trace($"trying rule {applicable.ToString()}");
 //                        if (!applicable.Equals(current.Rule))
 //                        {
                             Goal child = new Goal(applicable, current, current.Unification);
@@ -268,14 +298,13 @@ namespace logSharp.interpretation
 
             }
 
-            if (resultFound)
+            if (!resultFound)
+            
             {
-                yield break;
+                results.Add(Unification.Failed());
             }
-            else
-            {
-                yield return Unification.Failed();
-            }
+
+            return results;
         }
 
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,

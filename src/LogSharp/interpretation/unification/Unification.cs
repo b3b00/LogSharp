@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Linq;
 using logSharp.model;
@@ -87,6 +88,7 @@ namespace logSharp.interpretation.unification
             return dump.ToString();
         }
 
+        [ExcludeFromCodeCoverage]
         public override bool Equals(object obj)
         {
             if (obj != null)
@@ -124,6 +126,7 @@ namespace logSharp.interpretation.unification
             return false;
         }
 
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode()
         {
             return Environment.GetHashCode();

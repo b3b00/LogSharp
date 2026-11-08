@@ -4,6 +4,8 @@ namespace logSharp.model
     {
         public new string Name { get; private set; }
 
+        public override object RawValue => Name;
+        
         public Atom(string name)
         {
             Name = name;

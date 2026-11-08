@@ -26,14 +26,17 @@ relation(c,cc).
 single(a).
 single(b).
 
-callable_0.
+callable_0().
 
 five(a,b,c,d,e).
 five(f,g,h,j,k).
 five(l,m,n,o,p).
 
 callable_1(X) :- single(X).
-
+mapped_and_found() :- map_list([a,b,c],mapper(X,Y),L) member(bb,L).
+mapped_no_aa() :- map_list([a,b,c],mapper(X,Y),L) not(member(aa,L)).
+rules_then_length(L,N) :- map_list([a,b],mapper(X,Y),L) length(L,N).
+length_one_shot(X) :- length([a,b,c],N) single(X).
 ";
 
     [Fact]
@@ -326,11 +329,80 @@ callable_1(X) :- single(X).
         Check.That(answer).Contains("Y","d");
         Check.That(answer).Contains("T", "[e, f]");
     }
-    
+
+    //-----------------------------------------------------------
+    // Regression tests for the continuation re-link bug
+    // (see childofbug.md) : bindings produced by a built-in used as a
+    // NON-final conjunct must survive into the next conjuncts, and the
+    // remaining body goals must NOT be executed twice.
+
+    [Fact]
+    public void MapListAsFirstConjunctTest()
+    {
+        // member/2 consumes the body-local list L produced by map_list/3
+        var answers = GetAnswers("mapped_and_found()?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsOk();
+    }
+
+    [Fact]
+    public void MapListWithNotTest()
+    {
+        // not/1 consumes the body-local list L produced by map_list/3.
+        // "aa" IS in the mapped list, so not(member(aa,L)) must fail the rule.
+        // If L is lost before the second conjunct, member fails and not succeeds
+        // (false positive) : this test discriminates both behaviors.
+        var answers = GetAnswers("mapped_no_aa()?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).Not.IsOk();
+    }
+
+    [Fact]
+    public void LengthAfterMapListTest()
+    {
+        // length/2 consumes the body-local list L produced by map_list/3,
+        // and binds N into the rule head.
+        var answers = GetAnswers("rules_then_length(L,N)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsOk();
+        Check.That(answers[0]).Contains("N", "2");
+        var boundList = answers[0].GetBinding("L") as Term;
+        Check.That(boundList).IsNotNull();
+        Check.That(boundList.IsList).IsTrue();
+        Check.That(boundList.ToValuableList().Count).IsEqualTo(2);
+    }
+
+    [Fact]
+    public void BuiltInNotReExecutedAfterItsContinuationTest()
+    {
+        // length/2 binds N, then single/1 produces 2 solutions.
+        // The re-link bug re-executed length (and all the remaining goals)
+        // for each completed continuation, duplicating every answer.
+        var answers = GetAnswers("length_one_shot(X)?");
+        Check.That(answers).CountIs(2);
+        Check.That(answers.Extracting(x => x.GetBinding("X").ToString()))
+            .IsEquivalentTo(new List<string>() { "a", "b" });
+    }
+
+    [Fact]
+    public void PreludeDistinctElementsFastTest()
+    {
+        // prelude rule: sort(List, Sorted) length(List, Len) length(Sorted, Len)
+        // "Sorted" is a body-local variable produced by sort/2 and consumed by
+        // the last length/2 conjunct : exactly the shape that used to be
+        // broken be the continuation re-link bug.
+        var answers = GetAnswers("distinct_elements_fast([c,b,a])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).IsOk();
+
+        answers = GetAnswers("distinct_elements_fast([c,b,c])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0]).Not.IsOk();
+    }
+
     
     
     
     
     
 }
-

@@ -2,6 +2,8 @@ namespace logSharp.model
 {
     public abstract class Scalar : LogSharpAST, Valuable
     {
+        
+        public virtual object RawValue { get; }
         public bool IsScalar => true;
         public bool IsVariable => false;
         

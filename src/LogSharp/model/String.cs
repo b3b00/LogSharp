@@ -1,13 +1,19 @@
+using logSharp.interpretation.unification;
+
 namespace logSharp.model
 {
     public class String : Scalar
     {
+        
+        public override object RawValue => Value;
         public string Value { get; set; }
 
         public String(string value)
         {
             Value = value;
         }
+        
+        public object Evaluate(Unification unification) => RawValue;
         
         public override string Dump()
         {
