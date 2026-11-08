@@ -40,7 +40,7 @@ jobs:
       with:
         testProject: ${{env.TESTS_PROJECT}}
         output: 'lcov.net10.0.info'
-        threshold: 50
+        threshold: 70
         outputFormat: 'lcov'
         excludes: '[LogSharpTester]*,[LogsharpTests]*'
     - name: Publish Test Results
