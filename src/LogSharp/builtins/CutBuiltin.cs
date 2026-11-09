@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using logSharp.helpers;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
@@ -15,6 +16,12 @@ public class CutBuiltin
         
         interpreter.Cut(goal);
         return new List<Unification>() { goal.Unification };
+    }
+
+    [BuiltIn("fail/0")]
+    public static List<Unification> Fail(Interpreter interpreter, Goal goal,List<Valuable> parameters )
+    {
+        return ListHelper.BuildList(Unification.Success());
     }
 
 }
