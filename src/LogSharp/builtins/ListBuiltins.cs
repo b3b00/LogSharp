@@ -134,6 +134,138 @@ namespace logSharp.builtins
         [BuiltIn("bag_of/3")]
         public static List<Unification> BagOf(Interpreter interpreter, Goal goal, List<Valuable> parameters)
         {
+            var template = ResolveParameter(parameters[0], goal.Unification);
+            if (template == null)
+            {
+                return ListHelper.BuildList(Unification.Failed());
+            }
+
+            var query = parameters[1] as Term;
+            if (query == null)
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var list = ResolveParameter(parameters[2], goal.Unification);
+            if (!(list is Variable) && !(list is Term t && t.IsList))
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var freeVars = query.GetFreeVariables();
+            var templateVarNames = (template is Variable tv
+                ? new List<string> { tv.Name }
+                : template.GetFreeVariables().Select(v => v.Name)).ToHashSet();
+
+            var additionalVars = freeVars
+                .Where(x => !templateVarNames.Contains(x.Name)
+                         && !x.IsDiscardableVariable
+                         && (goal.Unification == null || !goal.Unification.HasBinding(x.Name)))
+                .Select(x => x.Name)
+                .Distinct()
+                .ToList();
+
+            Question question = new Question(DeepCopier.Copy(query));
+            bool previousVerbosity = interpreter.Verbose;
+            interpreter.Verbose = false;
+            var results = interpreter.Search(question, goal.Unification).ToList();
+            interpreter.Verbose = previousVerbosity;
+
+            var successfulResults = results.Where(r => r != null && r.IsOk).ToList();
+            if (!successfulResults.Any())
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var groups = successfulResults.GroupBy(r =>
+                string.Join(";", additionalVars.Select(v => $"{v}={r.GetBinding(v)?.GetType().Name}:{r.GetBinding(v)?.Dump()}"))
+            ).ToList();
+
+            var unifications = new List<Unification>();
+            foreach (var group in groups)
+            {
+                var values = new List<Valuable>();
+                foreach (var result in group)
+                {
+                    Valuable val = null;
+                    if (template is Variable templateVar)
+                    {
+                        if (result.HasBinding(templateVar.Name))
+                        {
+                            val = result.GetBinding(templateVar.Name);
+                        }
+                        else if (goal.Unification != null && goal.Unification.HasBinding(templateVar.Name))
+                        {
+                            val = goal.Unification.GetBinding(templateVar.Name);
+                        }
+                        else
+                        {
+                            val = templateVar;
+                        }
+                    }
+                    else if (template is Term templateTerm)
+                    {
+                        val = interpreter.Unifier.EvalTerm(DeepCopier.Copy(templateTerm), result);
+                    }
+                    else if (template is Scalar scalar)
+                    {
+                        val = scalar;
+                    }
+
+                    if (val != null)
+                    {
+                        values.Add(val);
+                    }
+                }
+
+                if (!values.Any())
+                {
+                    continue;
+                }
+
+                Term bag = Term.ListTerm(values);
+                var unificationOut = new Unification();
+                unificationOut.IsOk = true;
+
+                if (goal.Unification != null)
+                {
+                    unificationOut.AddBindings(goal.Unification);
+                }
+
+                var firstResult = group.First();
+                foreach (var varName in additionalVars)
+                {
+                    var binding = firstResult.GetBinding(varName);
+                    if (binding != null)
+                    {
+                        unificationOut.AddBinding(varName, binding);
+                    }
+                }
+
+                if (list is Variable outVar)
+                {
+                    if (!outVar.IsDiscardableVariable)
+                    {
+                        unificationOut.AddBinding(outVar.Name, bag);
+                    }
+                    unifications.Add(unificationOut);
+                }
+                else if (list is Term expectedTerm && expectedTerm.IsList)
+                {
+                    var unif = interpreter.UnifyTerms(bag, goal.Unification, expectedTerm, new Unification());
+                    if (unif.IsOk)
+                    {
+                        unificationOut.AddBindings(unif);
+                        unifications.Add(unificationOut);
+                    }
+                }
+            }
+
+            if (unifications.Any())
+            {
+                return unifications;
+            }
+
             return ListHelper.BuildList(Unification.Failed());
         }
         

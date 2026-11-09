@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using logSharp.interpretation.unification;
 
 namespace logSharp.model
@@ -24,6 +25,8 @@ namespace logSharp.model
         {
             Name = name;
         }
+
+        public List<Variable> GetFreeVariables() => new List<Variable>() { this };
         
         public object Evaluate(Unification unification)
         {

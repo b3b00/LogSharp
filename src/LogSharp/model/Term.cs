@@ -152,7 +152,15 @@ namespace logSharp.model
             return null;
         }
 
-        
+        public List<Variable> GetFreeVariables()
+        {
+            List<Variable> freeVars = new List<Variable>();
+            if (Parameters.Any())
+            {
+                freeVars = Parameters.SelectMany(x => x.GetFreeVariables()).ToList();
+            }
+            return freeVars;
+        }
         
         #endregion
 
