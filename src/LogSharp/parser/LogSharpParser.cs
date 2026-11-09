@@ -151,18 +151,6 @@ namespace logSharp.parser
             );
         }
         
-        // [Production("term :  LeftPar[d]  RightPar[d]")]
-        // public LogSharpAST NilTerm()
-        // {
-        //     return Nil.Instance;
-        // }
-        //
-        // [Production("term: Nil[d]")]
-        // public LogSharpAST NilKeywordTerm()
-        // {
-        //     return Nil.Instance;
-        // }
-
         [Production("term : Atom LeftPar[d] scalarorTerm (Comma[d] scalarorTerm)*  RightPar[d]")]
         public LogSharpAST Term(Token<LogSharpToken> clauseName, LogSharpAST headParam,
             List<Group<LogSharpToken, LogSharpAST>> tailParams)
@@ -178,6 +166,13 @@ namespace logSharp.parser
                 return new Term(
                     clauseName.StringWithoutQuotes,
                     parameters);
+        }
+
+
+        [Production("term: Cut[d]")]
+        public LogSharpAST CutTerm()
+        {
+            return new Term("cut");
         }
         
         #endregion

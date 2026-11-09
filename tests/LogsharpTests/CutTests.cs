@@ -8,8 +8,8 @@ public class CutTests : BaseTest
 {
     public const string PrologProgram = @"
 grade(Score, ""A"") :- Score >= 90 cut().
-grade(Score, ""B"") :- Score >= 75 cut().
-grade(Score, ""C"") :- Score >= 60 cut().
+grade(Score, ""B"") :- Score >= 75 !.
+grade(Score, ""C"") :- Score >= 60 !.
 grade(Score, ""F"") :- Score < 60.
 ";
 

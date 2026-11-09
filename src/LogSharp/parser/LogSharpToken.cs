@@ -44,6 +44,8 @@ namespace logSharp.parser
 
 
         [SingleLineComment("%")] Comment = 19,
+        
+        [Sugar("!")] Cut = 191,
 
 
 
