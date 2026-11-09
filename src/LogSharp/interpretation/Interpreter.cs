@@ -162,6 +162,10 @@ namespace logSharp.interpretation
             {
                 var stackAsList = stack.ToList();
                 Goal current = stack.Pop();
+                if (current.IsCut)
+                {
+                    continue;
+                }
                 Trace("");
                 Trace("____________________________");
                 Trace("____________________________");
@@ -320,10 +324,10 @@ namespace logSharp.interpretation
         
         public void Cut(Goal goal)
         {
-            var siblings = goal.Parent.Children;
-            if (siblings.Any())
+            var siblings = goal.Parent?.Parent?.Children;
+            if (siblings != null && siblings.Any())
             {
-                for (int i = goal.Index + 1; i < siblings.Count; i++)
+                for (int i = goal.Index; i < siblings.Count; i++)
                 {
                     siblings[i].Cut();
                 }

@@ -11,7 +11,7 @@ namespace LogSharpTester
     public class MyBuiltIns
     {
         [BuiltIn("testBuiltIn/0")]
-        public static List<Unification> TestPrim(Interpreter interpreter, Unification unificationIn,
+        public static List<Unification> TestPrim(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
 
         {

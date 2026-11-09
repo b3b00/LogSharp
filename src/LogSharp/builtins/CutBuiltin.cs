@@ -13,6 +13,7 @@ public class CutBuiltin
         List<Valuable> parameters)
     {
         
+        interpreter.Cut(goal);
         return new List<Unification>() { goal.Unification };
     }
 
