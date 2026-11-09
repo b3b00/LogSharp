@@ -20,7 +20,7 @@ grade(bob, science, 80).
 ";
 
     [Fact]
-    public void TestBagOf()
+    public void TestFindAll()
     {
         var answers = GetAnswers("find_all(Score, grade(Student, Subject, Score), Scores)?");
         Check.That(answers).CountIs(1);
@@ -34,5 +34,16 @@ grade(bob, science, 80).
         Check.That(scoresAsStrings).IsNotNull();
         Check.That(scoresAsStrings.Count).IsEqualTo(4);
         Check.That(scoresAsStrings).IsEquivalentTo(new List<string>() { "85", "90", "75", "80" });
+    }
+
+
+    public void TestBagOf()
+    {
+        var answers = GetAnswers("bag_of(Score, grade(Student, Subject, Score), Scores)?");
+        Check.That(answers).CountIs(2);
+        /*
+        Solution 1: Student = alice, Scores = [85, 90]
+        Solution 2: Student = bob, Scores = [75, 80]
+        */
     }
 }
