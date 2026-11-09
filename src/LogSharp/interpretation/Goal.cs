@@ -61,6 +61,8 @@ namespace logSharp.interpretation
             Index = 0;
         }
 
+        public List<Variable> GetFreeVariables() => Head.GetFreeVariables();
+
         public void AddChild(Goal child)
         {
             _children.Add(child);

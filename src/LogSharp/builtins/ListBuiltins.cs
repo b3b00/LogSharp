@@ -44,7 +44,7 @@ namespace logSharp.builtins
                         foreach (var item in items)
                         {
                             Unification unification = new Unification();
-                            unification.AddBinding(variable.Name, item);
+                            unification.SetBinding(variable.Name, item);
                             unifications.Add(unification);
                         }
 
@@ -56,10 +56,10 @@ namespace logSharp.builtins
             return BuildList(Unification.Failed());
         }
 
-        // bag_of/3 : bag_of(OutputPredicateValue,Predicate,OutputList)
+        // find_all/3 : find_all(OutputPredicateValue,Predicate,OutputList)
         // getting list of OutputPredicateValue that match Predicate in OutputList
-        [BuiltIn("bag_of/3")]
-        public static List<Unification> BagOf(Interpreter interpreter, Goal goal,
+        [BuiltIn("find_all/3")]
+        public static List<Unification> FindAll(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             if (parameters[0] is Variable lookedFor)
@@ -91,7 +91,7 @@ namespace logSharp.builtins
                             Term list = Term.ListTerm(values);
                             var unificationOut = new Unification();
                             unificationOut.IsOk = true;
-                            unificationOut.AddBinding(outputVar, list);
+                            unificationOut.SetBinding(outputVar, list);
                             return BuildList(unificationOut);
                     }
                     else if (parameters[2].IsList && parameters[2] is Term list)
@@ -129,6 +129,166 @@ namespace logSharp.builtins
             }
 
             return BuildList(Unification.Failed());
+        }
+
+        [BuiltIn("bag_of/3")]
+        public static List<Unification> BagOf(Interpreter interpreter, Goal goal, List<Valuable> parameters)
+        {
+            var template = ResolveParameter(parameters[0], goal.Unification);
+            if (template == null)
+            {
+                return ListHelper.BuildList(Unification.Failed());
+            }
+
+            var query = parameters[1] as Term;
+            if (query == null)
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var list = ResolveParameter(parameters[2], goal.Unification);
+            if (!(list is Variable) && !(list is Term t && t.IsList))
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var freeVars = query.GetFreeVariables();
+            var templateVarNames = (template is Variable tv
+                ? new List<string> { tv.Name }
+                : template.GetFreeVariables().Select(v => v.Name)).ToHashSet();
+
+            var additionalVars = freeVars
+                .Where(x => !templateVarNames.Contains(x.Name)
+                         && !x.IsDiscardableVariable
+                         && (goal.Unification == null || !goal.Unification.HasBinding(x.Name)))
+                .Select(x => x.Name)
+                .Distinct()
+                .ToList();
+
+            Question question = new Question(DeepCopier.Copy(query));
+            bool previousVerbosity = interpreter.Verbose;
+            interpreter.Verbose = false;
+            var results = interpreter.Search(question, goal.Unification).ToList();
+            interpreter.Verbose = previousVerbosity;
+
+            var successfulResults = results.Where(r => r != null && r.IsOk).ToList();
+            if (!successfulResults.Any())
+            {
+                return BuildList(Unification.Failed());
+            }
+
+            var groups = successfulResults.GroupBy(r =>
+                string.Join(";", additionalVars.Select(v => $"{v}={r.GetBinding(v)?.GetType().Name}:{r.GetBinding(v)?.Dump()}"))
+            ).ToList();
+
+            var unifications = new List<Unification>();
+            foreach (var group in groups)
+            {
+                var values = new List<Valuable>();
+                foreach (var result in group)
+                {
+                    Valuable val = null;
+                    if (template is Variable templateVar)
+                    {
+                        if (result.HasBinding(templateVar.Name))
+                        {
+                            val = result.GetBinding(templateVar.Name);
+                        }
+                        else if (goal.Unification != null && goal.Unification.HasBinding(templateVar.Name))
+                        {
+                            val = goal.Unification.GetBinding(templateVar.Name);
+                        }
+                        else
+                        {
+                            val = templateVar;
+                        }
+                    }
+                    else if (template is Term templateTerm)
+                    {
+                        val = interpreter.Unifier.EvalTerm(DeepCopier.Copy(templateTerm), result);
+                    }
+                    else if (template is Scalar scalar)
+                    {
+                        val = scalar;
+                    }
+
+                    if (val != null)
+                    {
+                        values.Add(val);
+                    }
+                }
+
+                if (!values.Any())
+                {
+                    continue;
+                }
+
+                Term bag = Term.ListTerm(values);
+                var unificationOut = new Unification();
+                unificationOut.IsOk = true;
+
+                if (goal.Unification != null)
+                {
+                    unificationOut.AddBindings(goal.Unification);
+                }
+
+                var firstResult = group.First();
+                foreach (var varName in additionalVars)
+                {
+                    var binding = firstResult.GetBinding(varName);
+                    if (binding != null)
+                    {
+                        unificationOut.SetBinding(varName, binding);
+                    }
+                }
+
+                if (list is Variable outVar)
+                {
+                    if (!outVar.IsDiscardableVariable)
+                    {
+                        unificationOut.SetBinding(outVar.Name, bag);
+                    }
+                    unifications.Add(unificationOut);
+                }
+                else if (list is Term expectedTerm && expectedTerm.IsList)
+                {
+                    var unif = interpreter.UnifyTerms(bag, goal.Unification, expectedTerm, new Unification());
+                    if (unif.IsOk)
+                    {
+                        unificationOut.AddBindings(unif);
+                        unifications.Add(unificationOut);
+                    }
+                }
+            }
+
+            if (unifications.Any())
+            {
+                return unifications;
+            }
+
+            return ListHelper.BuildList(Unification.Failed());
+        }
+
+        [BuiltIn("set_of/3")]
+        public static List<Unification> SetOf(Interpreter interpreter, Goal goal, List<Valuable> parameters)
+        {
+            var bagof = BagOf(interpreter, goal, parameters);
+            
+            var list = parameters[2] as Variable;
+            if (list == null)
+            {
+                return ListHelper.BuildList(Unification.Failed());
+            }
+
+            List<Unification> setof = bagof.Select(x =>
+            {
+                var values = x.GetBinding(list.Name);
+                var distinctValues = (values as Term).ToValuableList().Distinct();
+                x.SetBinding(list, Term.ListTerm(distinctValues.ToList()));
+                return x;
+            }).ToList();
+            
+            return setof.ToList();
         }
 
         // map_list/3 : map_list(InList,Mapper, OutList). mapper is mapper/2 with mapper(In,Out)
@@ -170,7 +330,7 @@ namespace logSharp.builtins
                         var output = Term.ListTerm(mapped);
                         var unificationOut = new Unification();
                         unificationOut.IsOk = true;
-                        unificationOut.AddBinding(outputVar, output);
+                        unificationOut.SetBinding(outputVar, output);
                         return BuildList(unificationOut);
                         
                     }
@@ -201,7 +361,7 @@ namespace logSharp.builtins
                 if (second is Variable lengthOut)
                 {
                     var unificationOut = new Unification();
-                    unificationOut.AddBinding(lengthOut.Name, new Int(realLength));
+                    unificationOut.SetBinding(lengthOut.Name, new Int(realLength));
                     return BuildList(unificationOut);
                 }
 
@@ -232,7 +392,7 @@ namespace logSharp.builtins
                 }
 
                 var unificationOut = new Unification();
-                unificationOut.AddBinding(list.Name, generated);
+                unificationOut.SetBinding(list.Name, generated);
                 return BuildList(unificationOut);
             }
 
@@ -260,7 +420,7 @@ namespace logSharp.builtins
                 if (second is Variable sortedOut)
                 {
                     var unificationOut = new Unification();
-                    unificationOut.AddBinding(sortedOut.Name, sortedList);
+                    unificationOut.SetBinding(sortedOut.Name, sortedList);
                     return BuildList(unificationOut);
                 }
 
@@ -285,7 +445,7 @@ namespace logSharp.builtins
                     }
 
                     var unificationOut = new Unification();
-                    unificationOut.AddBinding(input.Name, boundOutput);
+                    unificationOut.SetBinding(input.Name, boundOutput);
                     return BuildList(unificationOut);
                 }
             }

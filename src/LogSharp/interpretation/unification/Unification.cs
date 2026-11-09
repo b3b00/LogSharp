@@ -34,12 +34,12 @@ namespace logSharp.interpretation.unification
             IsOk = ok;
         }
 
-        public void AddBinding(Variable variable, Valuable value)
+        public void SetBinding(Variable variable, Valuable value)
         {
             Environment[variable.Name] = value;
         }
 
-        public void AddBinding(string variableName, Valuable value)
+        public void SetBinding(string variableName, Valuable value)
         {
             Environment[variableName] = value;
         }

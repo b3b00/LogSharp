@@ -59,9 +59,9 @@ length_one_shot(X) :- length([a,b,c],N) single(X).
     } 
     
     [Fact]
-    public void BagOfTest()
+    public void FindAllTest()
     {
-        var answers = GetAnswers("bag_of(X,relation(a,X), L)?");
+        var answers = GetAnswers("find_all(X,relation(a,X), L)?");
         Check.That(answers).CountIs(1);
         Check.That(answers[0]).IsOk();
         var unification = answers[0];

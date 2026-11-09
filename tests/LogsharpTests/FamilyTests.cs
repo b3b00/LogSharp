@@ -28,10 +28,10 @@ grandpa(X,Z) :- father(X,Y) father(Y,Z).
 gp(X,Y,Z) :- father(X,Y) father(Y,Z).
 brother(X,Y) :- father(Z,X) father(Z,Y).
 
-cof(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
-children_count(F,N) :- bag_of(CC,father(F,CC), L) length(L,N).
-sorted_children(F,S) :- bag_of(CC,father(F,CC), L) sort(L,S).
-each_child(F,C) :- bag_of(CC,father(F,CC), L) length(L,3) member(C,L).";
+cof(C,F) :- find_all(CC,father(F,CC), L) member(C,L).
+children_count(F,N) :- find_all(CC,father(F,CC), L) length(L,N).
+sorted_children(F,S) :- find_all(CC,father(F,CC), L) sort(L,S).
+each_child(F,C) :- find_all(CC,father(F,CC), L) length(L,3) member(C,L).";
 
 
         public FamilyTests() : base(PrologProgram)

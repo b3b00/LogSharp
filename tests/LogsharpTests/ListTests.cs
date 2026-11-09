@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Xunit;
 
 namespace ogsharpTests

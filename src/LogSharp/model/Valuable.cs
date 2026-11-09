@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace logSharp.model
 {
     public interface Valuable : LogSharpAST
@@ -13,5 +15,7 @@ namespace logSharp.model
         
         bool IsConstantList { get;  }
         string Name{ get;  }
+
+        List<Variable> GetFreeVariables();
     }
 }
