@@ -20,6 +20,7 @@ grade(alice, science, 90).
 grade(bob, math, 75).
 grade(bob, science, 80).
 grade(bob, science, 10).
+grade(bob, science, 10).
 ";
 
     [Fact]
@@ -35,8 +36,8 @@ grade(bob, science, 10).
         Check.That(scores.IsList).IsTrue();
         var scoresAsStrings = (scores as Term).ToValuableList().Select(x => x.ToString()).ToList();
         Check.That(scoresAsStrings).IsNotNull();
-        Check.That(scoresAsStrings.Count).IsEqualTo(5);
-        Check.That(scoresAsStrings).IsEquivalentTo(new List<string>() { "85", "90", "75", "80", "10" });
+        Check.That(scoresAsStrings.Count).IsEqualTo(6);
+        Check.That(scoresAsStrings).IsEquivalentTo(new List<string>() { "85", "90", "75", "80", "10","10" });
     }
 
 
@@ -58,7 +59,7 @@ grade(bob, science, 10).
         var answers = GetAnswers("bag_of(Score, grade(Student, _, Score), Scores)?");
         Check.That(answers).CountIs(2);
 
-        CheckItem("bob", ["10", "80", "75"], answers);
+        CheckItem("bob", ["10","10", "80", "75"], answers);
         CheckItem("alice", ["90","85"], answers);
     }
 
@@ -78,6 +79,30 @@ grade(bob, science, 10).
         
         
         var answers = GetAnswers("bag_of(Score, grade(Student, Subject, Score), Scores)?");
+        Check.That(answers).CountIs(4);
+
+        CheckItem("bob", "science", ["10", "10", "80"], answers);
+        CheckItem("bob", "math", ["75"], answers);
+        CheckItem("alice", "science", ["90"], answers);
+        CheckItem("alice", "math", ["85"], answers);
+    }
+    
+    [Fact]
+    public void TestSetOfWithMultipleFreeVariables()
+    {
+        Action<string, string, string[], List<Unification>> CheckItem =
+            (student, subject, expectedScores, answers) =>
+            {
+                var answer = answers.FirstOrDefault(a => a.GetBinding("Student")?.ToString() == student && a.GetBinding("Subject")?.ToString() == subject);
+                Check.That(answer).IsNotNull();
+                Check.That(answer.IsOk).IsTrue();
+                Check.That(answer).Contains("Scores");
+                var scores1 = (answer.GetBinding("Scores") as Term).ToValuableList().Select(x => x.ToString()).ToList();
+                Check.That(scores1).IsEquivalentTo(expectedScores);
+            };
+        
+        
+        var answers = GetAnswers("set_of(Score, grade(Student, Subject, Score), Scores)?");
         Check.That(answers).CountIs(4);
 
         CheckItem("bob", "science", ["10", "80"], answers);

@@ -42,7 +42,7 @@ namespace logSharp.builtins.expressions
                     value = new model.Double(doubleRes);
                 }
 
-                unificationOut.AddBinding(variable, value);
+                unificationOut.SetBinding(variable, value);
                 unifications.Add(unificationOut);
                 return unifications;
             }

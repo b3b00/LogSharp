@@ -38,15 +38,15 @@ namespace Tester
             var unifier = new NestedTermUnifier();
 
             Unification srcEnv = new Unification();
-            srcEnv.AddBinding("X",new Atom("c") );
-            srcEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+            srcEnv.SetBinding("X",new Atom("c") );
+            srcEnv.SetBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
 
             
             var destEnv = new Unification();
             var emptyChildU = new Unification();
             
-            destEnv.AddBinding("X",new Atom("c") );
-            destEnv.AddBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
+            destEnv.SetBinding("X",new Atom("c") );
+            destEnv.SetBinding("L",Term.ListTerm(ListHelper.BuildList<Valuable>(new Atom("b"),new Atom("c") )));
 
             var e1 = unifier.Eval(src, srcEnv);
             var e2 = unifier.Eval(dest, destEnv);

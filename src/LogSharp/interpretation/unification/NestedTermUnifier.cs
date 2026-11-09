@@ -46,7 +46,7 @@ namespace logSharp.interpretation.unification
                         {
                             if (destArg.Name != Variable.DiscardingVariable)
                             {
-                                unification.AddBinding(destArg as Variable, srcVal);
+                                unification.SetBinding(destArg as Variable, srcVal);
                             }
                         }
                         else
