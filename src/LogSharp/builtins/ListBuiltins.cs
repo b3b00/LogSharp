@@ -56,10 +56,10 @@ namespace logSharp.builtins
             return BuildList(Unification.Failed());
         }
 
-        // bag_of/3 : bag_of(OutputPredicateValue,Predicate,OutputList)
+        // find_all/3 : find_all(OutputPredicateValue,Predicate,OutputList)
         // getting list of OutputPredicateValue that match Predicate in OutputList
-        [BuiltIn("bag_of/3")]
-        public static List<Unification> BagOf(Interpreter interpreter, Goal goal,
+        [BuiltIn("find_all/3")]
+        public static List<Unification> FindAll(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             if (parameters[0] is Variable lookedFor)
@@ -131,6 +131,12 @@ namespace logSharp.builtins
             return BuildList(Unification.Failed());
         }
 
+        [BuiltIn("bag_of/3")]
+        public static List<Unification> BagOf(Interpreter interpreter, Goal goal, List<Valuable> parameters)
+        {
+            return ListHelper.BuildList(Unification.Failed());
+        }
+        
         // map_list/3 : map_list(InList,Mapper, OutList). mapper is mapper/2 with mapper(In,Out)
         [BuiltIn("map_list/3")]
         
