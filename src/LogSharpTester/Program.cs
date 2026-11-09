@@ -225,6 +225,26 @@ childrenOf(C,F) :- bag_of(CC,father(F,CC), L) member(C,L).
             
             
         }
+
+        static void TestCut()
+        {
+            string program = @"
+            grade(Score, ""A"") :- Score >= 90 cut().
+                grade(Score, ""B"") :- Score >= 75 cut().
+                grade(Score, ""C"") :- Score >= 60 cut().
+                grade(Score, ""F"") :- Score < 60.
+";
+            Interpreter = new Interpreter(false, null, BuildParser(), new NestedTermUnifier());
+            Interpreter.LoadProgram(program);
+            var answers = GetAnswers("grade(95,G)?");
+            PrintAnswers(answers);
+            answers = GetAnswers("grade(82,G)?");
+            PrintAnswers(answers);
+            answers = GetAnswers("grade(63,G)?");
+            PrintAnswers(answers);  
+            answers = GetAnswers("grade(6,G)?");
+            PrintAnswers(answers);
+        }
         
         static Interpreter Interpreter;
         
@@ -311,7 +331,8 @@ complex(X,Y) :- Y is (X + 69) * 12 - 4.
         
         static void Main(string[] args)
         {
-            TestCof();
+            TestCut();
+            //TestCof();
             //TestMaths();
             //PrologRepl.Loop(args);
             //TestMemberOf();

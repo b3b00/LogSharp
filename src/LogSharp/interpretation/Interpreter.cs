@@ -13,28 +13,29 @@ using sly.parser;
 namespace logSharp.interpretation
 {
 
-    public delegate List<Unification> PrologBuiltIn(Interpreter interpreter, Unification unificationIn,
+    public delegate List<Unification> PrologBuiltIn(Interpreter interpreter, Goal goal,
         List<Valuable> parameters);
-    
+
     public class Interpreter
     {
 
-       
-        
+
+
         public bool Verbose { get; set; }
-        
+
         public string DebugOutput { get; set; }
-        
+
         public LogSharpProgram LogSharpProgram { get; set; }
-        
+
         public IUnifier Unifier { get; set; }
-        
-        public Parser<LogSharpToken,LogSharpAST> Parser { get; private set; }
-        
-        public Dictionary<string,PrologBuiltIn> BuiltIns { get; set; }
-        
-        
-        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken,LogSharpAST> parser, IUnifier unifier)
+
+        public Parser<LogSharpToken, LogSharpAST> Parser { get; private set; }
+
+        public Dictionary<string, PrologBuiltIn> BuiltIns { get; set; }
+
+
+        public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken, LogSharpAST> parser,
+            IUnifier unifier)
         {
             LogSharpProgram = logSharpProgram;
             Verbose = verbose;
@@ -62,13 +63,13 @@ namespace logSharp.interpretation
         {
             if (LogSharpProgram == null)
             {
-                
+
                 LogSharpProgram = new LogSharpProgram(new List<Rule>());
             }
-            
+
             LogSharpProgram.Append(rule);
         }
-        
+
         public void Append(LogSharpProgram program)
         {
             if (LogSharpProgram == null)
@@ -91,7 +92,7 @@ namespace logSharp.interpretation
             return BuiltIns.ContainsKey(name);
         }
 
-       
+
 
         public void Trace(string message)
         {
@@ -108,7 +109,7 @@ namespace logSharp.interpretation
         public void LoadProgramFile(string program)
         {
             string prog = "";
-            if (File.Exists(program)) 
+            if (File.Exists(program))
                 prog = File.ReadAllText(program);
             else if (File.Exists(program + ".pl"))
                 prog = File.ReadAllText(program + ".pl");
@@ -116,11 +117,11 @@ namespace logSharp.interpretation
                 prog = File.ReadAllText(program + ".pro");
             LoadProgram(prog);
         }
-        
+
         public void LoadProgram(string program)
         {
-            
-            var logprog = Parser.Parse(program,"program");
+
+            var logprog = Parser.Parse(program, "program");
             if (logprog.IsOk)
             {
                 Append(logprog.Result as LogSharpProgram);
@@ -134,7 +135,7 @@ namespace logSharp.interpretation
                 }
             }
         }
-        
+
         public IList<Unification> Search(Question question, Unification unification = null)
         {
             Trace("*****************************************");
@@ -147,9 +148,10 @@ namespace logSharp.interpretation
             Trace($"search question {question}");
             if (unification != null && unification.IsOk)
             {
-                Term evaled = Unifier.EvalTerm(question,unification);
+                Term evaled = Unifier.EvalTerm(question, unification);
                 question = new Question(evaled);
             }
+
             Goal rootGoal = new Goal(question);
             rootGoal.Goals.Add(rootGoal);
             Trace($"stck : {rootGoal.ToString()}");
@@ -160,12 +162,16 @@ namespace logSharp.interpretation
             {
                 var stackAsList = stack.ToList();
                 Goal current = stack.Pop();
+                if (current.IsCut)
+                {
+                    continue;
+                }
                 Trace("");
                 Trace("____________________________");
                 Trace("____________________________");
                 Trace("");
                 Trace($"pop {current}");
-                
+
                 if (current.Index >= current.Count || current.IsFact)
                 {
                     if (current.IsRootGoal)
@@ -223,27 +229,31 @@ namespace logSharp.interpretation
                             p.Index++;
                             p.Unification = u;
                         }
+
                         Trace($"stck {p} @ {p.Index}");
                         stack.Push(p);
                     }
+
                     continue;
                 }
 
                 var parent = DeepCopier.Copy(current.Parent);
                 var term = current.Goals[current.Index];
-                
+
 
                 if (TryGetBuiltIn(term.Specification, out var builtIn))
                 {
                     var builtInTerm = DeepCopier.Copy(term.Head);
-                    builtInTerm = Unifier.EvalTerm(builtInTerm,current.Unification);
+                    builtInTerm = Unifier.EvalTerm(builtInTerm, current.Unification);
                     Trace($"calling built-in {term.Specification} {term.ToString()} with {current.Unification}");
-                    var builtInUnifications = builtIn(this, current.Unification, builtInTerm.Parameters);
+                    var builtInUnifications = builtIn(this, current, builtInTerm.Parameters);
                     foreach (var builtInUnification in builtInUnifications)
                     {
                         Trace($"        >>> {builtInUnification.ToString()}");
                     }
-                    if (current.Rule != null) {
+
+                    if (current.Rule != null)
+                    {
                         if (builtInUnifications != null && builtInUnifications.Any())
                         {
                             foreach (var builtInUnification in builtInUnifications)
@@ -275,31 +285,30 @@ namespace logSharp.interpretation
                     foreach (var applicable in (applicableRules))
                     {
                         Trace($"trying rule {applicable.ToString()}");
-//                        if (!applicable.Equals(current.Rule))
-//                        {
-                            Goal child = new Goal(applicable, current, current.Unification);
+                        Goal child = new Goal(applicable, current, current.Unification);
 
-                            var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head,
-                                child.Unification);
-                            if (unif.IsOk)
-                            {
-                                child.Unification = unif;
-                                Trace($"stck {child} @ {child.Index}");
-                                stack.Push(child);
-                            }
-                            else
-                            {
-                                Trace("unification failed.");
-                            }
-
-//                        }
+                        var unif = Unifier.UnifyTerms(term.Head, current.Unification, child.Head,
+                            child.Unification);
+                        if (unif.IsOk)
+                        {
+                            child.Unification = unif;
+                            Trace($"stck {child} @ {child.Index}");
+                            stack.Push(child);
+                            current.AddChild(child);
+                        }
+                        else
+                        {
+                            Trace("unification failed.");
+                        }
+    
+                        
                     }
                 }
 
             }
 
             if (!resultFound)
-            
+
             {
                 results.Add(Unification.Failed());
             }
@@ -309,6 +318,20 @@ namespace logSharp.interpretation
 
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
             Unification destEnv)
-        => Unifier.UnifyTerms(source, sourceEnv, destination, destEnv);
+            => Unifier.UnifyTerms(source, sourceEnv, destination, destEnv);
+
+
+        
+        public void Cut(Goal goal)
+        {
+            var siblings = goal.Parent?.Parent?.Children;
+            if (siblings != null && siblings.Any())
+            {
+                for (int i = goal.Index; i < siblings.Count; i++)
+                {
+                    siblings[i].Cut();
+                }
+            }
+        }
     }
 }
