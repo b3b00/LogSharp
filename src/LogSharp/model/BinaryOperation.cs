@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
@@ -31,7 +31,6 @@ namespace logSharp.model
             var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
             {
                 var result = f(left, right);
-                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
                 return result;
             };
             
@@ -45,6 +44,7 @@ namespace logSharp.model
                     return logAndReturn("==",(object l , object r ) => comparison == 0);
                 }
                 case LogSharpToken.Different :
+                case LogSharpToken.NotUnifiable :
                 {
                     return logAndReturn("!=",(object l , object r ) => comparison != 0);
                 }
@@ -76,7 +76,6 @@ namespace logSharp.model
             var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
             {
                 var result = f(left, right);
-                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
                 return result;
             };
             
@@ -108,7 +107,6 @@ namespace logSharp.model
             var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
             {
                 var result = f(left, right);
-                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
                 return result;
             };
             
@@ -131,7 +129,6 @@ namespace logSharp.model
             var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
             {
                 var result = f(left, right);
-                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
                 return result;
             };
             
@@ -154,7 +151,6 @@ namespace logSharp.model
             var logAndReturn = (string loggedOperation, Func<object, object, object> f) =>
             {
                 var result = f(left, right);
-                Console.WriteLine($"Binary : {left} {loggedOperation} {right} = {result}");
                 return result;
             };
             
@@ -194,6 +190,7 @@ namespace logSharp.model
                 }
                 case LogSharpToken.EqualsTo:
                 case LogSharpToken.Different:
+                case LogSharpToken.NotUnifiable:
                 case LogSharpToken.Gt:
                 case LogSharpToken.Lt:
                 case LogSharpToken.Gte:

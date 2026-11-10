@@ -11,7 +11,9 @@ namespace logSharp.parser
 {
     public class LogSharpParser
     {
-        [Production("program : rule *")]
+        private readonly DcgTranslator _dcgTranslator = new DcgTranslator();
+
+        [Production("program : [rule|dcg] *")]
         public LogSharpAST Program(List<LogSharpAST> rules)
         {
             try
@@ -97,7 +99,7 @@ namespace logSharp.parser
             return model.Term.ListTerm(head as Valuable, tail as Valuable);
         }
 
-        [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
+        [Production("list :  LeftBrack[d] listElement (Comma[d] listElement)*  RightBrack[d]")]
         public LogSharpAST ListTermLiteral(LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
             List<Valuable> parameters = new List<Valuable>();
@@ -208,7 +210,7 @@ namespace logSharp.parser
             return new Variable(variable.Value);
         }
 
-        [Production("scalar : Atom")]
+        [Production("scalar : [Atom | AtomicString]")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
         {
             return new Atom(atom.Value);
@@ -261,6 +263,7 @@ namespace logSharp.parser
 
         [Operation((int) LogSharpToken.EqualsTo, Affix.InFix, Associativity.Right, 5)]
         [Operation((int) LogSharpToken.Different, Affix.InFix, Associativity.Left, 5)]
+        [Operation((int) LogSharpToken.NotUnifiable, Affix.InFix, Associativity.Left, 5)]
         [Operation((int) LogSharpToken.Gt, Affix.InFix, Associativity.Left, 5)]
         [Operation((int) LogSharpToken.Lt, Affix.InFix, Associativity.Left, 5)]
         [Operation((int) LogSharpToken.Gte, Affix.InFix, Associativity.Left, 5)]
@@ -315,6 +318,142 @@ namespace logSharp.parser
         {
             return value;
         }
+
+        [Production("primary_value : LeftPar[d] Equal[d] RightPar[d]")]
+        public LogSharpAST EqualOperand()
+        {
+            return new Atom("=");
+        }
+
+        [Production("primary_value : LeftPar[d] Plus[d] RightPar[d]")]
+        public LogSharpAST PlusOperand()
+        {
+            return new Atom("+");
+        }
+
+        #endregion
+        
+        #region DCG
+
+        [Production("dcg : term DcgArrow[d] Dot[d]")]
+        public LogSharpAST DcgEmpty(LogSharpAST head)
+        {
+            var prolog = _dcgTranslator.TranslateDcg(head, new List<IDcgClause>());
+            return prolog;
+        }
+
+        [Production("dcg : term DcgArrow[d] dcgClause (Comma[d] dcgClause)* Dot[d]")]
+        public LogSharpAST DcgRule(LogSharpAST head, LogSharpAST headClause, List<Group<LogSharpToken, LogSharpAST>> tailClauses)
+        {
+            var clauses = new List<IDcgClause>();
+            if (headClause is IDcgClause c)
+            {
+                clauses.Add(c);
+            }
+            if (tailClauses != null)
+            {
+                foreach (var group in tailClauses)
+                {
+                    if (group.Value(0) is IDcgClause tc)
+                    {
+                        clauses.Add(tc);
+                    }
+                }
+            }
+            var prolog = _dcgTranslator.TranslateDcg(head, clauses);
+            return prolog;
+            ;
+        }
+
+        [Production("dcgClause : term")]
+        public LogSharpAST DcgNonTerminalClause(LogSharpAST clause)
+        {
+            if (clause is Term t)
+            {
+                if (t.Name == "cut" && (t.Parameters == null || !t.Parameters.Any()))
+                {
+                    return new DcgPrologGoals(new List<Term> { t });
+                }
+                return new DcgNonTerminal(t);
+            }
+            if (clause is Atom a)
+            {
+                return new DcgNonTerminal(new Term(a.Name));
+            }
+            return null;
+        }
+
+        [Production("dcgClause : LeftBrack[d] RightBrack[d]")]
+        public LogSharpAST DcgTerminalEmpty()
+        {
+            return new DcgTerminal(new List<Valuable>());
+        }
+
+        [Production("dcgClause : LeftBrack[d] listElement (Comma[d] listElement)* RightBrack[d]")]
+        public LogSharpAST DcgTerminalList(LogSharpAST head, List<Group<LogSharpToken, LogSharpAST>> tail)
+        {
+            var list = new List<Valuable>();
+            if (head is Valuable v)
+            {
+                list.Add(v);
+            }
+            if (tail != null)
+            {
+                foreach (var group in tail)
+                {
+                    if (group.Value(0) is Valuable tv)
+                    {
+                        list.Add(tv);
+                    }
+                }
+            }
+            return new DcgTerminal(list);
+        }
+
+        [Production("listElement : scalarorTerm")]
+        public LogSharpAST ListElement(LogSharpAST item) => item;
+
+        [Production("listElement : Plus")]
+        public LogSharpAST ListElementPlus(Token<LogSharpToken> tok) => new Atom("+");
+
+        [Production("listElement : Minus")]
+        public LogSharpAST ListElementMinus(Token<LogSharpToken> tok) => new Atom("-");
+
+        [Production("listElement : Times")]
+        public LogSharpAST ListElementTimes(Token<LogSharpToken> tok) => new Atom("*");
+
+        [Production("listElement : Divide")]
+        public LogSharpAST ListElementDivide(Token<LogSharpToken> tok) => new Atom("/");
+
+        [Production("listElement : Equal")]
+        public LogSharpAST ListElementEqual(Token<LogSharpToken> tok) => new Atom("=");
+
+        [Production("listElement : AtomicString")]
+        public LogSharpAST ListElementAtomicString(Token<LogSharpToken> tok) => new Atom(tok.StringWithoutQuotes);
+
+        [Production("dcgClause : LeftCurly[d] RightCurly[d]")]
+        public LogSharpAST DcgPrologEmpty()
+        {
+            return new DcgPrologGoals(new List<Term>());
+        }
+
+        [Production("dcgClause : LeftCurly[d] prologGoal (Comma[d] prologGoal)* RightCurly[d]")]
+        public LogSharpAST DcgPrologList(LogSharpAST head, List<Group<LogSharpToken, LogSharpAST>> tail)
+        {
+            var list = new List<Term>();
+            DcgTranslator.AddPrologGoal(list, head);
+            if (tail != null)
+            {
+                foreach (var group in tail)
+                {
+                    DcgTranslator.AddPrologGoal(list, group.Value(0));
+                }
+            }
+            return new DcgPrologGoals(list);
+        }
+
+        [Production("prologGoal : term")]
+        public LogSharpAST PrologGoalTerm(LogSharpAST term) => term;
 
         #endregion
     }
