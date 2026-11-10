@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
@@ -45,6 +45,7 @@ namespace logSharp.model
                     return logAndReturn("==",(object l , object r ) => comparison == 0);
                 }
                 case LogSharpToken.Different :
+                case LogSharpToken.NotUnifiable :
                 {
                     return logAndReturn("!=",(object l , object r ) => comparison != 0);
                 }
@@ -194,6 +195,7 @@ namespace logSharp.model
                 }
                 case LogSharpToken.EqualsTo:
                 case LogSharpToken.Different:
+                case LogSharpToken.NotUnifiable:
                 case LogSharpToken.Gt:
                 case LogSharpToken.Lt:
                 case LogSharpToken.Gte:

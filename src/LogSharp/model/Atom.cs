@@ -1,10 +1,14 @@
+using logSharp.interpretation.unification;
+
 namespace logSharp.model
 {
-    public class Atom : Scalar
+    public class Atom : Scalar, IExpression
     {
         public new string Name { get; private set; }
 
         public override object RawValue => Name;
+
+        public object Evaluate(Unification unification) => RawValue;
         
         public Atom(string name)
         {

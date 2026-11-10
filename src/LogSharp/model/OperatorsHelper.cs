@@ -7,6 +7,7 @@ public class OperatorsHelper
     public static string TokenToOperator(LogSharpToken token) => token switch
     {
         LogSharpToken.Different => "!=",
+        LogSharpToken.NotUnifiable => "\\=",
         LogSharpToken.EqualsTo => "==",
         LogSharpToken.Gt => ">",
         LogSharpToken.Gte => ">=",

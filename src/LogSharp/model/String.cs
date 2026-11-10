@@ -2,7 +2,7 @@ using logSharp.interpretation.unification;
 
 namespace logSharp.model
 {
-    public class String : Scalar
+    public class String : Scalar, IExpression
     {
         
         public override object RawValue => Value;

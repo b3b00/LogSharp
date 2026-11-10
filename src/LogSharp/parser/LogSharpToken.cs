@@ -46,6 +46,13 @@ namespace logSharp.parser
         [SingleLineComment("%")] Comment = 19,
         
         [Sugar("!")] Cut = 191,
+        
+        [Sugar("-->")] DcgArrow = 192,
+        
+        [Sugar("{")] LeftCurly = 193,
+        
+        [Sugar("}")] RightCurly = 194,
+        
 
 
 
@@ -85,6 +92,10 @@ namespace logSharp.parser
         [Lexeme(GenericToken.SugarToken,">=")] Gte = 58,
         
         [Lexeme(GenericToken.SugarToken,"<=")] Lte = 59,
+        
+        [Lexeme(GenericToken.SugarToken,"\\=")] NotUnifiable = 60,
+
+        [Lexeme(GenericToken.SugarToken,"=")] Equal = 61,
         
 
         
