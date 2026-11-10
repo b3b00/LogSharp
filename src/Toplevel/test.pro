@@ -17,11 +17,11 @@ empty2() --> .
 
 % A statement: variable = expression
 statement(ast_assign(Var, ExprAST)) --> 
-    [Var], [=], expr(ExprAST).
+    [Var], ['='], expr(ExprAST).
 
 % Expressions (handling addition for simplicity)
 expr(ast_add(Left, Right)) --> 
-    term(Left), [+], expr(Right).
+    term(Left), ['+'], expr(Right).
 expr(AST) --> 
     term(AST).
 
@@ -29,4 +29,4 @@ expr(AST) -->
 term(ast_num(N)) --> 
     [N], { number(N) }.
 term(ast_var(V)) --> 
-    [V], { atom(V) }. %V \= (=), V \= (+) }.
+    [V], { atom(V) }.  % %V \= (=), V \= (+) }.

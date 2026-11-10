@@ -165,5 +165,22 @@ number_pair(X, Y) --> digit(X), digit(Y).
             Check.That(answers[0].GetBinding("A").ToString()).IsEqualTo("zero");
             Check.That(answers[0].GetBinding("B").ToString()).IsEqualTo("one");
         }
+        
+        
+        [Fact]
+        public void TestQueryWithAtomicStrings()
+        {
+            var logParser = new LogSharpParser();
+            var builder = new ParserBuilder<LogSharpToken, LogSharpAST>();
+            var parser = builder.BuildParser(logParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
+            Check.That(parser.IsOk).IsTrue();
+            var lexer = parser.Result.Lexer as GenericLexer<LogSharpToken>;
+            CallBacksBuilder.BuildCallbacks<LogSharpToken>(lexer);
+
+            var parsed = parser.Result.Parse(@"phrase(statement(AST), [x, '=', 10, '+', 20])?","rule");
+            Check.That(parsed.IsOk).IsTrue();
+        }
     }
+    
+    
 }

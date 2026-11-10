@@ -99,7 +99,7 @@ namespace logSharp.parser
             return model.Term.ListTerm(head as Valuable, tail as Valuable);
         }
 
-        [Production("list :  LeftBrack[d] scalarorTerm (Comma[d] scalarorTerm)*  RightBrack[d]")]
+        [Production("list :  LeftBrack[d] listElement (Comma[d] listElement)*  RightBrack[d]")]
         public LogSharpAST ListTermLiteral(LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
         {
             List<Valuable> parameters = new List<Valuable>();
@@ -210,7 +210,7 @@ namespace logSharp.parser
             return new Variable(variable.Value);
         }
 
-        [Production("scalar : Atom")]
+        [Production("scalar : [Atom | AtomicString]")]
         public LogSharpAST AtomScalar(Token<LogSharpToken> atom)
         {
             return new Atom(atom.Value);
@@ -338,7 +338,6 @@ namespace logSharp.parser
         [Production("dcg : term DcgArrow[d] Dot[d]")]
         public LogSharpAST DcgEmpty(LogSharpAST head)
         {
-            Console.WriteLine($"new dcg rule {head.ToString()}");
             var prolog = _dcgTranslator.TranslateDcg(head, new List<IDcgClause>());
             return prolog;
         }
@@ -346,7 +345,6 @@ namespace logSharp.parser
         [Production("dcg : term DcgArrow[d] dcgClause (Comma[d] dcgClause)* Dot[d]")]
         public LogSharpAST DcgRule(LogSharpAST head, LogSharpAST headClause, List<Group<LogSharpToken, LogSharpAST>> tailClauses)
         {
-            Console.WriteLine($"new dcg rule {head.ToString()} : {string.Join(", ",tailClauses.Select(x => x.ToString()))}");
             var clauses = new List<IDcgClause>();
             if (headClause is IDcgClause c)
             {
@@ -391,7 +389,7 @@ namespace logSharp.parser
             return new DcgTerminal(new List<Valuable>());
         }
 
-        [Production("dcgClause : LeftBrack[d] dcgTerminalElement (Comma[d] dcgTerminalElement)* RightBrack[d]")]
+        [Production("dcgClause : LeftBrack[d] listElement (Comma[d] listElement)* RightBrack[d]")]
         public LogSharpAST DcgTerminalList(LogSharpAST head, List<Group<LogSharpToken, LogSharpAST>> tail)
         {
             var list = new List<Valuable>();
@@ -412,26 +410,26 @@ namespace logSharp.parser
             return new DcgTerminal(list);
         }
 
-        [Production("dcgTerminalElement : scalarorTerm")]
-        public LogSharpAST DcgTerminalScalar(LogSharpAST item) => item;
+        [Production("listElement : scalarorTerm")]
+        public LogSharpAST ListElement(LogSharpAST item) => item;
 
-        [Production("dcgTerminalElement : Plus")]
-        public LogSharpAST DcgTerminalPlus(Token<LogSharpToken> tok) => new Atom("+");
+        [Production("listElement : Plus")]
+        public LogSharpAST ListElementPlus(Token<LogSharpToken> tok) => new Atom("+");
 
-        [Production("dcgTerminalElement : Minus")]
-        public LogSharpAST DcgTerminalMinus(Token<LogSharpToken> tok) => new Atom("-");
+        [Production("listElement : Minus")]
+        public LogSharpAST ListElementMinus(Token<LogSharpToken> tok) => new Atom("-");
 
-        [Production("dcgTerminalElement : Times")]
-        public LogSharpAST DcgTerminalTimes(Token<LogSharpToken> tok) => new Atom("*");
+        [Production("listElement : Times")]
+        public LogSharpAST ListElementTimes(Token<LogSharpToken> tok) => new Atom("*");
 
-        [Production("dcgTerminalElement : Divide")]
-        public LogSharpAST DcgTerminalDivide(Token<LogSharpToken> tok) => new Atom("/");
+        [Production("listElement : Divide")]
+        public LogSharpAST ListElementDivide(Token<LogSharpToken> tok) => new Atom("/");
 
-        [Production("dcgTerminalElement : Equal")]
-        public LogSharpAST DcgTerminalEqual(Token<LogSharpToken> tok) => new Atom("=");
+        [Production("listElement : Equal")]
+        public LogSharpAST ListElementEqual(Token<LogSharpToken> tok) => new Atom("=");
 
-        [Production("dcgTerminalElement : AtomicString")]
-        public LogSharpAST DcgTerminalAtomicString(Token<LogSharpToken> tok) => new Atom(tok.StringWithoutQuotes);
+        [Production("listElement : AtomicString")]
+        public LogSharpAST ListElementAtomicString(Token<LogSharpToken> tok) => new Atom(tok.StringWithoutQuotes);
 
         [Production("dcgClause : LeftCurly[d] RightCurly[d]")]
         public LogSharpAST DcgPrologEmpty()
