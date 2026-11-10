@@ -14,9 +14,9 @@ public class CallBuiltins
     public static List<Unification> Call1(Interpreter interpreter, Goal goal,
         List<Valuable> parameters)
     {
-        var call = Call_X(2);
         if (parameters[0] is Term term)
         {
+            var call = Call_X(term.Arity + 1);
             List<Valuable> calleeParameters = new List<Valuable>();
             calleeParameters.Add(new Atom(term.Name));
             calleeParameters.AddRange(term.Parameters);
@@ -24,6 +24,7 @@ public class CallBuiltins
         }
         else
         {
+            var call = Call_X(2);
             Valuable first = ListBuiltins.ResolveParameter(parameters[0], goal.Unification);
             return call(interpreter, goal, parameters);
         }

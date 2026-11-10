@@ -12,8 +12,8 @@ grade(Score, ""B"") :- Score >= 75 !.
 grade(Score, ""C"") :- Score >= 60 !.
 grade(Score, ""F"") :- Score < 60.
 
-not(T) :- call(T) ! fail().
-not(T).
+no(T) :- call(T) ! fail().
+no(T).
 
 equals(X,Y) :- X == Y.
 
@@ -47,13 +47,13 @@ equals(X,Y) :- X == Y.
     }
     
     [Fact]
-    public void TestNotWithCut()
+    public void TestNoWithCut()
     {
-        var answers = GetAnswers("no(test(42,42))?");
+        var answers = GetAnswers("no(equals(42,42))?");
         Check.That(answers).CountIs(1);
         Check.That(answers[0]).Not.IsOk();
         
-        answers = GetAnswers("no(test(42,24))?");
+        answers = GetAnswers("no(equals(42,24))?");
         Check.That(answers).CountIs(1);
         Check.That(answers[0]).IsOk();
 

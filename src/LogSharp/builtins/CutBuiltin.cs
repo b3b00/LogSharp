@@ -21,7 +21,7 @@ public class CutBuiltin
     [BuiltIn("fail/0")]
     public static List<Unification> Fail(Interpreter interpreter, Goal goal,List<Valuable> parameters )
     {
-        return ListHelper.BuildList(Unification.Success());
+        return ListHelper.BuildList(Unification.Failed());
     }
 
 }

@@ -35,7 +35,6 @@ namespace logSharp.builtins.expressions
                         return ListHelper.BuildList(Unification.Success());
                     }
                 }
-                Console.WriteLine($"assert {expression.Dump()} failed.");
             }
 
             
