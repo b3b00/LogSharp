@@ -33,6 +33,9 @@ namespace logSharp.interpretation
 
         public Dictionary<string, PrologBuiltIn> BuiltIns { get; set; }
 
+        // finite-domain constraint store shared with the clpfd-like builtins
+        public ClpfdConstraints Constraints { get; } = new ClpfdConstraints();
+
 
         public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken, LogSharpAST> parser,
             IUnifier unifier)
