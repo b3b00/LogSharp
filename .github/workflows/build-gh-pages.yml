@@ -71,11 +71,11 @@ jobs:
 
       # Only the dev branch is allowed to replace the published Pages report.
       - name: Configure GitHub Pages
-        if: env.RUN_TESTS == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        if: env.RUN_TESTS == 'true'  && github.ref == 'refs/heads/dev' # && github.event_name == 'push'
         uses: actions/configure-pages@v5
 
       - name: Upload coverage report for GitHub Pages
-        if: env.RUN_TESTS == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        if: env.RUN_TESTS == 'true' &&  github.ref == 'refs/heads/dev' # github.event_name == 'push' &&
         uses: actions/upload-pages-artifact@v4
         with:
           path: coveragereport
