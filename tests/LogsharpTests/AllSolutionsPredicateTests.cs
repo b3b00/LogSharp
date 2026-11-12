@@ -41,6 +41,65 @@ grade(bob, science, 10).
     }
 
 
+    // covers the bound output list branch of find_all/3
+    // (find_all(X, Query, [already bound list]) -> success when the list
+    // contains exactly the values collected from Query)
+    [Fact]
+    public void TestFindAllWithBoundOutputListSucceedsWhenListMatches()
+    {
+        var answers = GetAnswers("find_all(Score, grade(alice, _, Score), [85, 90])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+    }
+
+    [Fact]
+    public void TestFindAllWithBoundOutputListIsOrderInsensitive()
+    {
+        var answers = GetAnswers("find_all(Score, grade(alice, _, Score), [90, 85])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+    }
+
+    [Fact]
+    public void TestFindAllWithBoundOutputListFailsWhenValueDiffers()
+    {
+        var answers = GetAnswers("find_all(Score, grade(alice, _, Score), [85, 91])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
+    [Fact]
+    public void TestFindAllWithBoundOutputListFailsWhenLengthDiffers()
+    {
+        var answers = GetAnswers("find_all(Score, grade(alice, _, Score), [85, 90, 75])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
+    [Fact]
+    public void TestFindAllWithBoundOutputListFailsWhenQueryHasNoSolution()
+    {
+        var answers = GetAnswers("find_all(Score, grade(charlie, _, Score), [85, 90])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
+    [Fact]
+    public void TestFindAllFailsWhenThirdParameterIsNeitherVariableNorList()
+    {
+        var answers = GetAnswers("find_all(Score, grade(alice, math, Score), 85)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
+    [Fact]
+    public void TestFindAllFailsWhenFirstParameterIsNotAVariable()
+    {
+        var answers = GetAnswers("find_all(85, grade(alice, math, Score), [85, 90])?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsFalse();
+    }
+
     [Fact]
     public void TestBagOf()
     {
@@ -126,5 +185,63 @@ grade(bob, science, 10).
         Check.That(answers).CountIs(1);
         Check.That(answers[0].IsOk).IsTrue();
         Check.That(answers[0].GetBinding("Student").ToString()).IsEqualTo("alice");
+    }
+
+    // covers the template resolution of bag_of/3 : template is a Term,
+    // evaluated against each result environment (pair(Subject, Score))
+    [Fact]
+    public void TestBagOfWithTermTemplate()
+    {
+        var answers = GetAnswers("bag_of(pair(Subject, Score), grade(Student, Subject, Score), L)?");
+        Check.That(answers).CountIs(2);
+
+        var alice = answers.FirstOrDefault(a => a.GetBinding("Student")?.ToString() == "alice");
+        Check.That(alice).IsNotNull();
+        Check.That(alice.IsOk).IsTrue();
+        Check.That(alice).Contains("L");
+        var alicePairs = (alice.GetBinding("L") as Term).ToValuableList();
+        Check.That(alicePairs.Count).IsEqualTo(2);
+        Check.That(alicePairs.Extracting(x => x.ToString()))
+            .IsEquivalentTo("pair(math, 85)", "pair(science, 90)");
+
+        var bob = answers.FirstOrDefault(a => a.GetBinding("Student")?.ToString() == "bob");
+        Check.That(bob).IsNotNull();
+        Check.That(bob.IsOk).IsTrue();
+        var bobPairs = (bob.GetBinding("L") as Term).ToValuableList();
+        Check.That(bobPairs.Count).IsEqualTo(4);
+        Check.That(bobPairs.Extracting(x => x.ToString()))
+            .IsEquivalentTo("pair(math, 75)", "pair(science, 80)", "pair(science, 10)", "pair(science, 10)");
+    }
+
+    // covers the template resolution of bag_of/3 : template is a Scalar,
+    // reused as-is for every matching result (bag is grouped per Score)
+    [Fact]
+    public void TestBagOfWithScalarTemplate()
+    {
+        var answers = GetAnswers("bag_of(85, grade(alice, _, Score), L)?");
+        Check.That(answers).CountIs(2);
+        foreach (var answer in answers)
+        {
+            Check.That(answer.IsOk).IsTrue();
+            Check.That(answer).Contains("L");
+            var values = (answer.GetBinding("L") as Term).ToValuableList();
+            Check.That(values.Count).IsEqualTo(1);
+            Check.That(values[0].ToString()).IsEqualTo("85");
+        }
+    }
+
+    // covers the template resolution of bag_of/3 : template is a Variable
+    // that the query never binds -> the raw variable is collected
+    [Fact]
+    public void TestBagOfWithNeverBoundVariableTemplate()
+    {
+        var answers = GetAnswers("bag_of(Z, grade(alice, math, 85), L)?");
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        Check.That(answers[0]).Contains("L");
+        var values = (answers[0].GetBinding("L") as Term).ToValuableList();
+        Check.That(values.Count).IsEqualTo(1);
+        Check.That(values[0]).IsInstanceOf<Variable>();
+        Check.That((values[0] as Variable).Name).IsEqualTo("Z");
     }
 }
