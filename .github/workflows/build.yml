@@ -49,10 +49,12 @@ jobs:
       with:
         files: |
           **/*.trx
+    - name: Setup LCOV
+      uses: hrishikesh-kadam/setup-lcov@v1
     - name: Publish code coverage
       uses: zgosalvez/github-actions-report-lcov@v4
       with:
-        coverage-files: ${{steps.coverlet.outputs.coverageFile}} 
+        coverage-files: ${{ steps.coverlet.outputs.coverageFile }}
         minimum-coverage: 0
         artifact-name: code-coverage-report
         github-token: ${{ secrets.GITHUB_TOKEN }}
