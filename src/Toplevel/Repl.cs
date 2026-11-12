@@ -20,8 +20,6 @@ public class PrologRepl
     [Argument('v', "verbose", "verbosity")]
     private static string LogFile { get; set; }
 
-    [Operands] private static string[] Programs { get; set; }
-
     delegate void ReplAction(Interpreter interpreter, Question question);
 
     private static Dictionary<string, ReplAction> ReplActions = new Dictionary<string, ReplAction>()
@@ -132,10 +130,12 @@ public class PrologRepl
     {
         Arguments.Populate();
         var parser = BuildParser();
+        Console.WriteLine($"startiing prolog with {(args != null && args.Length > 0 ? string.Join(" ",args):" no arg")}");
 
         LogSharpProgram program = null;
         if (args.Length > 0)
         {
+            Console.WriteLine($"loading file {args[0]}");
             var source = File.ReadAllText(args[0]);
             var ast = parser.Parse(source);
             if (ast.IsOk)
@@ -153,7 +153,10 @@ public class PrologRepl
             }
         }
         
-        Interpreter interpreter = new Interpreter(false, null, parser, new NestedTermUnifier());
+        // The first argument is the main program (already parsed above); it is
+        // handed to the interpreter so it is actually loaded. Any additional
+        // arguments are extra program files loaded on top of it.
+        Interpreter interpreter = new Interpreter(false, program, parser, new NestedTermUnifier());
 
 
         if (!string.IsNullOrEmpty(LogFile))
@@ -162,65 +165,112 @@ public class PrologRepl
             interpreter.Verbose = true;
         }
 
-        if (Programs != null && Programs.Length > 0)
+        for (int i = 1; i < args.Length; i++)
         {
-            for (int i = 1; i < Programs.Length; i++)
+            if (!args[i].EndsWith(".dll"))
             {
-                if (!Programs[i].EndsWith(".dll"))
-                {
-                    interpreter.LoadProgramFile(Programs[i]);
-                }
+                interpreter.LoadProgramFile(args[i]);
             }
-
         }
+
+        // When stdin is a pipe or a file redirection, the REPL runs in
+        // non-interactive mode: every solution is printed without asking the user
+        // for confirmation. This allows piping a question into the CLI, e.g.
+        //   echo "t(X)?" | Toplevel program.pl
+        bool interactive = !Console.IsInputRedirected;
 
         while (true)
         {
-            ReadLine.HistoryEnabled = true;
-            string input = ReadLine.Read("?. ");
-            if (input == "quit" || input == "exit")
+            string input;
+            if (interactive)
             {
-                return;
+                ReadLine.HistoryEnabled = true;
+                input = ReadLine.Read("?. ");
             }
             else
             {
-                if (!string.IsNullOrEmpty(input))
+                // Console.ReadLine (and not ReadLine.Read, which requires a real
+                // console) so piped input can be consumed.
+                input = Console.In.ReadLine();
+            }
+
+            // End of stream (EOF) or explicit quit.
+            if (input == null || input == "quit" || input == "exit")
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(input))
+            {
+                ProcessInput(interpreter, parser, input, interactive);
+            }
+        }
+    }
+
+
+    private static void ProcessInput(Interpreter interpreter, Parser<LogSharpToken, LogSharpAST> parser,
+        string input, bool interactive)
+    {
+        var query = parser.Parse(input, "rule");
+        if (!query.IsOk)
+        {
+            Console.Error.WriteLine("bad query.");
+            foreach (var error in query.Errors)
+            {
+                Console.Error.WriteLine(error.ErrorMessage);
+            }
+            return;
+        }
+
+        if (query.Result is Question ask)
+        {
+            if (ReplActions.ContainsKey(ask.Name))
+            {
+                ReplActions[ask.Name](interpreter, ask);
+                return;
+            }
+
+            if (interactive)
+            {
+                // The solutions are enumerated lazily: the engine is suspended
+                // between two solutions and only computes the next one when the user
+                // explicitly asks for it. A query with many (or infinite) solutions
+                // is therefore not fully evaluated up front.
+                using (var answers = interpreter.SearchLazy(ask).GetEnumerator())
                 {
-                    var query = parser.Parse(input, "rule");
-                    if (query.IsOk)
+                    while (answers.MoveNext())
                     {
-                        if (query.Result is Question ask)
-                        {
-                            if (ReplActions.ContainsKey(ask.Name))
-                            {
-                                ReplActions[ask.Name](interpreter, ask);
+                        var answer = answers.Current;
+                        Console.WriteLine(answer);
 
-                            }
-                            else
+                        // Ask whether to look for another solution after each one.
+                        // Failed results ("don't know.") are not followed by a
+                        // question since there is nothing more.
+                        if (answer != null && answer.IsOk)
+                        {
+                            string more = ReadLine.Read("encore / stop ? ");
+                            if (more == null ||
+                                more.Trim().ToLowerInvariant() == "stop")
                             {
-                                var answers = interpreter.Search(ask);
-
-                                foreach (var answer in answers)
-                                {
-                                    Console.WriteLine(answer);
-                                }
+                                break;
                             }
-                        }
-                        else if (query.Result is Rule rule)
-                        {
-                            interpreter.Append(rule);
-                        }
-                    }
-                    else
-                    {
-                        Console.Error.WriteLine("bad query.");
-                        foreach (var error in query.Errors)
-                        {
-                            Console.Error.WriteLine(error.ErrorMessage);
                         }
                     }
                 }
             }
+            else
+            {
+                // Non-interactive (piped) mode: display every solution without
+                // waiting for any validation.
+                foreach (var answer in interpreter.SearchLazy(ask))
+                {
+                    Console.WriteLine(answer);
+                }
+            }
+        }
+        else if (query.Result is Rule rule)
+        {
+            interpreter.Append(rule);
         }
     }
 

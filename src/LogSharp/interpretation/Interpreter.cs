@@ -139,7 +139,24 @@ namespace logSharp.interpretation
             }
         }
 
+        /// <summary>
+        /// Eagerly computes and returns every solution of <paramref name="question"/>.
+        /// Kept for backward compatibility; builtins and tests that need the whole set
+        /// of solutions use this. Interactive callers should prefer
+        /// <see cref="SearchLazy"/> so the search is not fully evaluated up front.
+        /// </summary>
         public IList<Unification> Search(Question question, Unification unification = null)
+        {
+            return SearchLazy(question, unification).ToList();
+        }
+
+        /// <summary>
+        /// Enumerates the solutions of <paramref name="question"/> lazily: the search
+        /// is suspended between two solutions, so the next one is only computed when
+        /// the caller asks for it (via MoveNext). Callers that need every solution can
+        /// simply materialize the sequence with ToList().
+        /// </summary>
+        public IEnumerable<Unification> SearchLazy(Question question, Unification unification = null)
         {
             Trace("*****************************************");
             Trace("***");
@@ -160,7 +177,6 @@ namespace logSharp.interpretation
             Trace($"stck : {rootGoal.ToString()}");
             stack.Push(rootGoal);
 
-            List<Unification> results = new List<Unification>();
             while (stack.Any())
             {
                 var stackAsList = stack.ToList();
@@ -182,7 +198,7 @@ namespace logSharp.interpretation
                         if (current.Unification.IsOk)
                         {
                             resultFound = true;
-                            results.Add(current.Unification);
+                            yield return current.Unification;
                         }
 
                         continue;
@@ -278,7 +294,7 @@ namespace logSharp.interpretation
                         resultFound = true;
                         foreach (var builtInUnification in builtInUnifications)
                         {
-                            results.Add(builtInUnification);
+                            yield return builtInUnification;
                         }
                     }
                 }
@@ -311,12 +327,9 @@ namespace logSharp.interpretation
             }
 
             if (!resultFound)
-
             {
-                results.Add(Unification.Failed());
+                yield return Unification.Failed();
             }
-
-            return results;
         }
 
         public Unification UnifyTerms(Term source, Unification sourceEnv, Term destination,
