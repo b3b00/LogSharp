@@ -2,6 +2,7 @@ using System;
 using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
+using logSharp.builtins;
 using logSharp.builtins.expressions;
 using logSharp.model;
 using sly.lexer;
@@ -93,14 +94,9 @@ namespace logSharp.parser
             return model.Term.EmptyListTerm();
         }
 
-        [Production("list :  LeftBrack[d] scalarorTerm Pipe[d] scalarorTerm  RightBrack[d]")]
-        public LogSharpAST ListTermConstructor(LogSharpAST head, LogSharpAST tail)
-        {
-            return model.Term.ListTerm(head as Valuable, tail as Valuable);
-        }
-
-        [Production("list :  LeftBrack[d] listElement (Comma[d] listElement)*  RightBrack[d]")]
-        public LogSharpAST ListTermLiteral(LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams)
+        [Production("list :  LeftBrack[d] listElement (Comma[d] listElement)* (Pipe[d] scalarorTerm)?  RightBrack[d]")]
+        public LogSharpAST ListTermLiteral(LogSharpAST headParam, List<Group<LogSharpToken, LogSharpAST>> tailParams,
+            ValueOption<Group<LogSharpToken, LogSharpAST>> pipeTail)
         {
             List<Valuable> parameters = new List<Valuable>();
             parameters.Add(headParam as Valuable);
@@ -110,8 +106,24 @@ namespace logSharp.parser
                 parameters.Add(param);
             }
 
+            Valuable result;
+            Valuable tailValue = pipeTail.Match(
+                group => (Valuable)group.Value(0),
+                () => null);
+            if (tailValue != null)
+            {
+                // build [X1, ..., Xn | Tail] as X1 | [X2 | ... | [Xn | Tail]]
+                result = tailValue;
+                for (int i = parameters.Count - 1; i >= 0; i--)
+                {
+                    result = model.Term.ListTerm(parameters[i], result);
+                }
+            }            else
+            {
+                result = model.Term.ListTerm(parameters);
+            }
 
-            return model.Term.ListTerm(parameters);
+            return result;
         }
 
         #endregion
@@ -119,6 +131,24 @@ namespace logSharp.parser
 
         #region terms
 
+        [Production("term : Variable Ins[d] LogSharpParser_expressions DotDotDot[d] LogSharpParser_expressions")]
+        public LogSharpAST Ins(Token<LogSharpToken> variableToken, LogSharpAST lowerBound,
+            LogSharpAST upperBound)
+        {
+            // syntactic sugar for ins_range(Vs, LowerBound, UpperBound) : the bounds
+            // may be integer literals, variables or arithmetic expressions
+            if (lowerBound is Valuable lowerValue && upperBound is Valuable upperValue)
+            {
+                return new Term(ClpfdBuiltins.InsBuiltinName, new List<Valuable>()
+                {
+                    new Variable(variableToken.Value),
+                    lowerValue,
+                    upperValue,
+                });
+            }
+
+            return null;
+        }
         
         [Production("term : Variable Is[d]  LogSharpParser_expressions")]
         public LogSharpAST Is(Token<LogSharpToken> variableToken,/*Token<LogSharpToken> isToken,*/ LogSharpAST expression)

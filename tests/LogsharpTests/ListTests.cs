@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Xunit;
 
-namespace ogsharpTests
+namespace LogsharpTests
 {
     public class ListTests : BaseTest
     {

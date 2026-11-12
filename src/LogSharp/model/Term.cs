@@ -66,23 +66,13 @@ namespace logSharp.model
         {
             Term list = new Term();
             list.Name = Term.ListConstructor;
-            
-            Valuable emptyTail = EmptyListTerm();
-            Valuable currentTail = emptyTail;
-            
-            
+
+            // build the list as nested pairs : [X1, ..., Xn] is
+            // X1 | (X2 | ... (Xn | [])) so that unification sees a proper list
+            Valuable currentTail = EmptyListTerm();
             for (int i = parameters.Count - 1; i >= 0; i--)
             {
-                var currentParameter = parameters[i];
-                if (currentTail == emptyTail && currentParameter.IsVariable)
-                {
-                    currentTail = currentParameter;
-                }
-                else
-                {
-                    Term term = new Term(Term.ListConstructor, new List<Valuable>() {currentParameter, currentTail});
-                    currentTail = term;
-                }
+                currentTail = ListTerm(parameters[i], currentTail);
             }
 
             list.Parameters = (currentTail as Term)?.Parameters;

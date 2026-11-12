@@ -6,7 +6,7 @@ using logSharp.model;
 using NFluent;
 using Xunit;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class AllSolutionsPredicateTests : BaseTest
 {

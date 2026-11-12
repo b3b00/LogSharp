@@ -2,7 +2,7 @@ using NFluent;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class CutTests : BaseTest
 {

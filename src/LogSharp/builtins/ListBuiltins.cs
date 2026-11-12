@@ -514,5 +514,120 @@ namespace logSharp.builtins
         {
             return $"__{variableName}_length_{index}";
         }
+
+        // same_length/2 : same_length(List1, List2) succeeds when both lists have
+        // the same length. Works in every direction :
+        //   - check two already bound lists
+        //   - generate a fresh-variable list of the right length for the free side
+        [BuiltIn("same_length/2")]
+        public static List<Unification> SameLength(Interpreter interpreter, Goal goal,
+            List<Valuable> parameters)
+        {
+            Valuable first = ResolveParameter(parameters[0], goal.Unification);
+            Valuable second = ResolveParameter(parameters[1], goal.Unification);
+
+            // way 1 : both lists are bound -> compare their lengths
+            if (first is Term firstList && firstList.IsList
+                && second is Term secondList && secondList.IsList)
+            {
+                if (firstList.ToValuableList().Count == secondList.ToValuableList().Count)
+                {
+                    return BuildList(Unification.Success());
+                }
+
+                return BuildList(Unification.Failed());
+            }
+
+            // way 2 : one list is bound, the other is a free variable
+            // -> generate a list of fresh variables of the right length
+            if (first is Term boundList && boundList.IsList && second is Variable freeSecond)
+            {
+                return BuildList(GenerateSameLength(freeSecond, boundList.ToValuableList().Count));
+            }
+
+            if (second is Term boundSecond && boundSecond.IsList && first is Variable freeFirst)
+            {
+                return BuildList(GenerateSameLength(freeFirst, boundSecond.ToValuableList().Count));
+            }
+
+            return BuildList(Unification.Failed());
+        }
+
+        // binds the variable to a fresh-variable list of the requested length
+        private static Unification GenerateSameLength(Variable variable, int length)
+        {
+            if (variable.IsDiscardableVariable)
+            {
+                return Unification.Success();
+            }
+
+            Term generated = Term.EmptyListTerm();
+            for (int i = length; i >= 1; i--)
+            {
+                generated = Term.ListTerm(new Variable($"__{variable.Name}_same_length_{i}"),
+                    generated);
+            }
+
+            var unification = new Unification();
+            unification.SetBinding(variable.Name, generated);
+            return unification;
+        }
+
+        // append/2 : append(ListOfLists, FlatList) flattens a list of lists by
+        // exactly one level. The first argument must be bound ; the second one is
+        // bound to the flattened list (or checked when already bound).
+        [BuiltIn("append/2")]
+        public static List<Unification> Append2(Interpreter interpreter, Goal goal,
+            List<Valuable> parameters)
+        {
+            Valuable first = ResolveParameter(parameters[0], goal.Unification);
+            Valuable second = ResolveParameter(parameters[1], goal.Unification);
+
+            if (first is Term listOfLists && listOfLists.IsList)
+            {
+                var flat = new List<Valuable>();
+                foreach (var item in listOfLists.ToValuableList())
+                {
+                    var current = item;
+                    while (current is Variable variable && goal.Unification != null
+                           && goal.Unification.HasBinding(variable.Name))
+                    {
+                        current = goal.Unification.GetBinding(variable.Name);
+                    }
+
+                    if (current is Term sublist && sublist.IsList)
+                    {
+                        flat.AddRange(sublist.ToValuableList());
+                    }
+                    else
+                    {
+                        flat.Add(current);
+                    }
+                }
+
+                Term flatList = Term.ListTerm(flat);
+
+                if (second is Variable outVariable)
+                {
+                    if (outVariable.IsDiscardableVariable)
+                    {
+                        return BuildList(Unification.Success());
+                    }
+
+                    var unificationOut = new Unification();
+                    unificationOut.SetBinding(outVariable.Name, flatList);
+                    return BuildList(unificationOut);
+                }
+
+                if (second is Term expected && expected.IsList)
+                {
+                    var unified = interpreter.UnifyTerms(flatList, goal.Unification, expected,
+                        new Unification());
+                    return BuildList(unified);
+                }
+            }
+
+            return BuildList(Unification.Failed());
+        }
     }
 }

@@ -60,6 +60,11 @@ namespace logSharp.parser
 
         [Lexeme(GenericToken.KeyWord,"is")]
         Is = 20,
+        
+        [Lexeme(GenericToken.KeyWord,"ins")]
+        Ins = 21,
+        
+        [Sugar("...")] DotDotDot = 22,
 
         #region expression 50 -> 100
         

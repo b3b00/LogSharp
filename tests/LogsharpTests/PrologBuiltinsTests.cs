@@ -4,7 +4,7 @@ using logSharp.model;
 using NFluent;
 using Xunit;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class PrologBuiltinsTests : BaseTest
 {
@@ -296,7 +296,9 @@ length_one_shot(X) :- length([a,b,c],N) single(X).
     public void TrickierSortTwoWaysBindingWithDiscardBindingsTest()
     {
         // two ways binding : sorted result is bound, list is free
-        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, T])?");
+        // the pattern [_ , X | T] discards the head, binds X to the second
+        // element and T to the remaining tail
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X | T])?");
         Check.That(answers).CountIs(1);
         var answer = answers[0];
         Check.That(answer.IsOk).IsTrue();
@@ -308,7 +310,7 @@ length_one_shot(X) :- length([a,b,c],N) single(X).
     public void TrickierSortTwoWaysBindingWithDiscardBindingsTest2()
     {
         // two ways binding : sorted result is bound, list is free
-        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, Y, T])?");
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, Y | T])?");
         Check.That(answers).CountIs(1);
         var answer = answers[0];
         Check.That(answer.IsOk).IsTrue();
@@ -321,7 +323,7 @@ length_one_shot(X) :- length([a,b,c],N) single(X).
     public void TrickierSortTwoWaysBindingWithDiscardBindingsTest3()
     {
         // two ways binding : sorted result is bound, list is free
-        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, _, Y, T])?");
+        var answers = GetAnswers("sort([a,b,c,d,e,f],[_, X, _, Y | T])?");
         Check.That(answers).CountIs(1);
         var answer = answers[0];
         Check.That(answer.IsOk).IsTrue();

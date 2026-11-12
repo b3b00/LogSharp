@@ -3,7 +3,7 @@ using logSharp.interpretation.unification;
 using NFluent;
 using Xunit;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class MathTests: BaseTest
 {
