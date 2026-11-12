@@ -1,0 +1,111 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TESTS_PROJECT: tests/LogsharpTests/LogsharpTests.csproj
+      PUBLISH_NUGET: 'false'
+      RUN_TESTS: 'true'
+      MAIN_CSPROJ: src/LogSharp/LogSharp.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Clean artifacts and NuGet caches
+        run: dotnet clean --configuration Release && dotnet nuget locals all --clear
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      - name: Test with coverage
+        id: coverlet
+        if: env.RUN_TESTS == 'true'
+        uses: b3b00/coverlet-action@d4de331462c1706fd9f07b4b2a565f256fd95a23
+        with:
+          testProject: ${{ env.TESTS_PROJECT }}
+          output: lcov.net10.0.info
+          threshold: 70
+          outputFormat: lcov
+          excludes: '[LogSharpTester]*,[LogsharpTests]*'
+
+      - name: Publish test results
+        if: always() && env.RUN_TESTS == 'true'
+        uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
+        with:
+          files: |
+            **/*.trx
+
+      - name: Generate coverage report
+        if: env.RUN_TESTS == 'true'
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.5.12
+        with:
+          reports: ${{ steps.coverlet.outputs.coverageFile }}
+          targetdir: coveragereport
+          reporttypes: Html;MarkdownSummaryGithub
+
+      - name: Add coverage summary
+        if: env.RUN_TESTS == 'true'
+        shell: bash
+        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      # Only the dev branch is allowed to replace the published Pages report.
+      - name: Configure GitHub Pages
+        if: env.RUN_TESTS == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        uses: actions/configure-pages@v5
+
+      - name: Upload coverage report for GitHub Pages
+        if: env.RUN_TESTS == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: coveragereport
+
+      # - name: Publish NuGet
+      #   if: success() && env.PUBLISH_NUGET == 'true'
+      #   id: publish_nuget
+      #   uses: alirezanet/publish-nuget@v3.0.0
+      #   with:
+      #     VERSION_REGEX: <version>(.*)</version>
+      #     PROJECT_FILE_PATH: ${{ env.MAIN_CSPROJ }}
+      #     NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      #     VERSION_FILE_PATH: ${{ env.MAIN_CSPROJ }}
+      #     INCLUDE_SYMBOLS: true
+
+  deploy-coverage:
+    name: Deploy coverage report to GitHub Pages
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy coverage report
+        id: deployment
+        uses: actions/deploy-pages@v4
