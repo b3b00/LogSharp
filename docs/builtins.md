@@ -428,35 +428,14 @@ Calls the DCG rule `GrammarRule` against the token list `Input`:
 ## Prolog prelude (written in LogSharp itself)
 
 `src/LogSharp/prelude/prelude.pro` is parsed and appended to every interpreter
-at construction (`PreludeLoader`). It provides:
+at construction (`PreludeLoader`). It provides pure-Prolog utilities such as
+`my_maplist/2`, `my_maplist/3`, `distinct_elements_fast/1`, `len/2`, `append/3`,
+`prefix/2`, `suffix/2`, `sublist/2`, `last/2`, `nth0/3`, `nth1/3`, `reverse/2`,
+`sum_list/2`, `max_list/2`, `min_list/2`, `memberchk/2`, `between/3`,
+`range/3`, `select/3`, `permutation/2`, `include/3` and `exclude/3`.
 
-### `my_maplist/2` and `my_maplist/3`
-
-```
-my_maplist(Goal, List)
-my_maplist(Goal, List1, List2)
-```
-
-Pure-Prolog versions of maplist, using `call/2` (resp. `call/3`) and
-recursion. Prefer the `maplist/2` built-in for constraint programs (it merges
-the bindings of each element call).
-
-### `distinct_elements_fast/1`
-
-```
-distinct_elements_fast(List)
-```
-
-Succeeds when `List` contains no duplicates, by comparing the length of
-`sort(List, Sorted)` with `length(List, Len)`.
-
-### `len/2`
-
-```
-len(X, Y)
-```
-
-Alias for `length/2`.
+Their full documentation (semantics, binding modes and examples) lives in
+[prelude.md](prelude.md).
 
 ## Extending the built-in set
 
