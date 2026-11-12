@@ -1,7 +1,7 @@
 using NFluent;
 using Xunit;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class PreludeTests : BaseTest
 {

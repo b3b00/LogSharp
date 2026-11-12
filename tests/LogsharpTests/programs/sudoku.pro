@@ -3,17 +3,17 @@
 % adapted to this interpreter grammar :
 %   - goals in a rule body are separated by spaces, not commas
 %   - no directives : the ":- use_module(library(clpfd))." line was dropped
-%   - no infix operators : "Vs ins 1..9" is written ins(Vs, 1, 9)
+%   - the clpfd range declaration "Vs ins 1..9" is written "Vs ins 1...9"
 %   - "Rows = [R1,...,R9]" cannot use the expression parser (no list
 %     operands), so as_grid/10 names the rows instead.
 %
-% clpfd-like builtins : length/2, maplist/2, append/2, same_length/2, ins/3,
-% all_distinct/1, transpose/2, label/1
+% clpfd-like builtins : length/2, maplist/2, append/2, same_length/2,
+% all_distinct/1, transpose/2, label/1 and the "ins" spread operator
 sudoku(Rows) :-
     length(Rows, 9)
     maplist(same_length(Rows), Rows)
     append(Rows, Vs)
-    ins(Vs, 1, 9)
+    Vs ins 1...9
 
     % Rows must all be distinct
     maplist(all_distinct, Rows)

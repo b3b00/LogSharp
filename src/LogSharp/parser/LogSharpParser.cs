@@ -2,6 +2,7 @@ using System;
 using sly.parser.generator;
 using System.Collections.Generic;
 using System.Linq;
+using logSharp.builtins;
 using logSharp.builtins.expressions;
 using logSharp.model;
 using sly.lexer;
@@ -130,6 +131,24 @@ namespace logSharp.parser
 
         #region terms
 
+        [Production("term : Variable Ins[d] LogSharpParser_expressions DotDotDot[d] LogSharpParser_expressions")]
+        public LogSharpAST Ins(Token<LogSharpToken> variableToken, LogSharpAST lowerBound,
+            LogSharpAST upperBound)
+        {
+            // syntactic sugar for ins_range(Vs, LowerBound, UpperBound) : the bounds
+            // may be integer literals, variables or arithmetic expressions
+            if (lowerBound is Valuable lowerValue && upperBound is Valuable upperValue)
+            {
+                return new Term(ClpfdBuiltins.InsBuiltinName, new List<Valuable>()
+                {
+                    new Variable(variableToken.Value),
+                    lowerValue,
+                    upperValue,
+                });
+            }
+
+            return null;
+        }
         
         [Production("term : Variable Is[d]  LogSharpParser_expressions")]
         public LogSharpAST Is(Token<LogSharpToken> variableToken,/*Token<LogSharpToken> isToken,*/ LogSharpAST expression)

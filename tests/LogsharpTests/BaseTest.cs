@@ -10,7 +10,7 @@ using sly.parser;
 using sly.parser.generator;
 using Xunit;
 
-namespace ogsharpTests
+namespace LogsharpTests
 {
     public class BaseTest
     {

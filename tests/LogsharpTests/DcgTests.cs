@@ -8,7 +8,7 @@ using sly.lexer;
 using sly.parser.generator;
 using Xunit;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public class DcgTests
 {

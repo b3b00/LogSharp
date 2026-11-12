@@ -9,7 +9,7 @@ using logSharp.model;
 namespace logSharp.builtins
 {
     // minimal finite-domain constraint store shared by the clpfd-like builtins
-    // (all_distinct/1, ins/3, label/1). Constraints are recorded when a goal is
+    // (all_distinct/1, ins_range/3, label/1). Constraints are recorded when a goal is
     // called with still-unbound variables, and checked by label/1 while it
     // enumerates the assignments.
     public class ClpfdConstraints
@@ -32,11 +32,15 @@ namespace logSharp.builtins
     [BuiltIns]
     public class ClpfdBuiltins
     {
-        // default domain used by label/1 for variables without an ins/3 declaration
+        // default domain used by label/1 for variables without an ins_range/3 declaration
         private const int DefaultDomainMin = 1;
 
         private const int DefaultDomainMax = 9;
 
+        // internal name of the range-constraint built-in; the infix sugar
+        // "Vars ins Min...Max" is translated by the parser into a Term with
+        // exactly this name
+        public const string InsBuiltinName = "ins_range";
         // all_distinct/1 : every element of the list must be pairwise different.
         // Bound elements are checked immediately ; free variables are recorded as a
         // distinct-group constraint enforced later by label/1.
@@ -93,20 +97,23 @@ namespace logSharp.builtins
             return ListHelper.BuildList(Unification.Success());
         }
 
-        // ins/3 : ins(Variables, Min, Max) constrains every variable of the list to
-        // the inclusive integer range [Min, Max]. Already bound elements must lie
-        // within the range.
-        [BuiltIn("ins/3")]
+        // ins_range/3 : ins_range(Variables, Min, Max) constrains every variable of
+        // the list to the inclusive integer range [Min, Max]. Already bound elements
+        // must lie within the range.
+        // Written in programs as the infix sugar "Vars ins Min...Max".
+        // The bounds may be integer literals, variables bound to an integral value
+        // or arithmetic expressions evaluating to an integral value.
+        [BuiltIn($"{InsBuiltinName}/3")]
         public static List<Unification> Ins(Interpreter interpreter, Goal goal,
             List<Valuable> parameters)
         {
             Valuable list = ListBuiltins.ResolveParameter(parameters[0], goal.Unification);
-            Valuable minVal = ListBuiltins.ResolveParameter(parameters[1], goal.Unification);
-            Valuable maxVal = ListBuiltins.ResolveParameter(parameters[2], goal.Unification);
+            int? min = ResolveBound(parameters[1], goal.Unification);
+            int? max = ResolveBound(parameters[2], goal.Unification);
 
             if (!(list is Term listTerm && listTerm.IsList)
-                || !(minVal is Int min)
-                || !(maxVal is Int max)
+                || min == null
+                || max == null
                 || min.Value > max.Value)
             {
                 return ListHelper.BuildList(Unification.Failed());
@@ -138,6 +145,39 @@ namespace logSharp.builtins
             }
 
             return ListHelper.BuildList(Unification.Success());
+        }
+
+        // resolves a range bound : the bound is an IExpression (integer literal,
+        // variable or arithmetic expression) evaluated against the current
+        // unification, and must produce an integral value (2.5 is rejected, 3.0
+        // is accepted as 3). Returns null when the bound cannot be resolved.
+        private static int? ResolveBound(Valuable bound, Unification unification)
+        {
+            var resolved = ListBuiltins.ResolveParameter(bound, unification);
+            object result = resolved;
+            if (resolved is IExpression expression && !(resolved is Int))
+            {
+                try
+                {
+                    result = expression.Evaluate(unification);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            switch (result)
+            {
+                case Int intValue:
+                    return intValue.Value;
+                case int intValue:
+                    return intValue;
+                case double doubleValue when doubleValue == Math.Floor(doubleValue):
+                    return (int) doubleValue;
+                default:
+                    return null;
+            }
         }
 
         // label/1 : assigns a value from the variable domain to every free variable

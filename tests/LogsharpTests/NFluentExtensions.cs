@@ -4,7 +4,7 @@ using logSharp.interpretation.unification;
 using NFluent;
 using NFluent.Extensibility;
 
-namespace ogsharpTests;
+namespace LogsharpTests;
 
 public static class NFluentExtensions
 {
