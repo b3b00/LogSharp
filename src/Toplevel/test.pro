@@ -71,3 +71,43 @@ blocks([], [], []).
 blocks([A,B,C|Bs1], [D,E,F|Bs2], [G,H,I|Bs3]) :-
     all_distinct([A,B,C,D,E,F,G,H,I])
     blocks(Bs1, Bs2, Bs3).
+
+% ---------------------------------------------------------------------------
+% Generative version of the statement grammar.
+%
+% statement//1 is a recognizer: its { number(N) } / { atom(V) } guards test
+% values taken from the input list. The rules below instead enumerate values
+% from finite domains, so they can be run "backwards" to generate inputs.
+% ---------------------------------------------------------------------------
+
+% finite token domains
+num(0).
+num(1).
+num(2).
+ident(x).
+ident(y).
+ident(z).
+
+g_term(ast_num(N)) --> [N], { num(N) }.
+g_term(ast_var(V)) --> [V], { ident(V) }.
+
+g_expr(ast_add(Left, Right)) -->
+    g_term(Left), ['+'], g_expr(Right).
+g_expr(AST) -->
+    g_term(AST).
+
+g_statement(ast_assign(Var, ExprAST)) -->
+    [Var], ['='], g_expr(ExprAST), { ident(Var) }.
+
+% generate statements whose token list has exactly N elements
+gen_statement(N, AST, Tokens) :-
+    length(Tokens, N)
+    phrase(g_statement(AST), Tokens).
+
+% generate inputs of several sizes in one enumeration
+length_to(3).
+length_to(5).
+
+gen_any(AST, Tokens) :-
+    length_to(N)
+    gen_statement(N, AST, Tokens).
