@@ -1,0 +1,43 @@
+		{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "test:run",
+            "dependsOn": [],
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/tests/LogSharpTests.csproj",
+                "/p:CollectCoverage=true",
+                "/p:CoverletOutputFormat=lcov",
+                "/p:CoverletOutput=./lcov.info"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test:report",
+            "command": "reportgenerator.exe",
+            "type": "process",
+            "args": [
+                "-reports:lcov.info",
+                "-targetdir:coverage-report",
+                "-reporttypes:Html"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "dependsOn": [
+                "test:run",
+                "test:report"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}
+	

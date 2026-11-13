@@ -24,7 +24,7 @@ build/
 [Bb]in/
 [Oo]bj/
 packages/
-.vscode/
+#.vscode/
 .vs/
 tools/
 .idea/
