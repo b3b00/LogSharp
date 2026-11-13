@@ -144,3 +144,11 @@ exclude(Goal, [Head | Tail], Excluded) :-
 exclude(Goal, [Head | Tail], [Head | Excluded]) :-
     not(call(Goal, Head))
     exclude(Goal, Tail, Excluded).
+
+% foldl/4 : foldl(Goal, List, AccIn, AccOut) reduces List left to right,
+% calling call(Goal, Element, Acc, NextAcc) on each element. With an empty
+% list the accumulator is returned unchanged.
+foldl(_, [], AccIn, AccIn).
+foldl(Goal, [Head | Tail], AccIn, AccOut) :-
+    call(Goal, Head, AccIn, AccNext)
+    foldl(Goal, Tail, AccNext, AccOut).

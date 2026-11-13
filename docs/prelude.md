@@ -16,6 +16,7 @@ For the built-in predicates implemented in C#, see [builtins.md](builtins.md).
 - [List access and aggregation](#list-access-and-aggregation)
 - [Membership and enumeration](#membership-and-enumeration)
 - [Filtering](#filtering)
+- [Folding](#folding)
 
 ## Grammar reminders
 
@@ -244,6 +245,30 @@ exclude(Goal, List, Excluded)
 
 `Excluded` drops the elements of `List` for which `Goal` succeeds (keeps the
 others). Example: `exclude(big,[5,11,12,3],E)` gives `E = [5,3]`.
+
+## Folding
+
+### `foldl/4`
+
+```
+foldl(Goal, List, AccIn, AccOut)
+```
+
+Reduces `List` left to right with an accumulator: for each element `Element`,
+`Goal/3` is invoked through `call(Goal, Element, Acc, NextAcc)` and the final
+accumulator is unified with `AccOut`. With an empty list, `AccOut` is `AccIn`
+unchanged (`foldl(_, [], Acc, Acc)`).
+
+Like `include/3` and `exclude/3`, `Goal` must be a predicate name (an atom),
+and the goal should succeed exactly once per element: a failing goal makes the
+whole fold fail, while several successes would enumerate alternative folds.
+
+Examples (with `add(X, Y, Z) :- Z is X + Y.`):
+
+```
+foldl(add,[1,2,3],0,S)   % -> S = 6
+foldl(add,[],5,S)        % -> S = 5
+```
 
 ## Adding a prelude predicate
 

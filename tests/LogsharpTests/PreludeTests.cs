@@ -11,9 +11,11 @@ namespace LogsharpTests;
 // (src/LogSharp/prelude/prelude.pro), which is loaded by every Interpreter
 public class PreludeTests : BaseTest
 {
-    // helper rule used by the include/3 and exclude/3 tests
+    // helper rules used by the include/3, exclude/3 and foldl/4 tests
     public const string PrologProgram = @"
 big(X) :- number(X) X > 10.
+add(X, Y, Z) :- Z is X + Y.
+cons(X, Acc, [X | Acc]).
 ";
 
     public PreludeTests() : base(PrologProgram)
@@ -413,5 +415,45 @@ big(X) :- number(X) X > 10.
         var answers = Ok(GetAnswers("exclude(big,[5,11,12,3],E)?"));
         Check.That(answers).CountIs(1);
         Check.That(Elements(answers[0], "E")).IsEquivalentTo("5", "3");
+    }
+
+    // -----------------------------------------------------------------------
+    // foldl/4
+    // -----------------------------------------------------------------------
+
+    [Fact]
+    public void FoldlReducesAListFromLeftToRight()
+    {
+        var answers = Ok(GetAnswers("foldl(add,[1,2,3],0,S)?"));
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].GetBinding("S").ToString()).IsEqualTo("6");
+    }
+
+    [Fact]
+    public void FoldlOnAnEmptyListReturnsTheAccumulator()
+    {
+        var answers = Ok(GetAnswers("foldl(add,[],5,S)?"));
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].GetBinding("S").ToString()).IsEqualTo("5");
+    }
+
+    [Fact]
+    public void FoldlChecksAGivenResult()
+    {
+        var answers = Ok(GetAnswers("foldl(add,[1,2],0,3)?"));
+        Check.That(answers).CountIs(1);
+
+        answers = Ok(GetAnswers("foldl(add,[1,2],0,4)?"));
+        Check.That(answers).IsEmpty();
+    }
+
+    // cons(Head, Acc, [Head | Acc]) prepends each element to the accumulator,
+    // so a left fold collects the elements in reverse order
+    [Fact]
+    public void FoldlProcessesTheElementsInListOrder()
+    {
+        var answers = Ok(GetAnswers("foldl(cons,[1,2,3],[],R)?"));
+        Check.That(answers).CountIs(1);
+        Check.That(Elements(answers[0], "R")).IsEquivalentTo("3", "2", "1");
     }
 }
