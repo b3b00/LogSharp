@@ -1,4 +1,5 @@
-﻿using logSharp.interpretation.unification;
+﻿using System.Diagnostics.CodeAnalysis;
+using logSharp.interpretation.unification;
 using logSharp.parser;
 
 namespace logSharp.model
@@ -45,6 +46,7 @@ namespace logSharp.model
             return null;
         }
 
+        [ExcludeFromCodeCoverage]
         public override string Dump()
         {
             string oper = _operator == LogSharpToken.Minus ? "-" : "+";

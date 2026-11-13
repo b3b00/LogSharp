@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace logSharp.model
@@ -12,11 +13,13 @@ namespace logSharp.model
         }
         
         
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             return Dump();
         }
         
+        [ExcludeFromCodeCoverage]
         public override string Dump()
         {
             StringBuilder builder = new StringBuilder();

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using logSharp.helpers;
@@ -154,6 +155,7 @@ namespace logSharp.model
         
         #endregion
 
+        [ExcludeFromCodeCoverage]
         public virtual string Dump()
         {
             var dump =  new StringBuilder();
@@ -207,11 +209,13 @@ namespace logSharp.model
             return dump.ToString();
         }
 
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             return Dump();
         }
 
+        [ExcludeFromCodeCoverage]
         public override bool Equals(object o)
         {
             if (o != null)
@@ -248,7 +252,7 @@ namespace logSharp.model
         }
 
        
-
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode()
         {
             unchecked

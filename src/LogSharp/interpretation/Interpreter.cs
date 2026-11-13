@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using DeepCopy;
@@ -62,6 +63,7 @@ namespace logSharp.interpretation
             return BuiltIns.TryGetValue(spec, out builtIn);
         }
 
+        [ExcludeFromCodeCoverage]
         public void Append(Rule rule)
         {
             if (LogSharpProgram == null)
@@ -73,6 +75,7 @@ namespace logSharp.interpretation
             LogSharpProgram.Append(rule);
         }
 
+        [ExcludeFromCodeCoverage]
         public void Append(LogSharpProgram program)
         {
             if (LogSharpProgram == null)
@@ -97,6 +100,7 @@ namespace logSharp.interpretation
 
 
 
+        [ExcludeFromCodeCoverage]
         public void Trace(string message)
         {
             if (Verbose)
@@ -109,6 +113,7 @@ namespace logSharp.interpretation
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public void LoadProgramFile(string program)
         {
             string prog = "";
@@ -218,11 +223,7 @@ namespace logSharp.interpretation
                             : p.Goals[p.Index].Head;
                         u = Unifier.UnifyTerms(current.Head, current.Unification,
                             destination, p.Unification);
-                    }
-                    else
-                    {
-                        ;
-                    }
+                    }                   
 
                     if (u.IsOk)
                     {

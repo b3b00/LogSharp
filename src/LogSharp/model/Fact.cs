@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -20,7 +21,8 @@ namespace logSharp.model
         public Fact(string name) : base(new Term(name))
         {
         }
-        
+
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             return Dump();

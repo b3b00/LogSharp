@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using logSharp.interpretation.unification;
 
 namespace logSharp.model
@@ -16,6 +17,7 @@ namespace logSharp.model
         
         public object Evaluate(Unification unification) => RawValue;
 
+        [ExcludeFromCodeCoverage]
         public override string Dump()
         {
             return Value.ToString();

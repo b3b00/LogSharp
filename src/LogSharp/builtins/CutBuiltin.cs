@@ -12,8 +12,7 @@ public class CutBuiltin
     [BuiltIn("cut/0")]
     public static List<Unification> Cut(Interpreter interpreter, Goal goal,
         List<Valuable> parameters)
-    {
-        
+    {        
         interpreter.Cut(goal);
         return new List<Unification>() { goal.Unification };
     }

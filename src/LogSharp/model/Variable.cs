@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using logSharp.interpretation.unification;
 
 namespace logSharp.model
@@ -42,11 +43,13 @@ namespace logSharp.model
             return null;
         }
         
+        [ExcludeFromCodeCoverage]
         public string Dump()
         {
             return Name;
         }
 
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             return Dump();

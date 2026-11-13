@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using logSharp.interpretation;
 using logSharp.interpretation.unification;
 using logSharp.model;
@@ -236,11 +237,13 @@ namespace logSharp.model
         }
 
 
+        [ExcludeFromCodeCoverage]
         public override string Dump()
         {
             return $"{LeftExpresion.Dump()} {OperatorsHelper.TokenToOperator(Operator)} {RightExpression.Dump()}";
         }
 
+        [ExcludeFromCodeCoverage]
         public string ToString(string format, IFormatProvider formatProvider) => Dump();
     }
 }
