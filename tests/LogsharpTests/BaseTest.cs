@@ -10,6 +10,8 @@ using sly.parser;
 using sly.parser.generator;
 using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace LogsharpTests
 {
     public class BaseTest
@@ -58,6 +60,5 @@ namespace LogsharpTests
             var answers = Interpreter.Search(question).ToList();
             return answers;
         }
-
     }
 }

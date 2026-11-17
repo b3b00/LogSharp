@@ -36,6 +36,7 @@ namespace logSharp.interpretation
 
         // finite-domain constraint store shared with the clpfd-like builtins
         public ClpfdConstraints Constraints { get; } = new ClpfdConstraints();
+        public bool UseIndex { get => LogSharpProgram?.UseIndex ?? false; set { if (LogSharpProgram != null) LogSharpProgram.UseIndex = value; } }
 
 
         public Interpreter(bool verbose, LogSharpProgram logSharpProgram, Parser<LogSharpToken, LogSharpAST> parser,
@@ -301,7 +302,10 @@ namespace logSharp.interpretation
                 }
                 else
                 {
-                    List<Rule> applicableRules = LogSharpProgram.GetRulesForSpec(term.Specification);
+                    Valuable firstArg = term.Head.Parameters != null && term.Head.Parameters.Count > 0
+                        ? term.Head.Parameters[0]
+                        : null;
+                    IEnumerable<Rule> applicableRules = LogSharpProgram.GetCandidateRules(term.Specification, firstArg, current.Unification);
                     foreach (var applicable in (applicableRules))
                     {
                         Trace($"trying rule {applicable.ToString()}");

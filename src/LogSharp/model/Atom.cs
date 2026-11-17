@@ -6,6 +6,7 @@ namespace logSharp.model
     public class Atom : Scalar, IExpression
     {
         public new string Name { get; private set; }
+        public string Value => Name;
 
         public override object RawValue => Name;
 

@@ -48,3 +48,8 @@ Term derefArg = Dereference(goalFirstArg);
     }
 }
 ```
+
+
+## 4. Benchmarks and Performance Gains
+
+See [`predicate_index_bench.md`](predicate_index_bench.md) for empirical benchmark results comparing indexed resolution with linear scanning.

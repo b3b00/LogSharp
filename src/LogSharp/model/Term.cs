@@ -28,6 +28,7 @@ namespace logSharp.model
         public List<Valuable> Parameters { get; set; }
         
         public int Arity => Parameters.Count;
+        public string Functor => Name;
         public string Specification => $"{Name}/{Arity}";
 
         public Term(string name) : this (name, new List<Valuable>())
