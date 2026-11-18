@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using logSharp.interpretation.unification;
+using logSharp.model;
 using NFluent;
 using Xunit;
 
@@ -16,6 +17,10 @@ plusOne(X,Y) :- Y is X + 1.
 conditionalAdd(X,Y) :- X < 10 Y is X + 1.
 conditionalAdd(X,Y) :- X >= 10 Y is X + 10.
 complex(X,Y) :- Y is (X + 69) * 12 - 4.
+
+exception(Y) :- Y is a - 1.
+
+minus(X, Y) :- Y is - X.    
 ";
 
     [Fact]
@@ -52,11 +57,28 @@ complex(X,Y) :- Y is (X + 69) * 12 - 4.
         Check.That(answers).CountIs(1);
         Check.That(answers[0].IsOk).IsTrue();
         Check.That((answers[0])).Contains("Y", "52");
-        
-        
-        
-
     }
-        
+    
+    [Fact]
+    public void TestExpressionException()
+    {
+        Check.ThatCode(() => GetAnswers("exception(28)?")).Throws<ExpressionException>();
+    }
+    
+    [Fact]
+    public void TestUnaryExpression()
+    {
+        Check.ThatCode(() => GetAnswers("exception(28)?")).Throws<ExpressionException>();
+    }
+
+    [Fact]
+    public void TestUnaryMinus()
+    {
+        var answers = GetAnswers("minus(28,Y)?");
+        Check.That(answers).Not.IsNullOrEmpty();
+        Check.That(answers).CountIs(1);
+        Check.That(answers[0].IsOk).IsTrue();
+        Check.That((answers[0])).Contains("Y", "-28");
+    }
     
 }

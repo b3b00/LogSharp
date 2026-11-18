@@ -50,8 +50,78 @@ namespace logSharp.model
 
         public void Append(Rule rule)
         {
-            Rules.Add(rule);
-            AddRuleToIndices(rule);
+            AssertClause(rule, atEnd: true);
+        }
+
+        /// <summary>
+        /// Adds a clause to the program at runtime (assertz when <paramref
+        /// name="atEnd"/>, asserta otherwise). The clause is registered in the
+        /// ordered rule lists AND in the first argument index, which is kept
+        /// synchronized : the head's first argument is categorized (variable,
+        /// constant, compound) and appended/prepended to the matching bucket
+        /// and to the fallback list. Unknown predicates are created on the fly.
+        /// </summary>
+        public void AssertClause(Rule rule, bool atEnd = true)
+        {
+            if (rule == null) return;
+            Rules ??= new List<Rule>();
+            RulesBySpec ??= new Dictionary<string, List<Rule>>();
+            PredicateIndexes ??= new Dictionary<string, PredicateIndex>();
+
+            if (!RulesBySpec.TryGetValue(rule.Specification, out var currentRules))
+            {
+                currentRules = new List<Rule>();
+                RulesBySpec[rule.Specification] = currentRules;
+            }
+
+            if (!PredicateIndexes.TryGetValue(rule.Specification, out var index))
+            {
+                index = new PredicateIndex();
+                PredicateIndexes[rule.Specification] = index;
+            }
+
+            if (atEnd)
+            {
+                Rules.Add(rule);
+                currentRules.Add(rule);
+                index.Add(rule);
+            }
+            else
+            {
+                // asserta : the clause must be evaluated FIRST, the logical
+                // ordering of every structure is preserved
+                Rules.Insert(0, rule);
+                currentRules.Insert(0, rule);
+                index.AddFirst(rule);
+            }
+        }
+
+        /// <summary>
+        /// Removes a clause from the ordered rule lists and from the first
+        /// argument index (every table it was classified into). Returns true
+        /// when the clause was present in the program.
+        /// </summary>
+        public bool RetractClause(Rule rule)
+        {
+            if (rule == null) return false;
+
+            bool removed = false;
+            if (Rules != null)
+            {
+                removed = Rules.Remove(rule);
+            }
+
+            if (RulesBySpec != null && RulesBySpec.TryGetValue(rule.Specification, out var currentRules))
+            {
+                removed |= currentRules.Remove(rule);
+            }
+
+            if (PredicateIndexes != null && PredicateIndexes.TryGetValue(rule.Specification, out var index))
+            {
+                removed |= index.Remove(rule);
+            }
+
+            return removed;
         }
 
         public void Append(LogSharpProgram program)
@@ -90,10 +160,16 @@ namespace logSharp.model
                 var index = GetPredicateIndex(specification);
                 if (index != null)
                 {
+                    // the index returns a snapshot, isolated from the structural
+                    // mutations assert/retract may perform while the enumeration
+                    // is active (choice points over the modified predicate)
                     return index.GetCandidateClauses(goalFirstArg, unification);
                 }
             }
-            return GetRulesForSpec(specification);
+
+            // copy the ordered clause list so dynamic updates cannot mutate the
+            // list being iterated by an active search
+            return new List<Rule>(GetRulesForSpec(specification));
         }
         
         [ExcludeFromCodeCoverage]

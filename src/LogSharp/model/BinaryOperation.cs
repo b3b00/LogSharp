@@ -122,7 +122,7 @@ namespace logSharp.model
             {
                 return logAndReturn("-",(object l , object r ) => (int)l - (int)r);
             }
-            throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for subsctraction {leftType}  and {rightType}");
+            throw new ExpressionException(ExpressionError.BadTypes,$"incompatible types for substraction {leftType}  and {rightType}");
         }
         
         public static object Mul(LogSharpToken oper, object left, object right)
